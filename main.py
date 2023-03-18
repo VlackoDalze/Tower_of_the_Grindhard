@@ -14,6 +14,7 @@ MAP_HEIGHT = setting.SCREEN_HEIGHT // CELL_SIZE
 MAX_FPS = 60
 BLANCO = (255, 255, 255)
 
+
 # definiendo el tamaño de la pantalla
 screen = pygame.display.set_mode((setting.SCREEN_WIDTH, setting.SCREEN_HEIGHT))
 clock = pygame.time.Clock()
@@ -40,14 +41,50 @@ with open('collisions.csv', 'r') as csv_file:
 # defining font attributes
 myFont = pygame.font.SysFont("Segoe UI", 90)
 helloWorld = myFont.render("Hello World", 1, (255, 0, 255), (255, 255, 255))
+#color negro
+NEGRO = (0, 0, 0)
 
+#ejes de jugador
+jugador_ejex = 32*2
+jugador_ejey = 32*19
+
+#lista de colisiones
+colisiones = []
+eje_x = 0  # eje x
+eje_y = 0  # eje y
+for row in collide_level1:
+    for column in row:
+
+        if column=="1" or column=="2" or column=="3" or column=="4" :
+            colisiones.append(str(eje_x)+"-"+str(eje_y))
+           
+        eje_x = eje_x + CELL_SIZE  # aumenta x +32
+    eje_y = eje_y + CELL_SIZE  # aumenta y+32
+    eje_x = 0  # resets x
+    
 while True:
     # El evento pygame.QUIT significa que el usuario hizo click en X para cerrar la ventana
+    ejex= jugador_ejex
+    ejey=jugador_ejey
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
             exit()
-
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_LEFT:
+                ejex = ejex-CELL_SIZE
+            if event.key ==pygame.K_RIGHT:
+                ejex =ejex+CELL_SIZE
+            if event.key==pygame.K_UP:
+                ejey = ejey-CELL_SIZE
+            if event.key== pygame.K_DOWN:
+                ejey = ejey+CELL_SIZE
+            print(ejex,ejey)  
+     
+        if str(ejex)+"-"+str(ejey) not in colisiones:  
+            jugador_ejex = ejex
+            jugador_ejey = ejey
+            
     # Lleno la pantalla con el color para borrar cualquier cosa del último cuadro
     screen.fill(BLANCO)
 
@@ -71,31 +108,11 @@ while True:
     # pygame.draw.circle(screen, BLANCO, (64,64), 8)
 
     screen.blit(level1_texture, (0, 0))
+    pygame.draw.rect(screen, NEGRO, (jugador_ejex, jugador_ejey, 32, 32))
 
-    # pygame.draw.rect(screen, BLANCO, (0,0,32,32))
-
-    eje_x = 0  # eje x
-    eje_y = 0  # eje y
-
-    for row in collide_level1:
-        for column in row:
-
-            if (column == '1'):  # Muro
-                pygame.draw.rect(screen, BLANCO, (eje_x, eje_y, 32, 32))
-            if (column == '2'):  # La puerta
-                pygame.draw.rect(screen, (126, 126, 0), (eje_x, eje_y, 32, 32))
-            if (column == '3'):  # Cofres
-                pygame.draw.rect(screen, (0, 126, 0), (eje_x, eje_y, 32, 32))
-            if (column == '4'):  # Muebles
-                pygame.draw.rect(screen, (0, 126, 126), (eje_x, eje_y, 32, 32))
-
-            eje_x = eje_x + CELL_SIZE  # aumenta x +32
-
-        eje_y = eje_y + CELL_SIZE  # aumenta y+32
-        eje_x = 0  # resets x
-
-    #Sistema de jugador
-    
+    # Sistema de jugador
+   
+       
 
     # flip() la pantalla para poner su trabajo en la pantalla
     pygame.display.flip()
