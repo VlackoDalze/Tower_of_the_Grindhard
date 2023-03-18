@@ -33,7 +33,7 @@ class Personaje(pygame.sprite.Sprite):
             return Estadisticas(self.estadisticasBase).getDefensaFisica()-float(dano)
         else: # 1 magico
             return Estadisticas(self.estadisticasBase).getDefensaMagica()-float(dano)
- 
+
     def atacar(self,tipoDeDano):
         if int(tipoDeDano)==0: #  0 fisico
             return (Estadisticas(self.estadisticasBase).getAtaqueFisico(),0)

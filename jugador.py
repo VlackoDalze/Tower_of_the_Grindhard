@@ -1,4 +1,5 @@
 from personaje import Personaje
+import pygame
 class Jugador(Personaje):
     #atributos
     inventario = []
@@ -8,6 +9,8 @@ class Jugador(Personaje):
     #constructor
     def __init__(self,nombre, descripcion, imagen, estadisticasBase, habilidadesActivas, habilidadesPasivas,posicionX,posicionY,raza):
         super().__init__(nombre, descripcion, imagen, estadisticasBase, habilidadesActivas,habilidadesPasivas,posicionX,posicionY)
+        self.flip = False
+        self.direction = 1
         self.raza =raza
 
     #metodos
@@ -25,15 +28,22 @@ class Jugador(Personaje):
         direction_y = 0
 
         if movimiento_izquierda:
-            direction_x = -super().getCellSize()
+            direction_x = -super().getCellSize()*0.1
+            self.flip = True
+            self.direction = -1
         if movimiento_derecha:
-            direction_x = super().getCellSize()
+            direction_x = super().getCellSize()*0.1
+            self.flip = False
+            self.direction = 1
         if movimiento_abajo:
-            direction_y = super().getCellSize()
+            direction_y = super().getCellSize()*0.1
         if movimiento_arriba:
-            direction_y = -super().getCellSize()
+            direction_y = -super().getCellSize()*0.1
         
         self.rect.x += direction_x
         self.rect.y += direction_y
+
+    def draw(self, screen):
+        screen.blit(pygame.transform.flip(self.player_texture, self.flip, False) , self.rect)
 
     
