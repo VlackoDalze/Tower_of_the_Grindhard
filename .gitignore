@@ -1,0 +1,7 @@
+# Lines starting with `#` are comments.
+
+# Ignoro el fichero .vscode
+.vscode
+
+# Ignoro el fichero __pycache__
+__pycache__
