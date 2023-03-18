@@ -1,4 +1,6 @@
 class Sistema_stats:
+
+    #atributos
     vida = 0
     mana = 0
     ataqueFisico = 0
@@ -11,6 +13,7 @@ class Sistema_stats:
     multiplicadorCritico = 0
     velocidad = 0
 
+    #constructor
     def __init__(self,vida,mana,ataqueFisico,ataqueMagico,defensaFisica,defensaMagica,precision,evasion,probCritica,multiplicadorCritico,velocidad):
         self.vida = vida
         self.mana = mana
@@ -24,6 +27,7 @@ class Sistema_stats:
         self.multiplicadorCritico = multiplicadorCritico
         self.velocidad = velocidad
 
+    #getters
     def __getVida__(self):
         return self.vida
     
@@ -57,8 +61,36 @@ class Sistema_stats:
     def __getVel__(self):
         return self.velocidad
     
+    #setters
     def __setVida__(self,vida):
         self.vida = vida
 
     def __setMana__(self,mana):
         self.mana = mana
+
+    def __setAtaqFis__(self,ataqueFisico):
+        self.ataqueFisico = ataqueFisico
+
+    def __setAtaqMag__(self,ataqueMagico):
+        self.ataqueMagico = ataqueMagico
+
+    def __setDefFis__(self,defensaFisica):
+        self.defensaFisica = defensaFisica
+
+    def __setDefMag__(self,defensaMagica):
+        self.defensaMagica = defensaMagica
+
+    def __setPrec__(self,precision):
+        self.precision = precision
+
+    def __setEva__(self,evasion):
+        self.evasion = evasion
+
+    def __setProbCrit__(self,probCritica):
+        self.probCritica = probCritica
+
+    def __setMultiCrit__(self,multiplicadorCritico):
+        self.multiplicadorCritico = multiplicadorCritico
+
+    def __setVel__(self,velocidad):
+        self.velocidad = velocidad
