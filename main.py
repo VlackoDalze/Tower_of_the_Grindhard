@@ -30,6 +30,47 @@ floor_texture = pygame.image.load("assets/dungeon/floor/sandstone_floor_0.png")
 wall_texture = pygame.image.load("assets/dungeon/wall/brick_brown_0.png")
 level1_texture = pygame.image.load("_composite.png")
 
+#Textura de jugador
+player_texture = pygame.image.load("assets/player/base/elf_male.png")
+
+#Variable de acción del personaje
+movimiento_derecha = False;
+movimiento_izquierda = False;
+movimiento_arriba = False;
+movimiento_abajo = False;
+
+
+
+class Jugador(pygame.sprite.Sprite):
+    CELL_SIZE = 32
+    def __init__(self, image, x, y):
+        pygame.sprite.Sprite.__init__(self)
+        self.player_texture = image
+        self.rect = self.player_texture.get_rect()
+        self.rect.center = ((x * CELL_SIZE)+16, (y * CELL_SIZE)+16)
+        print(self.rect)
+
+    def move(self,movimiento_izquierda, movimiento_derecha,movimiento_abajo,movimiento_arriba):
+        direction_x = 0
+        direction_y = 0
+
+        if movimiento_izquierda:
+            direction_x = -CELL_SIZE
+        if movimiento_derecha:
+            direction_x = CELL_SIZE
+        if movimiento_abajo:
+            direction_y = CELL_SIZE
+        if movimiento_arriba:
+            direction_y = -CELL_SIZE
+        
+        self.rect.x += direction_x
+        self.rect.y += direction_y
+
+    def draw(self):
+        screen.blit(self.player_texture, self.rect)
+
+player = Jugador(player_texture,3,19)
+
 collide_level1 = []
 
 with open('collisions.csv', 'r') as csv_file:
@@ -41,15 +82,58 @@ with open('collisions.csv', 'r') as csv_file:
 myFont = pygame.font.SysFont("Segoe UI", 90)
 helloWorld = myFont.render("Hello World", 1, (255, 0, 255), (255, 255, 255))
 
+def drawMap(level_texture):
+    screen.blit(level_texture, (0, 0))
+
+def drawCollider(map_collider_matriz):
+    eje_x = 0  # eje x
+    eje_y = 0  # eje y
+
+    for row in map_collider_matriz:
+        for column in row:
+
+            if (column == '1'):  # Muro
+                pygame.draw.rect(screen, BLANCO, (eje_x, eje_y, 32, 32))
+            if (column == '2'):  # La puerta
+                pygame.draw.rect(screen, (126, 126, 0), (eje_x, eje_y, 32, 32))
+            if (column == '3'):  # Cofres
+                pygame.draw.rect(screen, (0, 126, 0), (eje_x, eje_y, 32, 32))
+            if (column == '4'):  # Muebles
+                pygame.draw.rect(screen, (0, 126, 126), (eje_x, eje_y, 32, 32))
+
+            eje_x = eje_x + CELL_SIZE  # aumenta x +32
+
+        eje_y = eje_y + CELL_SIZE  # aumenta y+32
+        eje_x = 0  # resets x
+
+
 while True:
     # El evento pygame.QUIT significa que el usuario hizo click en X para cerrar la ventana
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
             exit()
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_a :
+                movimiento_izquierda = True
+            if event.key == pygame.K_d :
+                movimiento_derecha = True
+            if event.key == pygame.K_w :
+                movimiento_arriba = True
+            if event.key == pygame.K_s :
+                movimiento_abajo = True
 
-    # Lleno la pantalla con el color para borrar cualquier cosa del último cuadro
-    screen.fill(BLANCO)
+        if event.type == pygame.KEYUP:
+            if event.key == pygame.K_a :
+                movimiento_izquierda = False
+            if event.key == pygame.K_d :
+                movimiento_derecha = False
+            if event.key == pygame.K_w :
+                movimiento_arriba = False
+            if event.key == pygame.K_s :
+                movimiento_abajo = False
+
+    player.move(movimiento_izquierda, movimiento_derecha, movimiento_abajo,movimiento_arriba)
 
     # RENDER GAME HERE
     # Dibujo el mapa
@@ -70,32 +154,15 @@ while True:
     # screen.blit(image, (x * CELL_SIZE, y * CELL_SIZE))
     # pygame.draw.circle(screen, BLANCO, (64,64), 8)
 
-    screen.blit(level1_texture, (0, 0))
+
+    drawMap(level1_texture)
 
     # pygame.draw.rect(screen, BLANCO, (0,0,32,32))
 
-    eje_x = 0  # eje x
-    eje_y = 0  # eje y
-
-    for row in collide_level1:
-        for column in row:
-
-            if (column == '1'):  # Muro
-                pygame.draw.rect(screen, BLANCO, (eje_x, eje_y, 32, 32))
-            if (column == '2'):  # La puerta
-                pygame.draw.rect(screen, (126, 126, 0), (eje_x, eje_y, 32, 32))
-            if (column == '3'):  # Cofres
-                pygame.draw.rect(screen, (0, 126, 0), (eje_x, eje_y, 32, 32))
-            if (column == '4'):  # Muebles
-                pygame.draw.rect(screen, (0, 126, 126), (eje_x, eje_y, 32, 32))
-
-            eje_x = eje_x + CELL_SIZE  # aumenta x +32
-
-        eje_y = eje_y + CELL_SIZE  # aumenta y+32
-        eje_x = 0  # resets x
-
-    #Sistema de jugador
+    drawCollider(collide_level1)
     
+    # Sistema de jugador
+    player.draw()
 
     # flip() la pantalla para poner su trabajo en la pantalla
     pygame.display.flip()
