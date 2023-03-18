@@ -3,6 +3,7 @@ from sys import exit
 import setting
 import numpy as np
 import csv
+from jugador import Jugador
 
 # Inicio el programa
 pygame.init()
@@ -40,36 +41,7 @@ movimiento_arriba = False;
 movimiento_abajo = False;
 
 
-
-class Jugador(pygame.sprite.Sprite):
-    CELL_SIZE = 32
-    def __init__(self, image, x, y):
-        pygame.sprite.Sprite.__init__(self)
-        self.player_texture = image
-        self.rect = self.player_texture.get_rect()
-        self.rect.center = ((x * CELL_SIZE)+16, (y * CELL_SIZE)+16)
-        print(self.rect)
-
-    def move(self,movimiento_izquierda, movimiento_derecha,movimiento_abajo,movimiento_arriba):
-        direction_x = 0
-        direction_y = 0
-
-        if movimiento_izquierda:
-            direction_x = -CELL_SIZE
-        if movimiento_derecha:
-            direction_x = CELL_SIZE
-        if movimiento_abajo:
-            direction_y = CELL_SIZE
-        if movimiento_arriba:
-            direction_y = -CELL_SIZE
-        
-        self.rect.x += direction_x
-        self.rect.y += direction_y
-
-    def draw(self):
-        screen.blit(self.player_texture, self.rect)
-
-player = Jugador(player_texture,3,19)
+player = Jugador("player1","none",player_texture,None,None,None,3,19,"Humano")
 
 collide_level1 = []
 
@@ -136,33 +108,12 @@ while True:
     player.move(movimiento_izquierda, movimiento_derecha, movimiento_abajo,movimiento_arriba)
 
     # RENDER GAME HERE
-    # Dibujo el mapa
-    # Itera sobre el mapa y dibuja cada textura
-    # for y in range(MAP_HEIGHT):
-    #     for x in range(MAP_WIDTH):
-    #         # Calcula la posición en píxeles de la textura en el mapa
-    #         texture_x = x * CELL_SIZE
-    #         texture_y = y * CELL_SIZE
-
-    #         # Dibuja la imagen de la textura en la posición correspondiente
-    #         if map_data[y][x] == 0:
-    #             screen.blit(floor_texture, (texture_x, texture_y))
-    #         elif map_data[y][x] == 1:
-    #             screen.blit(wall_texture, (texture_x, texture_y))
-
-    # Dibuja la imagen en la pantalla
-    # screen.blit(image, (x * CELL_SIZE, y * CELL_SIZE))
-    # pygame.draw.circle(screen, BLANCO, (64,64), 8)
-
 
     drawMap(level1_texture)
-
-    # pygame.draw.rect(screen, BLANCO, (0,0,32,32))
-
     drawCollider(collide_level1)
     
-    # Sistema de jugador
-    player.draw()
+    # Dibujo al jugador
+    player.draw(screen)
 
     # flip() la pantalla para poner su trabajo en la pantalla
     pygame.display.flip()
