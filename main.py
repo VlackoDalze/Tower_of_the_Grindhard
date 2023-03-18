@@ -30,7 +30,7 @@ floor_texture = pygame.image.load("assets/dungeon/floor/sandstone_floor_0.png")
 wall_texture = pygame.image.load("assets/dungeon/wall/brick_brown_0.png")
 level1_texture = pygame.image.load("_composite.png")
 
-collide_level1 = [[]]
+collide_level1 = []
 
 with open('collisions.csv', 'r') as csv_file:
     csv_reader = csv.reader(csv_file)#Almaceno la matriz
@@ -74,22 +74,25 @@ while True:
 
     #pygame.draw.rect(screen, BLANCO, (0,0,32,32))
 
-    filaPX = 0;
-    columnaPX = -32;
+    eje_x = 0 #eje x
+    eje_y = 0 #eje y
 
     for row in collide_level1:
         for column in row:
+            
             if(column == '1'):#Muro
-                pygame.draw.rect(screen, BLANCO, (filaPX,columnaPX,32,32))
+                pygame.draw.rect(screen, BLANCO, (eje_x,eje_y,32,32))
             if(column == '2'):#La puerta
-                pygame.draw.rect(screen, (126,126,0), (filaPX,columnaPX,32,32))
+                pygame.draw.rect(screen, (126,126,0), (eje_x,eje_y,32,32))
             if(column == '3'):#Cofres
-                pygame.draw.rect(screen, (0,126,0), (filaPX,columnaPX,32,32))
+                pygame.draw.rect(screen, (0,126,0), (eje_x,eje_y,32,32))
             if(column == '4'):#Muebles
-                pygame.draw.rect(screen, (0,126,126), (filaPX,columnaPX,32,32))
-            filaPX = filaPX + CELL_SIZE
-        columnaPX = columnaPX + CELL_SIZE
-        filaPX = 0
+                pygame.draw.rect(screen, (0,126,126), (eje_x,eje_y,32,32))
+           
+            eje_x = eje_x + CELL_SIZE #aumenta x +32
+            
+        eje_y = eje_y + CELL_SIZE #aumenta y+32
+        eje_x = 0 #resetea x
 
     # flip() la pantalla para poner su trabajo en la pantalla
     pygame.display.flip()
