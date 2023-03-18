@@ -56,3 +56,9 @@ class Sistema_stats:
     
     def __getVel__(self):
         return self.velocidad
+    
+    def __setVida__(self,vida):
+        self.vida = vida
+
+    def __setMana__(self,mana):
+        self.mana = mana
