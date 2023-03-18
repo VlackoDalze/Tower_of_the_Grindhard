@@ -40,7 +40,6 @@ movimiento_izquierda = False;
 movimiento_arriba = False;
 movimiento_abajo = False;
 
-
 player = Jugador("player1","none",player_texture,None,None,None,3,19,"Humano")
 
 collide_level1 = []
