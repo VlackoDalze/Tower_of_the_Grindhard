@@ -1,5 +1,7 @@
+import pygame
 from estadisticas import Estadisticas
-class Personaje:
+import setting
+class Personaje(pygame.sprite.Sprite):
     #atributos
     nombre = None
     descripcion = None
@@ -9,7 +11,13 @@ class Personaje:
     habilidadesPasivas = None
 
     #constructor
-    def __init__(self, nombre, descripcion, imagen, estadisticasBase, habilidadesActivas, habilidadesPasivas):
+    def __init__(self, nombre, descripcion, imagen, estadisticasBase, habilidadesActivas, habilidadesPasivas, posicionX,posicionY):
+        pygame.sprite.Sprite.__init__(self)
+        self.CELL_SIZE = setting.CELL_SIZE
+        self.player_texture = imagen
+        self.rect = self.player_texture.get_rect()
+        self.rect.center = ((posicionX * self.CELL_SIZE)+16, (posicionY * self.CELL_SIZE)+16)
+
         self.nombre = nombre
         self.descripcion = descripcion
         self.imagen = imagen
@@ -31,3 +39,9 @@ class Personaje:
             return (Estadisticas(self.estadisticasBase).getAtaqueFisico(),0)
         else:  # 1 magico
             return (Estadisticas(self.estadisticasBase).getAtaqueMagico(),1)
+
+    def draw(self, screen):
+        screen.blit(self.player_texture, self.rect)
+
+    def getCellSize(self):
+        return self.CELL_SIZE
