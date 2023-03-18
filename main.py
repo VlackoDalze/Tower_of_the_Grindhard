@@ -33,7 +33,7 @@ level1_texture = pygame.image.load("_composite.png")
 collide_level1 = []
 
 with open('collisions.csv', 'r') as csv_file:
-    csv_reader = csv.reader(csv_file)#Almaceno la matriz
+    csv_reader = csv.reader(csv_file)  # Almaceno la matriz
     for line in csv_reader:
         collide_level1.append(line)
 
@@ -70,29 +70,32 @@ while True:
     # screen.blit(image, (x * CELL_SIZE, y * CELL_SIZE))
     # pygame.draw.circle(screen, BLANCO, (64,64), 8)
 
-    screen.blit(level1_texture,(0,0))
+    screen.blit(level1_texture, (0, 0))
 
-    #pygame.draw.rect(screen, BLANCO, (0,0,32,32))
+    # pygame.draw.rect(screen, BLANCO, (0,0,32,32))
 
-    eje_x = 0 #eje x
-    eje_y = 0 #eje y
+    eje_x = 0  # eje x
+    eje_y = 0  # eje y
 
     for row in collide_level1:
         for column in row:
-            
-            if(column == '1'):#Muro
-                pygame.draw.rect(screen, BLANCO, (eje_x,eje_y,32,32))
-            if(column == '2'):#La puerta
-                pygame.draw.rect(screen, (126,126,0), (eje_x,eje_y,32,32))
-            if(column == '3'):#Cofres
-                pygame.draw.rect(screen, (0,126,0), (eje_x,eje_y,32,32))
-            if(column == '4'):#Muebles
-                pygame.draw.rect(screen, (0,126,126), (eje_x,eje_y,32,32))
-           
-            eje_x = eje_x + CELL_SIZE #aumenta x +32
-            
-        eje_y = eje_y + CELL_SIZE #aumenta y+32
-        eje_x = 0 #resetea x
+
+            if (column == '1'):  # Muro
+                pygame.draw.rect(screen, BLANCO, (eje_x, eje_y, 32, 32))
+            if (column == '2'):  # La puerta
+                pygame.draw.rect(screen, (126, 126, 0), (eje_x, eje_y, 32, 32))
+            if (column == '3'):  # Cofres
+                pygame.draw.rect(screen, (0, 126, 0), (eje_x, eje_y, 32, 32))
+            if (column == '4'):  # Muebles
+                pygame.draw.rect(screen, (0, 126, 126), (eje_x, eje_y, 32, 32))
+
+            eje_x = eje_x + CELL_SIZE  # aumenta x +32
+
+        eje_y = eje_y + CELL_SIZE  # aumenta y+32
+        eje_x = 0  # resets x
+
+    #Sistema de jugador
+    
 
     # flip() la pantalla para poner su trabajo en la pantalla
     pygame.display.flip()
