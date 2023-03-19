@@ -1,6 +1,6 @@
 import pygame
-from estadisticas import Estadisticas
-import setting
+from scripts.estadisticas import Estadisticas as Estadisticas
+import scripts.setting as setting
 class Personaje(pygame.sprite.Sprite):
     #atributos
     nombre = None

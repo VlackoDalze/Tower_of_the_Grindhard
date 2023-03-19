@@ -1,4 +1,4 @@
-from personaje import Personaje
+from scripts.personaje import Personaje as Personaje
 import pygame
 class Jugador(Personaje):
     #atributos
