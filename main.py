@@ -56,7 +56,7 @@ helloWorld = myFont.render("Hello World", 1, (255, 0, 255), (255, 255, 255))
 def drawMap(level_texture):
     screen.blit(level_texture, (0, 0))
 
-def drawCollider(map_collider_matriz):
+def dibujarCollider(map_collider_matriz):
     eje_x = 0  # eje x
     eje_y = 0  # eje y
 
