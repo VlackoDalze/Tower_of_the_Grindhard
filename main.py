@@ -13,6 +13,8 @@ CELL_SIZE = setting.CELL_SIZE
 MAP_WIDTH = setting.SCREEN_WIDTH // CELL_SIZE
 MAP_HEIGHT = setting.SCREEN_HEIGHT // CELL_SIZE
 MAX_FPS = 60
+#FPS 60/5 = 12
+MAX_MOVEMENT_FPS = MAX_FPS/5
 BLANCO = (255, 255, 255)
 
 # definiendo el tamaño de la pantalla
@@ -77,6 +79,7 @@ def drawCollider(map_collider_matriz):
         eje_y = eje_y + CELL_SIZE  # aumenta y+32
         eje_x = 0  # resets x
 
+player_update_time = 0
 
 while True:
     # El evento pygame.QUIT significa que el usuario hizo click en X para cerrar la ventana
@@ -104,9 +107,12 @@ while True:
             if event.key == pygame.K_s :
                 movimiento_abajo = False
 
-    player.move(movimiento_izquierda, movimiento_derecha, movimiento_abajo,movimiento_arriba)
-
     # RENDER GAME HERE
+
+    # ACTUALIZACIÓN DEL MOVIMIENTO DEL JUGADOR A 5 FPS
+    if player_update_time >= MAX_MOVEMENT_FPS:
+        player.move(movimiento_izquierda, movimiento_derecha, movimiento_abajo,movimiento_arriba)
+        player_update_time = 0  # reinicio el temporizador
 
     drawMap(level1_texture)
     drawCollider(collide_level1)
@@ -117,4 +123,6 @@ while True:
     # flip() la pantalla para poner su trabajo en la pantalla
     pygame.display.flip()
     data_time = clock.tick(MAX_FPS)  # limito el FPS a 60
+    # incremento el temporizador
+    player_update_time += 1
     pygame.display.update()
