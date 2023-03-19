@@ -26,19 +26,20 @@ class Jugador(Personaje):
     def move(self,movimiento_izquierda, movimiento_derecha,movimiento_abajo,movimiento_arriba):
         direction_x = 0
         direction_y = 0
+        movement_speed = super().getCellSize();
 
         if movimiento_izquierda:
-            direction_x = -super().getCellSize()*0.1
+            direction_x = -movement_speed
             self.flip = True
             self.direction = -1
         if movimiento_derecha:
-            direction_x = super().getCellSize()*0.1
+            direction_x = movement_speed
             self.flip = False
             self.direction = 1
         if movimiento_abajo:
-            direction_y = super().getCellSize()*0.1
+            direction_y = movement_speed
         if movimiento_arriba:
-            direction_y = -super().getCellSize()*0.1
+            direction_y = -movement_speed
         
         self.rect.x += direction_x
         self.rect.y += direction_y
