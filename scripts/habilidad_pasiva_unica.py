@@ -1,26 +1,26 @@
 class PasivaUnica():
-    #atributos
+    # atributos
     nombre = None
     descripcion = None
     nivel = 1
     estadisticas = None
-    
-    #constructor
+
+    # constructor
     def __init__(self, nombre, descripcion, nivel, estadisticas):
         self.nombre = nombre
         self.descripcion = descripcion
         self.nivel = nivel
         self.estadisticas = estadisticas
-        
-    #metodos para que los hijos los personalicen
+
+    # metodos para que los hijos los personalicen
     def activar():
         pass
 
-    def deactivar():
+    def desactivar():
         pass
-    
 
-    #metodos
+    # metodos
+
     def getNivel(self):
         return self.nivel
 
