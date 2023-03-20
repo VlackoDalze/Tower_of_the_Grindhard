@@ -1,6 +1,5 @@
 from scripts.personaje import Personaje as Personaje
 import pygame
-from habilidad_pasiva_unica import PasivaUnica
 
 class Jugador(Personaje):
     #atributos
@@ -49,9 +48,4 @@ class Jugador(Personaje):
     def draw(self, screen):
         screen.blit(pygame.transform.flip(self.player_texture, self.flip, False) , self.rect)
         
-    #pasiva unica , el parametro no se si lo pillara, luego debo revisarlo -a
-    def activarPasivas(self, estadisticas=super().estadisticasBase):
-      PasivaUnica(super().habilidadesPasivas).activar(estadisticas)
-
-    def desactivarPasivas(self):
-       PasivaUnica(super().habilidadesPasivas).deactivar()
+  

@@ -47,3 +47,10 @@ class Personaje(pygame.sprite.Sprite):
 
     def getCellSize(self):
         return self.CELL_SIZE
+
+      #pasiva unica y otras pasivas -a
+    def activarPasivas(self):
+      PasivaUnica(self.habilidadesPasivas).activar()
+
+    def desactivarPasivas(self):
+       PasivaUnica(self.habilidadesPasivas).deactivar()

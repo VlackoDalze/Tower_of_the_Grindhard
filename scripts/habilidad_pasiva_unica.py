@@ -1,12 +1,28 @@
-from abc import abstractmethod
-from abc import ABCMeta
-
-class PasivaUnica(metaclass=ABCMeta): #clase abstracta -a
+class PasivaUnica():
+    #atributos
+    nombre = None
+    descripcion = None
+    nivel = 1
+    estadisticas = None
     
-    @abstractmethod
-    def activar(self,estadisticas):
+    #constructor
+    def __init__(self, nombre, descripcion, nivel, estadisticas):
+        self.nombre = nombre
+        self.descripcion = descripcion
+        self.nivel = nivel
+        self.estadisticas = estadisticas
+        
+    #metodos para que los hijos los personalicen
+    def activar():
         pass
 
-    @abstractmethod
-    def deactivar(self):
+    def deactivar():
         pass
+    
+    #metodos
+    def getNivel(self):
+        return self.nivel
+
+    def subirNivel(self):
+        self.nivel = self.nivel+1
+        self.porcentaje = self.porcentaje+0.05
