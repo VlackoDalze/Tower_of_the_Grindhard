@@ -1,6 +1,8 @@
 import pygame
 from scripts.estadisticas import Estadisticas as Estadisticas
 import scripts.setting as setting
+from habilidad_pasiva_unica import PasivaUnica
+
 class Personaje(pygame.sprite.Sprite):
     #atributos
     nombre = None
@@ -24,7 +26,7 @@ class Personaje(pygame.sprite.Sprite):
         self.estadisticasBase = estadisticasBase
         self.habilidadesActivas = habilidadesActivas
         self.habilidadesPasivas = habilidadesPasivas
-
+        
     #metodos
     def defender(self,recibeAtaque): #recibe ataque es un array con dos valores el daño  y el tipo de daño
         dano = recibeAtaque[0]
@@ -45,3 +47,10 @@ class Personaje(pygame.sprite.Sprite):
 
     def getCellSize(self):
         return self.CELL_SIZE
+
+      #pasiva unica y otras pasivas -a
+    def activarPasivas(self):
+      PasivaUnica(self.habilidadesPasivas).activar()
+
+    def desactivarPasivas(self):
+       PasivaUnica(self.habilidadesPasivas).deactivar()

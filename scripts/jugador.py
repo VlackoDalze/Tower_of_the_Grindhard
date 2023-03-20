@@ -1,5 +1,6 @@
 from scripts.personaje import Personaje as Personaje
 import pygame
+
 class Jugador(Personaje):
     #atributos
     inventario = []
@@ -26,7 +27,7 @@ class Jugador(Personaje):
     def move(self,movimiento_izquierda, movimiento_derecha,movimiento_abajo,movimiento_arriba):
         direction_x = 0
         direction_y = 0
-        movement_speed = super().getCellSize();
+        movement_speed = super().getCellSize()
 
         if movimiento_izquierda:
             direction_x = -movement_speed
@@ -46,5 +47,5 @@ class Jugador(Personaje):
 
     def draw(self, screen):
         screen.blit(pygame.transform.flip(self.player_texture, self.flip, False) , self.rect)
-
-    
+        
+  
