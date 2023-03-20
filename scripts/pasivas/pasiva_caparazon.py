@@ -5,6 +5,7 @@ class PasivaCaparazon(PasivaUnica):
     # atributos
     aux_vida = None
     PORCENTAJE = 1.05
+    BASE=0.005
     aux_defensa = None
 
     # constructor
@@ -18,9 +19,11 @@ class PasivaCaparazon(PasivaUnica):
         self.estadisticas = Estadisticas(estadisticas)
 
         if self.aux_vida > self.estadisticas.getVida():
-            self.estadisticas.setDefensaFisica(
-                self.estadisticas.getDefensaFisica*self.PORCENTAJE)
+            self.estadisticas.setDefensaFisica(self.estadisticas.getDefensaFisica*self.getPorcentaje())
             self.aux_vida = self.estadisticas.getVida()
 
     def desactivar(self):
         self.estadisticas.setDefensaFisica(self.aux_defensa)
+
+    def getPorcentaje(self):
+       return self.PORCENTAJE+(self.BASE*self.nivel)

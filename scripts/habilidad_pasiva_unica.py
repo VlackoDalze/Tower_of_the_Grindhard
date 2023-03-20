@@ -19,10 +19,10 @@ class PasivaUnica():
     def deactivar():
         pass
     
+
     #metodos
     def getNivel(self):
         return self.nivel
 
     def subirNivel(self):
         self.nivel = self.nivel+1
-        self.porcentaje = self.porcentaje+0.05
