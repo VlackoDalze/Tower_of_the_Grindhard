@@ -1,5 +1,7 @@
 from scripts.personaje import Personaje as Personaje
 import pygame
+from habilidad_pasiva_unica import PasivaUnica
+
 class Jugador(Personaje):
     #atributos
     inventario = []
@@ -26,7 +28,7 @@ class Jugador(Personaje):
     def move(self,movimiento_izquierda, movimiento_derecha,movimiento_abajo,movimiento_arriba):
         direction_x = 0
         direction_y = 0
-        movement_speed = super().getCellSize();
+        movement_speed = super().getCellSize()
 
         if movimiento_izquierda:
             direction_x = -movement_speed
@@ -46,5 +48,10 @@ class Jugador(Personaje):
 
     def draw(self, screen):
         screen.blit(pygame.transform.flip(self.player_texture, self.flip, False) , self.rect)
+        
+    #pasiva unica , el parametro no se si lo pillara, luego debo revisarlo -a
+    def activarPasivas(self, estadisticas=super().estadisticasBase):
+      PasivaUnica(super().habilidadesPasivas).activar(estadisticas)
 
-    
+    def desactivarPasivas(self):
+       PasivaUnica(super().habilidadesPasivas).deactivar()
