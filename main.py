@@ -1,21 +1,25 @@
 import pygame
 from sys import exit
-import setting
-import numpy as np
-import csv
+import scripts.setting as setting
+from scripts.jugador import Jugador
+from scripts.collider_matrix_maker import get_collider_matrix, get_animated_decorations_matrix
+from scripts.torch import Torch
 
 # Inicio el programa
 pygame.init()
 
 # Variables statics
 CELL_SIZE = setting.CELL_SIZE
-MAP_WIDTH = setting.SCREEN_WIDTH // CELL_SIZE
-MAP_HEIGHT = setting.SCREEN_HEIGHT // CELL_SIZE
+SCREEN_WIDTH = setting.SCREEN_WIDTH
+SCREEN_HEIGHT = setting.SCREEN_HEIGHT
 MAX_FPS = 60
+# FPS 60/5 = 12
+MAX_MOVEMENT_FPS = MAX_FPS/5
+MAX_FURNITURE_ANIMATION_FPS = MAX_FPS/4
 BLANCO = (255, 255, 255)
 
 # definiendo el tamaño de la pantalla
-screen = pygame.display.set_mode((setting.SCREEN_WIDTH, setting.SCREEN_HEIGHT))
+screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 clock = pygame.time.Clock()
 
 # Titulo de la pantalla
@@ -23,61 +27,38 @@ pygame.display.set_caption("Tower of the Grindhard")
 
 # Variables
 data_time = 0  # Se usa para los movimiento de físicas
-map_data = np.random.randint(0, 2, size=(MAP_HEIGHT, MAP_WIDTH))
+scene_level = 'level00'
 
-# Texturas
-floor_texture = pygame.image.load("assets/dungeon/floor/sandstone_floor_0.png")
-wall_texture = pygame.image.load("assets/dungeon/wall/brick_brown_0.png")
-level1_texture = pygame.image.load("_composite.png")
+# Textura de jugador
+player_texture = pygame.image.load("assets/player/base/elf_male.png")
 
-collide_level1 = []
+# Variable de acción del personaje
+movimiento_derecha = False
+movimiento_izquierda = False
+movimiento_arriba = False
+movimiento_abajo = False
 
-with open('collisions.csv', 'r') as csv_file:
-    csv_reader = csv.reader(csv_file)  # Almaceno la matriz
-    for line in csv_reader:
-        collide_level1.append(line)
+player = Jugador("player1", "none", player_texture,
+                 None, None, None, 3, 19, "Humano")
+
+collide_level1 = get_collider_matrix(scene_level)
+animated_decorations_matrix = get_animated_decorations_matrix(scene_level)
 
 # defining font attributes
 myFont = pygame.font.SysFont("Segoe UI", 90)
 helloWorld = myFont.render("Hello World", 1, (255, 0, 255), (255, 255, 255))
 
-while True:
-    # El evento pygame.QUIT significa que el usuario hizo click en X para cerrar la ventana
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            pygame.quit()
-            exit()
 
-    # Lleno la pantalla con el color para borrar cualquier cosa del último cuadro
-    screen.fill(BLANCO)
+def drawMap(level):
+    level_texture = pygame.image.load(f'scene/{level}/_composite.png')
+    screen.blit(level_texture, (0, 0))
 
-    # RENDER GAME HERE
-    # Dibujo el mapa
-    # Itera sobre el mapa y dibuja cada textura
-    # for y in range(MAP_HEIGHT):
-    #     for x in range(MAP_WIDTH):
-    #         # Calcula la posición en píxeles de la textura en el mapa
-    #         texture_x = x * CELL_SIZE
-    #         texture_y = y * CELL_SIZE
 
-    #         # Dibuja la imagen de la textura en la posición correspondiente
-    #         if map_data[y][x] == 0:
-    #             screen.blit(floor_texture, (texture_x, texture_y))
-    #         elif map_data[y][x] == 1:
-    #             screen.blit(wall_texture, (texture_x, texture_y))
-
-    # Dibuja la imagen en la pantalla
-    # screen.blit(image, (x * CELL_SIZE, y * CELL_SIZE))
-    # pygame.draw.circle(screen, BLANCO, (64,64), 8)
-
-    screen.blit(level1_texture, (0, 0))
-
-    # pygame.draw.rect(screen, BLANCO, (0,0,32,32))
-
+def drawCollider(map_collider_matriz):
     eje_x = 0  # eje x
     eje_y = 0  # eje y
 
-    for row in collide_level1:
+    for row in map_collider_matriz:
         for column in row:
 
             if (column == '1'):  # Muro
@@ -94,10 +75,100 @@ while True:
         eje_y = eje_y + CELL_SIZE  # aumenta y+32
         eje_x = 0  # resets x
 
-    #Sistema de jugador
-    
+
+def get_animated_decoration_array(map_animated_decorations_matrix):
+    eje_x = 0  # eje x
+    eje_y = 0  # eje y
+    list_animated_decoration = []
+
+    for row in map_animated_decorations_matrix:
+        for column in row:
+
+            # almaceno en la lista de objetos si se encuentra el valor 1
+            if (column == '1'):  # Antorcha
+                torch = Torch(eje_x, eje_y)
+                list_animated_decoration.append(torch)
+
+            eje_x += 1  # aumenta x +1 (x*32)
+
+        eje_y += 1  # aumenta y+1 (y * 32)
+        eje_x = 0  # resets x
+    return list_animated_decoration
+
+# recorro la lista de objetos del mapa que tengan animación y dibujo el objeto en el mapa
+
+
+def draw_list_torch(screen, list_torch, current_sprite_anim):
+    for torch in list_torch:
+        if isinstance(torch, Torch):
+            torch.drawTorch(screen, current_sprite_anim)
+
+
+# obtengo la lista de objetos del mapa que tengan animación y la guardo en la variable list_torch
+list_torch = get_animated_decoration_array(animated_decorations_matrix)
+
+# Estados de animación para la antorcha
+current_sprite_anim = 0
+
+player_update_time = 0
+furniture_animation_update_time = 0
+
+while True:
+    # El evento pygame.QUIT significa que el usuario hizo click en X para cerrar la ventana
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            exit()
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_a:
+                movimiento_izquierda = True
+            if event.key == pygame.K_d:
+                movimiento_derecha = True
+            if event.key == pygame.K_w:
+                movimiento_arriba = True
+            if event.key == pygame.K_s:
+                movimiento_abajo = True
+
+        if event.type == pygame.KEYUP:
+            if event.key == pygame.K_a:
+                movimiento_izquierda = False
+            if event.key == pygame.K_d:
+                movimiento_derecha = False
+            if event.key == pygame.K_w:
+                movimiento_arriba = False
+            if event.key == pygame.K_s:
+                movimiento_abajo = False
+
+    # RENDER GAME HERE
+
+    # ACTUALIZACIÓN DEL MOVIMIENTO DEL JUGADOR A 5 FPS
+    if player_update_time >= MAX_MOVEMENT_FPS:
+        player.move(movimiento_izquierda, movimiento_derecha,
+                    movimiento_abajo, movimiento_arriba)
+        player_update_time = 0  # reinicio el temporizador
+
+    if furniture_animation_update_time >= MAX_FURNITURE_ANIMATION_FPS:
+        current_sprite_anim += 1
+        if current_sprite_anim >= Torch.get_torch_sprites_length():
+            current_sprite_anim = 0
+        furniture_animation_update_time = 0
+
+    # dibujo el mapa
+    drawMap(scene_level)
+
+    # dibujo las colisiones en el mapa a partir de una matriz
+    # drawCollider(collide_level1)
+
+    # dibujo las antorchas en el mapa a partir de una matriz
+    draw_list_torch(screen, list_torch, current_sprite_anim)
+
+    # Dibujo al jugador
+    player.draw(screen)
 
     # flip() la pantalla para poner su trabajo en la pantalla
     pygame.display.flip()
     data_time = clock.tick(MAX_FPS)  # limito el FPS a 60
+    # incremento el temporizador
+    player_update_time += 1
+    furniture_animation_update_time += 1
     pygame.display.update()
