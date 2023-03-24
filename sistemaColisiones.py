@@ -3,32 +3,32 @@ import pygame
 def movimiento(colision: bool):
     if event.type == pygame.KEYDOWN:
         if event.key == pygame.K_a:
-            movimiento_izquierda = True
+            movimiento_izquierda = colision
         if event.key == pygame.K_d :
-            movimiento_derecha = True
+            movimiento_derecha = colision
         if event.key == pygame.K_w :
-            movimiento_arriba = True
+            movimiento_arriba = colision
         if event.key == pygame.K_s :
-            movimiento_abajo = True
+            movimiento_abajo = colision
     if event.type == pygame.KEYUP:
         if event.key == pygame.K_a :
-            movimiento_izquierda = False
+            movimiento_izquierda = colision
         if event.key == pygame.K_d :
-            movimiento_derecha = False
+            movimiento_derecha = colision
         if event.key == pygame.K_w :
-            movimiento_arriba = False
+            movimiento_arriba = colision
         if event.key == pygame.K_s :
-            movimiento_abajo = False
+            movimiento_abajo = colision
 
     if event.type == pygame.KEYUP:
         if event.key == pygame.K_LEFT :
-            movimiento_izquierda = False
+            movimiento_izquierda = colision
         if event.key == pygame.K_RIGHT :
-            movimiento_derecha = False
+            movimiento_derecha = colision
         if event.key == pygame.K_UP :
-            movimiento_arriba = False
+            movimiento_arriba = colision
         if event.key == pygame.K_DOWN :
-            movimiento_abajo = False
+            movimiento_abajo = colision
 
 for event in pygame.event.get():
         if event.type == pygame.QUIT:
