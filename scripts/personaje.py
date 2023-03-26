@@ -19,8 +19,14 @@ class Personaje(pygame.sprite.Sprite):
         self.estadisticasBase = estadisticasBase
         self.habilidadesActivas = habilidadesActivas
         self.habilidadesPasivas = habilidadesPasivas
-
+        #revisar las posiciones no me van usando rect
+        self.posicionX = posicionX*self.CELL_SIZE
+        self.posicionY = posicionY*self.CELL_SIZE
     # metodos
+    #get de posicion del jugador
+    def getPosition(self):
+        return (self.posicionX,self.posicionY)   
+
     # recibe ataque es un array con dos valores el daño  y el tipo de daño
     def defender(self, recibeAtaque):
         dano = recibeAtaque[0]

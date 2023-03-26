@@ -1,6 +1,6 @@
 import pygame
 import scripts.setting as setting
-
+from scripts.jugador import Jugador
 # Variables statics
 CELL_SIZE = setting.CELL_SIZE
 SCREEN_WIDTH = setting.SCREEN_WIDTH
@@ -17,7 +17,9 @@ viewsSizes =[(SCREEN_WIDTH-CELL_SIZE*2, SCREEN_HEIGHT-CELL_SIZE*2),#1 player
 
 class Views:
     def __init__(self,players=None,screen=None):
-        self.players = players
+        self.playerList=[]
+        for p in players:
+            self.playerList.append(p)
         self.screen = screen
         self.numPlayers = len(players)
         if self.numPlayers == 1:
@@ -29,8 +31,18 @@ class Views:
   
         
 
-    def playerView(self):
+    def playerView(self):   
         for i in range(self.numPlayers):
             view=pygame.Surface(self.sizePlayer)
+            
+            #aqui hay que hacer lo de los hilos para que las camaras se fijen en c/u de los players
+            
+            camVision=pygame.Rect((0,0,SCREEN_WIDTH/2-CELL_SIZE*1.5,SCREEN_HEIGHT/2-CELL_SIZE*1.5)) #esto debe variar segun el numero de players?
+           
+                
+            position=(self.playerList[0].posicionX,self.playerList[0].posicionY)
+    
+            view.blit(self.screen,position,camVision)  # screen base, eje x y y(dinamico),recorte de screen
+            
             self.screen.blit(view,viewsPositions[i])
-        
+          

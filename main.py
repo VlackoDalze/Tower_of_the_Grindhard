@@ -55,13 +55,14 @@ myFont = pygame.font.SysFont("Segoe UI", 90)
 helloWorld = myFont.render("Hello World", 1, (255, 0, 255), (255, 255, 255))
 
 
-def drawMap(level,players):
+def drawMap(level):
     level_texture = pygame.image.load(f'scene/{level}/_composite.png')
     screen.blit(level_texture, (0, 0))
+    
+   
+def drawViews(players,screen):
     createViews=Views(players,screen) 
     createViews.playerView()
-   
-
 
 def drawCollider(map_collider_matriz):
     eje_x = 0  # eje x
@@ -138,7 +139,7 @@ while True:
         furniture_animation_update_time = 0
 
     # dibujo el mapa
-    drawMap(scene_level,players_list)
+    drawMap(scene_level)
 
     # dibujo las colisiones en el mapa a partir de una matriz
     # drawCollider(collide_level1)
@@ -149,6 +150,9 @@ while True:
     # Dibujo al jugador
     player1.draw(screen)
 
+    # Dibujar vistas
+    drawViews(players_list,screen)
+    
     # flip() la pantalla para poner su trabajo en la pantalla
     pygame.display.flip()
     data_time = clock.tick(MAX_FPS)  # limito el FPS a 60

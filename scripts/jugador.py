@@ -91,7 +91,7 @@ class Jugador(Personaje):
 
         self.rect.x += direction_x
         self.rect.y += direction_y
-
+    
     # * Interfaz de usuario
 
     def toggleGUI(self):
