@@ -76,9 +76,7 @@ def drawCollider(map_collider_matriz,player):
             if (column == '1'):  # Muro
                 muro = pygame.Rect(eje_x, eje_y, 32, 32)
                 pygame.draw.rect(screen, BLANCO, muro)
-                if playr.colliderect(muro):
-                    player.setPosX(player.getPosX())
-                    player.setPosY(player.getPosY())
+                colision(muro,playr)
             if (column == '2'):  # La puerta
                 puerta = pygame.Rect(eje_x, eje_y, 32, 32)
                 pygame.draw.rect(screen, (126, 126, 0), puerta)

@@ -98,12 +98,6 @@ class Jugador(Personaje):
     def getPosY(self):
         return self.rect.y
 
-    def setPosX(self,x):
-        self.rect.x = x
-
-    def setPosY(self,y):
-        self.rect.x = y
-
     # * Interfaz de usuario
 
     def toggleGUI(self):
