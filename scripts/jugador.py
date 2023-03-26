@@ -45,15 +45,20 @@ class Jugador(Personaje):
         movimiento_derecha = False
         movimiento_arriba = False
         movimiento_abajo = False
+        movement_speed = super().getCellSize()
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_a:
                 movimiento_izquierda = True
+                self.posicionX -= movement_speed
             if event.key == pygame.K_d:
                 movimiento_derecha = True
+                self.posicionX += movement_speed
             if event.key == pygame.K_w:
                 movimiento_arriba = True
+                self.posicionX -= movement_speed
             if event.key == pygame.K_s:
                 movimiento_abajo = True
+                self.posicionX += movement_speed
             if event.key == pygame.K_i:  # Inventario
                 self.toggleInventory()
             if event.key == pygame.K_m:  # Mapa
@@ -74,20 +79,24 @@ class Jugador(Personaje):
         # * Area de movimientos
         direction_x = 0
         direction_y = 0
-        movement_speed = super().getCellSize()
+     
 
         if movimiento_izquierda:
             direction_x = -movement_speed
             self.flip = True
             self.direction = -1
+           
         if movimiento_derecha:
             direction_x = movement_speed
             self.flip = False
             self.direction = 1
+            
         if movimiento_abajo:
             direction_y = movement_speed
+            
         if movimiento_arriba:
             direction_y = -movement_speed
+            
 
         self.rect.x += direction_x
         self.rect.y += direction_y

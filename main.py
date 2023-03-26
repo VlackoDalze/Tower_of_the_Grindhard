@@ -151,7 +151,7 @@ while True:
     player1.draw(screen)
 
     # Dibujar vistas
-    drawViews(players_list,screen)
+    drawViews(players_list,screen)  
     
     # flip() la pantalla para poner su trabajo en la pantalla
     pygame.display.flip()
