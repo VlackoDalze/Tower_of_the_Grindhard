@@ -42,9 +42,9 @@ player3 = Jugador("player1", "none", player_texture,
 player4 = Jugador("player2", "none", player_texture,
                  None, None, None, 3, 19, "Humano")
 players_list.append(player1)
-players_list.append(player2)
-players_list.append(player3)
-players_list.append(player4)
+#players_list.append(player2)
+#players_list.append(player3)
+#players_list.append(player4)
 
 
 collide_level1 = get_collider_matrix(scene_level)
