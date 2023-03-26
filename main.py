@@ -4,6 +4,7 @@ import scripts.setting as setting
 from scripts.jugador import Jugador
 from scripts.collider_matrix_maker import get_collider_matrix, get_animated_decorations_matrix
 from scripts.torch import Torch
+from scripts.players_views import Views
 
 # Inicio el programa
 pygame.init()
@@ -31,9 +32,20 @@ scene_level = 'level00'
 
 # Textura de jugador
 player_texture = pygame.image.load("assets/player/base/elf_male.png")
-
-player = Jugador("player1", "none", player_texture,
+players_list = []
+player1 = Jugador("player1", "none", player_texture,
                  None, None, None, 3, 19, "Humano")
+player2 = Jugador("player2", "none", player_texture,
+                 None, None, None, 3, 19, "Humano")
+player3 = Jugador("player1", "none", player_texture,
+                 None, None, None, 3, 19, "Humano")
+player4 = Jugador("player2", "none", player_texture,
+                 None, None, None, 3, 19, "Humano")
+players_list.append(player1)
+players_list.append(player2)
+players_list.append(player3)
+players_list.append(player4)
+
 
 collide_level1 = get_collider_matrix(scene_level)
 animated_decorations_matrix = get_animated_decorations_matrix(scene_level)
@@ -43,9 +55,12 @@ myFont = pygame.font.SysFont("Segoe UI", 90)
 helloWorld = myFont.render("Hello World", 1, (255, 0, 255), (255, 255, 255))
 
 
-def drawMap(level):
+def drawMap(level,players):
     level_texture = pygame.image.load(f'scene/{level}/_composite.png')
     screen.blit(level_texture, (0, 0))
+    createViews=Views(players,screen) 
+    createViews.playerView()
+   
 
 
 def drawCollider(map_collider_matriz):
@@ -113,7 +128,7 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             exit()
-        player.move(event)
+        player1.move(event)
 
     # RENDER GAME HERE
     if furniture_animation_update_time >= MAX_FURNITURE_ANIMATION_FPS:
@@ -123,7 +138,7 @@ while True:
         furniture_animation_update_time = 0
 
     # dibujo el mapa
-    drawMap(scene_level)
+    drawMap(scene_level,players_list)
 
     # dibujo las colisiones en el mapa a partir de una matriz
     # drawCollider(collide_level1)
@@ -132,7 +147,7 @@ while True:
     draw_list_torch(screen, list_torch, current_sprite_anim)
 
     # Dibujo al jugador
-    player.draw(screen)
+    player1.draw(screen)
 
     # flip() la pantalla para poner su trabajo en la pantalla
     pygame.display.flip()
