@@ -27,8 +27,6 @@ def movimiento(colision: bool=True):
                 movimiento_abajo = not colision
 
 def colision(muro: pygame.Rect,player: pygame.Rect,eje_x: int,eje_y: int):
-        player.x += eje_x
-        player.y += eje_y
 
         if player.right >= setting.SCREEN_WIDTH or player.left <=0:
             eje_x *= -1
