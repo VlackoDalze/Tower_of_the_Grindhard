@@ -96,10 +96,13 @@ def get_animated_decoration_array(map_animated_decorations_matrix):
     return list_animated_decoration
 
 # recorro la lista de objetos del mapa que tengan animación y dibujo el objeto en el mapa
+
+
 def draw_list_torch(screen, list_torch, current_sprite_anim):
     for torch in list_torch:
         if isinstance(torch, Torch):
             torch.drawTorch(screen, current_sprite_anim)
+
 
 # obtengo la lista de objetos del mapa que tengan animación y la guardo en la variable list_torch
 list_torch = get_animated_decoration_array(animated_decorations_matrix)
