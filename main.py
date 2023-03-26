@@ -5,7 +5,7 @@ from scripts.jugador import Jugador
 from scripts.collider_matrix_maker import get_collider_matrix, get_animated_decorations_matrix
 from scripts.torch import Torch
 from scripts.players_views import Views
-from scripts.sistemaColisiones import colision
+from scripts.sistemaColisiones import colisionCollider,colisionTrigger
 
 # Inicio el programa
 pygame.init()
@@ -76,19 +76,19 @@ def drawCollider(map_collider_matriz,player):
             if (column == '1'):  # Muro
                 muro = pygame.Rect(eje_x, eje_y, 32, 32)
                 pygame.draw.rect(screen, BLANCO, muro)
-                colision(muro,playr,eje_x,eje_y)
+                colisionCollider(muro,playr)
             if (column == '2'):  # La puerta
                 puerta = pygame.Rect(eje_x, eje_y, 32, 32)
                 pygame.draw.rect(screen, (126, 126, 0), puerta)
-                colision(puerta,playr,eje_x,eje_y)
+                colisionTrigger(puerta,playr)
             if (column == '3'):  # Cofres
                 cofres = pygame.Rect(eje_x, eje_y, 32, 32)
                 pygame.draw.rect(screen, (0, 126, 0), cofres)
-                colision(cofres,playr,eje_x,eje_y)
+                colisionCollider(cofres,playr)
             if (column == '4'):  # Muebles
                 muebles = pygame.Rect(eje_x, eje_y, 32, 32)
                 pygame.draw.rect(screen, (0, 126, 126), muebles)
-                colision(muebles,playr,eje_x,eje_y)
+                colisionCollider(muebles,playr)
             eje_x = eje_x + CELL_SIZE  # aumenta x +32
         
         eje_y = eje_y + CELL_SIZE  # aumenta y+32
