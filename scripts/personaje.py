@@ -5,15 +5,6 @@ from scripts.habilidad_pasiva_unica import PasivaUnica
 
 
 class Personaje(pygame.sprite.Sprite):
-    # atributos
-    nombre = None
-    descripcion = None
-    imagen = None
-    estadisticasBase = None
-    habilidadesActivas = None
-    habilidadesPasivas = None
-
-    # constructor
     def __init__(self, nombre, descripcion, imagen, estadisticasBase, habilidadesActivas, habilidadesPasivas, posicionX, posicionY):
         pygame.sprite.Sprite.__init__(self)
         self.CELL_SIZE = setting.CELL_SIZE
