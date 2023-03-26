@@ -1,12 +1,13 @@
 import pygame
 import scripts.setting as setting
-import scripts.jugador as jugador
+from scripts.jugador import Jugador as jugador
 
 def movimiento(colision: bool):
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
             exit()
+        jugador.move(event)
 
 def colisionTrigger(puerta: pygame.Rect,player: pygame.Rect):
         if player.right >= setting.SCREEN_WIDTH or player.left <=0:
