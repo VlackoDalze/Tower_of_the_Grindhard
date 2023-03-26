@@ -114,7 +114,7 @@ class Jugador(Personaje):
         screen.blit(pygame.transform.flip(
             self.player_texture, self.flip, False), self.rect)
 
-        self.drawGUI(screen, self._interface_active)
+        #self.drawGUI(screen, self._interface_active)
 
     # Dibuja la interfaz de usuario
     def drawGUI(self, screen, interface_active):
