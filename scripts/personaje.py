@@ -24,8 +24,10 @@ class Personaje(pygame.sprite.Sprite):
         self.posicionY = posicionY*self.CELL_SIZE
     # metodos
     #get de posicion del jugador
-    def getPosition(self):
-        return (self.posicionX,self.posicionY)   
+    def getPositionX(self):
+        return self.posicionX
+    def getPositionY(self):
+        return self.posicionY
 
     # recibe ataque es un array con dos valores el daño  y el tipo de daño
     def defender(self, recibeAtaque):
