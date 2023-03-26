@@ -64,25 +64,33 @@ def drawMap(level,players):
    
 
 
-def drawCollider(map_collider_matriz):
+def drawCollider(map_collider_matriz,player):
     eje_x = 0  # eje x
     eje_y = 0  # eje y
+
+    playr = pygame.Rect(player.getPosX(),player.getPosY(),CELL_SIZE,CELL_SIZE)
 
     for row in map_collider_matriz:
         for column in row:
 
             if (column == '1'):  # Muro
                 muro = pygame.Rect(eje_x, eje_y, 32, 32)
-                colision(muro,column)
+                pygame.draw.rect(screen, BLANCO, muro)
+                if playr.colliderect(muro):
+                    player.setPosX(player.getPosX())
+                    player.setPosY(player.getPosY())
             if (column == '2'):  # La puerta
                 puerta = pygame.Rect(eje_x, eje_y, 32, 32)
-                colision(puerta,column)
+                pygame.draw.rect(screen, (126, 126, 0), puerta)
+                colision(puerta,playr)
             if (column == '3'):  # Cofres
                 cofres = pygame.Rect(eje_x, eje_y, 32, 32)
-                colision(cofres,column)
+                pygame.draw.rect(screen, (0, 126, 0), cofres)
+                colision(cofres,playr)
             if (column == '4'):  # Muebles
                 muebles = pygame.Rect(eje_x, eje_y, 32, 32)
-                colision(muebles,column)
+                pygame.draw.rect(screen, (0, 126, 126), muebles)
+                colision(muebles,playr)
             eje_x = eje_x + CELL_SIZE  # aumenta x +32
         
         eje_y = eje_y + CELL_SIZE  # aumenta y+32
@@ -146,7 +154,7 @@ while True:
     drawMap(scene_level,players_list)
 
     # dibujo las colisiones en el mapa a partir de una matriz
-    drawCollider(collide_level1 )
+    drawCollider(collide_level1,player1)
 
     # dibujo las antorchas en el mapa a partir de una matriz
     draw_list_torch(screen, list_torch, current_sprite_anim)

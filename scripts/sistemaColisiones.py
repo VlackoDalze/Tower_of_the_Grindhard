@@ -30,12 +30,12 @@ def movimiento(event,colision: bool):
         if event.key == pygame.K_DOWN :
             movimiento_abajo = colision
 
-def colision(muro,col):
+def colision(muro,player):
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
             exit()
-        if muro.colliderect(col):
+        if player.colliderect(muro):
             movimiento(event,False)
         else:
             movimiento(event,True)
