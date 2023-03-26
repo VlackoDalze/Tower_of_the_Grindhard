@@ -12,7 +12,7 @@ pygame.init()
 CELL_SIZE = setting.CELL_SIZE
 SCREEN_WIDTH = setting.SCREEN_WIDTH
 SCREEN_HEIGHT = setting.SCREEN_HEIGHT
-MAX_FPS = 60
+MAX_FPS = setting.MAX_FPS
 # FPS 60/5 = 12
 MAX_MOVEMENT_FPS = MAX_FPS/5
 MAX_FURNITURE_ANIMATION_FPS = MAX_FPS/4
@@ -31,12 +31,6 @@ scene_level = 'level00'
 
 # Textura de jugador
 player_texture = pygame.image.load("assets/player/base/elf_male.png")
-
-# Variable de acción del personaje
-movimiento_derecha = False
-movimiento_izquierda = False
-movimiento_arriba = False
-movimiento_abajo = False
 
 player = Jugador("player1", "none", player_texture,
                  None, None, None, 3, 19, "Humano")
@@ -119,34 +113,9 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             exit()
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_a:
-                movimiento_izquierda = True
-            if event.key == pygame.K_d:
-                movimiento_derecha = True
-            if event.key == pygame.K_w:
-                movimiento_arriba = True
-            if event.key == pygame.K_s:
-                movimiento_abajo = True
-
-        if event.type == pygame.KEYUP:
-            if event.key == pygame.K_a:
-                movimiento_izquierda = False
-            if event.key == pygame.K_d:
-                movimiento_derecha = False
-            if event.key == pygame.K_w:
-                movimiento_arriba = False
-            if event.key == pygame.K_s:
-                movimiento_abajo = False
+        player.move(event)
 
     # RENDER GAME HERE
-
-    # ACTUALIZACIÓN DEL MOVIMIENTO DEL JUGADOR A 5 FPS
-    if player_update_time >= MAX_MOVEMENT_FPS:
-        player.move(movimiento_izquierda, movimiento_derecha,
-                    movimiento_abajo, movimiento_arriba)
-        player_update_time = 0  # reinicio el temporizador
-
     if furniture_animation_update_time >= MAX_FURNITURE_ANIMATION_FPS:
         current_sprite_anim += 1
         if current_sprite_anim >= Torch.get_torch_sprites_length():
