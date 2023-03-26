@@ -5,6 +5,7 @@ from scripts.jugador import Jugador
 from scripts.collider_matrix_maker import get_collider_matrix, get_animated_decorations_matrix
 from scripts.torch import Torch
 from scripts.players_views import Views
+from scripts.sistemaColisiones import colision
 
 # Inicio el programa
 pygame.init()
@@ -71,16 +72,19 @@ def drawCollider(map_collider_matriz):
         for column in row:
 
             if (column == '1'):  # Muro
-                pygame.draw.rect(screen, BLANCO, (eje_x, eje_y, 32, 32))
+                muro = pygame.Rect(eje_x, eje_y, 32, 32)
+                colision(muro,column)
             if (column == '2'):  # La puerta
-                pygame.draw.rect(screen, (126, 126, 0), (eje_x, eje_y, 32, 32))
+                puerta = pygame.Rect(eje_x, eje_y, 32, 32)
+                colision(puerta,column)
             if (column == '3'):  # Cofres
-                pygame.draw.rect(screen, (0, 126, 0), (eje_x, eje_y, 32, 32))
+                cofres = pygame.Rect(eje_x, eje_y, 32, 32)
+                colision(cofres,column)
             if (column == '4'):  # Muebles
-                pygame.draw.rect(screen, (0, 126, 126), (eje_x, eje_y, 32, 32))
-
+                muebles = pygame.Rect(eje_x, eje_y, 32, 32)
+                colision(muebles,column)
             eje_x = eje_x + CELL_SIZE  # aumenta x +32
-
+        
         eje_y = eje_y + CELL_SIZE  # aumenta y+32
         eje_x = 0  # resets x
 
@@ -130,6 +134,7 @@ while True:
             exit()
         player1.move(event)
 
+
     # RENDER GAME HERE
     if furniture_animation_update_time >= MAX_FURNITURE_ANIMATION_FPS:
         current_sprite_anim += 1
@@ -141,7 +146,7 @@ while True:
     drawMap(scene_level,players_list)
 
     # dibujo las colisiones en el mapa a partir de una matriz
-    # drawCollider(collide_level1)
+    drawCollider(collide_level1 )
 
     # dibujo las antorchas en el mapa a partir de una matriz
     draw_list_torch(screen, list_torch, current_sprite_anim)
