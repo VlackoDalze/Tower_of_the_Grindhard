@@ -55,10 +55,10 @@ class Jugador(Personaje):
                 self.posicionX += movement_speed
             if event.key == pygame.K_w:
                 movimiento_arriba = True
-                self.posicionX -= movement_speed
+                self.posicionY -= movement_speed
             if event.key == pygame.K_s:
                 movimiento_abajo = True
-                self.posicionX += movement_speed
+                self.posicionY += movement_speed
             if event.key == pygame.K_i:  # Inventario
                 self.toggleInventory()
             if event.key == pygame.K_m:  # Mapa

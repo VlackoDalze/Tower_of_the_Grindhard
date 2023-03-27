@@ -42,7 +42,7 @@ player3 = Jugador("player1", "none", player_texture,
 player4 = Jugador("player2", "none", player_texture,
                  None, None, None, 3, 19, "Humano")
 players_list.append(player1)
-#players_list.append(player2)
+#splayers_list.append(player2)
 #players_list.append(player3)
 #players_list.append(player4)
 
@@ -71,7 +71,7 @@ def drawCollider(map_collider_matriz):
     for row in map_collider_matriz:
         for column in row:
 
-            if (column == '1'):  # Muro
+            if (column == '1'):  # Muroa
                 pygame.draw.rect(screen, BLANCO, (eje_x, eje_y, 32, 32))
             if (column == '2'):  # La puerta
                 pygame.draw.rect(screen, (126, 126, 0), (eje_x, eje_y, 32, 32))
