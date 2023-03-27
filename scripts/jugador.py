@@ -45,31 +45,32 @@ class Jugador(Personaje):
         movimiento_derecha = False
         movimiento_arriba = False
         movimiento_abajo = False
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_a:
-                movimiento_izquierda = True
-            if event.key == pygame.K_d:
-                movimiento_derecha = True
-            if event.key == pygame.K_w:
-                movimiento_arriba = True
-            if event.key == pygame.K_s:
-                movimiento_abajo = True
-            if event.key == pygame.K_i:  # Inventario
-                self.toggleInventory()
-            if event.key == pygame.K_m:  # Mapa
-                self.toggleMap()
-            if event.key == pygame.K_ESCAPE:  # Opciones
-                self.toggleSetting()
+        if event is not None:
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_a:
+                    movimiento_izquierda = True
+                if event.key == pygame.K_d:
+                    movimiento_derecha = True
+                if event.key == pygame.K_w:
+                    movimiento_arriba = True
+                if event.key == pygame.K_s:
+                    movimiento_abajo = True
+                if event.key == pygame.K_i:  # Inventario
+                    self.toggleInventory()
+                if event.key == pygame.K_m:  # Mapa
+                    self.toggleMap()
+                if event.key == pygame.K_ESCAPE:  # Opciones
+                    self.toggleSetting()
 
-        if event.type == pygame.KEYUP:
-            if event.key == pygame.K_a:
-                movimiento_izquierda = False
-            if event.key == pygame.K_d:
-                movimiento_derecha = False
-            if event.key == pygame.K_w:
-                movimiento_arriba = False
-            if event.key == pygame.K_s:
-                movimiento_abajo = False
+            if event.type == pygame.KEYUP:
+                if event.key == pygame.K_a:
+                    movimiento_izquierda = False
+                if event.key == pygame.K_d:
+                    movimiento_derecha = False
+                if event.key == pygame.K_w:
+                    movimiento_arriba = False
+                if event.key == pygame.K_s:
+                    movimiento_abajo = False
 
         # * Area de movimientos
         direction_x = 0
@@ -97,6 +98,12 @@ class Jugador(Personaje):
     
     def getPosY(self):
         return self.rect.y
+
+    def setPosX(self,x):
+        self.rect.x = x
+
+    def setPosY(self,y):
+        self.rect.y = y
 
     # * Interfaz de usuario
 

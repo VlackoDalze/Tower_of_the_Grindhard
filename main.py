@@ -76,19 +76,19 @@ def drawCollider(map_collider_matriz,player):
             if (column == '1'):  # Muro
                 muro = pygame.Rect(eje_x, eje_y, 32, 32)
                 pygame.draw.rect(screen, BLANCO, muro)
-                colisionCollider(muro,playr)
+                colisionCollider(muro,playr,player)
             if (column == '2'):  # La puerta
                 puerta = pygame.Rect(eje_x, eje_y, 32, 32)
                 pygame.draw.rect(screen, (126, 126, 0), puerta)
-                colisionTrigger(puerta,playr)
+                colisionTrigger(puerta,playr,"puerta")
             if (column == '3'):  # Cofres
                 cofres = pygame.Rect(eje_x, eje_y, 32, 32)
                 pygame.draw.rect(screen, (0, 126, 0), cofres)
-                colisionCollider(cofres,playr)
+                colisionTrigger(cofres,playr,"cofre")
             if (column == '4'):  # Muebles
                 muebles = pygame.Rect(eje_x, eje_y, 32, 32)
                 pygame.draw.rect(screen, (0, 126, 126), muebles)
-                colisionCollider(muebles,playr)
+                colisionCollider(muebles,playr,player)
             eje_x = eje_x + CELL_SIZE  # aumenta x +32
         
         eje_y = eje_y + CELL_SIZE  # aumenta y+32

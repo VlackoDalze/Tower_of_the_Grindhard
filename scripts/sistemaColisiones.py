@@ -1,48 +1,45 @@
 import pygame
 import scripts.setting as setting
-from scripts.jugador import Jugador as jugador
+from scripts.jugador import Jugador
 
-def movimiento(colision: bool):
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            pygame.quit()
-            exit()
-        jugador.move(event)
+# def movimiento(colision: bool):
+#     for event in pygame.event.get():
+#         if event.type == pygame.QUIT:
+#             pygame.quit()
+#             exit()
 
-def colisionTrigger(puerta: pygame.Rect,player: pygame.Rect):
-        if player.right >= setting.SCREEN_WIDTH or player.left <=0:
-            movimiento(False)
-        if player.bottom >= setting.SCREEN_HEIGHT or player.top <=0:
-            movimiento(False)
-
-        toleranciaColision = 10
+def colisionTrigger(puerta: pygame.Rect,player: pygame.Rect,trigger: str):
         if player.colliderect(puerta):
-            if((puerta.top - player.bottom) < toleranciaColision):
-                movimiento(False)
-            if((puerta.bottom - player.top) < toleranciaColision):
-                movimiento(False)
-            if((puerta.right - player.left) < toleranciaColision):
-                movimiento(False)
-            if((puerta.left - player.right) < toleranciaColision):
-                movimiento(False)
+            if trigger=="puerta":
+                print("Siguiente nivel")
+            else:
+                print("Cofre abierto")
 
-def colisionCollider(muro: pygame.Rect,player: pygame.Rect):
-    if player.right >= setting.SCREEN_WIDTH or player.left <=0:
-        movimiento(False)
-    if player.bottom >= setting.SCREEN_HEIGHT or player.top <=0:
-        movimiento(False)
+def colisionCollider(muro: pygame.Rect,player: pygame.Rect, jug: Jugador):
+    # if player.right >= setting.SCREEN_WIDTH or player.left <=0:
+    #     if player.left <=0:
+    #         jug.setPosX(32)
+    #     else:
+    #         jug.setPosX(setting.SCREEN_WIDTH-32*2)
+    # if player.bottom >= setting.SCREEN_HEIGHT or player.top <=0:
+    #     if player.top <=0:
+    #         jug.setPosY(32)
+    #     else:
+    #         jug.setPosY(setting.SCREEN_HEIGHT-32*2)
+    
+    x = jug.getPosX()
+    y = jug.getPosY()
 
-    toleranciaColision = 40
     if player.colliderect(muro):
-        if(abs(muro.top - player.bottom) < toleranciaColision):
-            print(muro.top-player.bottom)
-            movimiento(False)
-        if(abs(muro.bottom - player.top) < toleranciaColision):
-            print(muro.bottom - player.top)
-            movimiento(False)
-        if(abs(muro.right - player.left) < toleranciaColision):
-            print(muro.right - player.left)
-            movimiento(False)
-        if(abs(muro.left - player.right) < toleranciaColision):
-            print(muro.left - player.right)
-            movimiento(False)        
+        if(abs(player.bottom - muro.top)<40):
+            jug.setPosX(x)
+            jug.setPosY(y)
+        if(abs(player.top - muro.bottom)<40):
+            jug.setPosX(x)
+            jug.setPosY(y+32)
+        if(abs(player.left - muro.right)<40):
+            jug.setPosX(x-32)
+            jug.setPosY(y-32)
+        if(abs(player.right - muro.left)<40):
+            jug.setPosX(x+32)
+            jug.setPosY(y-32)
