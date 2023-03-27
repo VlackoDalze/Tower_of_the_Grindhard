@@ -139,7 +139,7 @@ while True:
     drawMap(scene_level)
 
     # dibujo las colisiones en el mapa a partir de una matriz
-    # drawCollider(collide_level1)
+    drawCollider(collide_level1)
 
     # dibujo las antorchas en el mapa a partir de una matriz
     draw_list_torch(screen, list_torch, current_sprite_anim)
