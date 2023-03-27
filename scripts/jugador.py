@@ -39,24 +39,29 @@ class Jugador(Personaje):
     def removeFromInventario(self, item):
         self.inventario.remove(item)
 
-    def move(self, event):
+    def move(self, event,assignedKeys):
         # *Area de controles
         movimiento_izquierda = False
         movimiento_derecha = False
         movimiento_arriba = False
         movimiento_abajo = False
         movement_speed = super().getCellSize()
+        listaKeys=[[pygame.K_a, pygame.K_d, pygame.K_w, pygame.K_s],
+                   [ pygame.K_g, pygame.K_j, pygame.K_y, pygame.K_h],
+                   [pygame.K_LEFT, pygame.K_RIGHT, pygame.K_UP, pygame.K_DOWN],
+                   [pygame.K_KP_4, pygame.K_KP_6, pygame.K_KP_8, pygame.K_KP_5]]
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_a:
+            
+            if event.key == listaKeys[assignedKeys][0]:
                 movimiento_izquierda = True
                 self.posicionX -= movement_speed
-            if event.key == pygame.K_d:
+            if event.key ==  listaKeys[assignedKeys][1]:
                 movimiento_derecha = True
                 self.posicionX += movement_speed
-            if event.key == pygame.K_w:
+            if event.key ==  listaKeys[assignedKeys][2]:
                 movimiento_arriba = True
                 self.posicionY -= movement_speed
-            if event.key == pygame.K_s:
+            if event.key ==  listaKeys[assignedKeys][3]:
                 movimiento_abajo = True
                 self.posicionY += movement_speed
             if event.key == pygame.K_i:  # Inventario

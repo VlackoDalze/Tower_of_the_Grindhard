@@ -40,11 +40,12 @@ class Views:
         else:
             self.sizePlayer = (viewsSizes[2])
 
-    def movCamera(jugador,num_view):
+    def movCamera(num_view):
         miny=256
         maxy=576
         minx=128
         maxx=608
+        
         basex=Views.varListforViews[num_view][0]
         basey=Views.varListforViews[num_view][1]
         positionx=Views.varListforViews[num_view][2]
@@ -86,46 +87,57 @@ class Views:
     def createXandYprev(jugador,num_view):
         Views.varListforViews[num_view][4]=jugador.getPositionX()  
         Views.varListforViews[num_view][5]=jugador.getPositionY()
-    def playerView(self):
-    
         
+    def playerView(self):
             view = pygame.Surface(self.sizePlayer)
             # aqui hay que hacer lo de los hilos para que las camaras se fijen en c/u de los players
             if self.numPlayers==1:
+                
                 view = pygame.Surface(self.sizePlayer)
+                
                 if (Views.varListforViews[0][4]== 0 and Views.varListforViews[0][5]==0 ) :
                     Views.createXandYprev( self.playerList[0],0)
+                    
                 Views.varListforViews[0][2] = self.playerList[0].getPositionX()  
                 Views.varListforViews[0][3] = self.playerList[0].getPositionY()
            
-                recorte= self.screen.subsurface(Views.movCamera(self.playerList[0],0))
+                recorte= self.screen.subsurface(Views.movCamera(0))
                 recorte= pygame.transform.scale(recorte,viewsSizes[0]) #redimiension
-            # ubica dentro del view el recorte del screen
+          
                 view.blit(recorte, (0,0))#es el relleno de la vista
+                
                 self.screen.blit(view, viewsPositions[0])#es la vista
+                
             elif self.numPlayers==2: 
+                
                 view = pygame.Surface(self.sizePlayer)
                 view2 = pygame.Surface(self.sizePlayer)
+                
                 if (Views.varListforViews[0][4]== 0 and Views.varListforViews[0][5]==0 ) :
                     Views.createXandYprev(self.playerList[0],0)
                 if (Views.varListforViews[1][4]== 0 and Views.varListforViews[1][5]==0 ) :
                     Views.createXandYprev( self.playerList[1],1)
+                    
                 Views.varListforViews[0][2] = self.playerList[0].getPositionX()  
-                Views.varListforViews[0][3] = self.playerList[0].getPositionY()    
+                Views.varListforViews[0][3] = self.playerList[0].getPositionY() 
+                   
                 Views.varListforViews[1][2] = self.playerList[1].getPositionX()  
                 Views.varListforViews[1][3] = self.playerList[1].getPositionY()
                 
-                recorte= self.screen.subsurface( Views.movCamera(self.playerList[0],0))
-                recorte2= self.screen.subsurface( Views.movCamera(self.playerList[1],1))
+                recorte= self.screen.subsurface( Views.movCamera(0))
+                recorte2= self.screen.subsurface( Views.movCamera(1))
+                
                 recorte= pygame.transform.scale(recorte, viewsSizes[1]) #redimiension
-                recorte2= pygame.transform.scale(recorte, viewsSizes[1]) #redimiension
-                    # ubica dentro del view el recorte del screen
+                recorte2= pygame.transform.scale(recorte2, viewsSizes[1]) #redimiension
+                    
                 view.blit(recorte, (0,0))#es el relleno de la vista
-                view2.blit(recorte2, (0,0))#es el relleno de la vista  
+                view2.blit(recorte2, (0,0))#es el relleno de la vista 
+                 
                 self.screen.blit(view, viewsPositions[0])#es la vista  
                 self.screen.blit(view2, viewsPositions[1])#es la vista  
                
             elif self.numPlayers==3:
+                
                 view = pygame.Surface(self.sizePlayer)
                 view2 = pygame.Surface(self.sizePlayer)
                 view3 = pygame.Surface(self.sizePlayer)
@@ -136,35 +148,41 @@ class Views:
                     Views.createXandYprev( self.playerList[1],1)
                 if (Views.varListforViews[2][4]== 0 and Views.varListforViews[2][5]==0 ) :
                     Views.createXandYprev( self.playerList[2],1)  
+                    
                 Views.varListforViews[0][2] = self.playerList[0].getPositionX()  
-                Views.varListforViews[0][3] = self.playerList[0].getPositionY()    
+                Views.varListforViews[0][3] = self.playerList[0].getPositionY()  
+                  
                 Views.varListforViews[1][2] = self.playerList[1].getPositionX()  
                 Views.varListforViews[1][3] = self.playerList[1].getPositionY()
-                Views.varListforViews[3][2] = self.playerList[1].getPositionX()  
-                Views.varListforViews[3][3] = self.playerList[1].getPositionY()
                 
-                recorte= self.screen.subsurface(Views.movCamera(self.playerList[0],0))
-                recorte2= self.screen.subsurface(Views.movCamera(self.playerList[1],0))
-                recorte3= self.screen.subsurface(Views.movCamera(self.playerList[2],0))
+                Views.varListforViews[2][2] = self.playerList[2].getPositionX()  
+                Views.varListforViews[2][3] = self.playerList[2].getPositionY()
+                
+                recorte= self.screen.subsurface(Views.movCamera(0))
+                recorte2= self.screen.subsurface(Views.movCamera(1))
+                recorte3= self.screen.subsurface(Views.movCamera(2))
+                
                 recorte= pygame.transform.scale(recorte, viewsSizes[2]) #redimiension
                 recorte2= pygame.transform.scale(recorte2, viewsSizes[2]) #redimiension
                 recorte3= pygame.transform.scale(recorte3, viewsSizes[2]) #redimiension
                
-                # ubica dentro del view el recorte del screen
                 view.blit(recorte, (0,0))
                 view2.blit(recorte2, (0,0))
                 view3.blit(recorte3, (0,0))
                 view4 = pygame.Surface(self.sizePlayer)
+                
                 self.screen.blit(view, viewsPositions[0])#es la vista
                 self.screen.blit(view2, viewsPositions[1])#es la vista
                 self.screen.blit(view3, viewsPositions[2])#es la vista
                 self.screen.blit(view4, viewsPositions[3])#ventana negra
                 
             elif self.numPlayers==4:
+                
                 view = pygame.Surface(self.sizePlayer)
                 view2 = pygame.Surface(self.sizePlayer)
                 view3 = pygame.Surface(self.sizePlayer)
                 view4 = pygame.Surface(self.sizePlayer)
+                
                 if (Views.varListforViews[0][4]== 0 and Views.varListforViews[0][5]==0 ) :
                     Views.createXandYprev( self.playerList[0],0)
                 if (Views.varListforViews[1][4]== 0 and Views.varListforViews[1][5]==0 ) :
@@ -173,28 +191,34 @@ class Views:
                     Views.createXandYprev( self.playerList[2],1) 
                 if (Views.varListforViews[3][4]== 0 and Views.varListforViews[3][5]==0 ) :
                     Views.createXandYprev( self.playerList[3],1) 
+                    
                 Views.varListforViews[0][2] = self.playerList[0].getPositionX()  
-                Views.varListforViews[0][3] = self.playerList[0].getPositionY()    
+                Views.varListforViews[0][3] = self.playerList[0].getPositionY() 
+                   
                 Views.varListforViews[1][2] = self.playerList[1].getPositionX()  
                 Views.varListforViews[1][3] = self.playerList[1].getPositionY()
-                Views.varListforViews[2][2] = self.playerList[0].getPositionX()  
-                Views.varListforViews[2][3] = self.playerList[0].getPositionY()    
-                Views.varListforViews[3][2] = self.playerList[1].getPositionX()  
-                Views.varListforViews[3][3] = self.playerList[1].getPositionY()
+                
+                Views.varListforViews[2][2] = self.playerList[2].getPositionX()  
+                Views.varListforViews[2][3] = self.playerList[2].getPositionY() 
+                   
+                Views.varListforViews[3][2] = self.playerList[3].getPositionX()  
+                Views.varListforViews[3][3] = self.playerList[3].getPositionY()
              
-                recorte= self.screen.subsurface(Views.movCamera(self.playerList[0],0))
-                recorte2= self.screen.subsurface(Views.movCamera(self.playerList[1],0))
-                recorte3= self.screen.subsurface(Views.movCamera(self.playerList[2],0))
-                recorte4= self.screen.subsurface(Views.movCamera(self.playerList[3],0))
+                recorte= self.screen.subsurface(Views.movCamera(0))
+                recorte2= self.screen.subsurface(Views.movCamera(1))
+                recorte3= self.screen.subsurface(Views.movCamera(2))
+                recorte4= self.screen.subsurface(Views.movCamera(3))
+                
                 recorte= pygame.transform.scale(recorte, viewsSizes[2]) #redimiension
                 recorte2= pygame.transform.scale(recorte2, viewsSizes[2]) #redimiension
                 recorte3= pygame.transform.scale(recorte3, viewsSizes[2]) #redimiension
                 recorte4= pygame.transform.scale(recorte4, viewsSizes[2]) #redimiension
-                # ubica dentro del view el recorte del screen
+                
                 view.blit(recorte, (0,0))
                 view2.blit(recorte2, (0,0))
                 view3.blit(recorte3, (0,0))
                 view4.blit(recorte4, (0,0))
+                
                 self.screen.blit(view, viewsPositions[0])#es la vista
                 self.screen.blit(view2, viewsPositions[1])#es la vista
                 self.screen.blit(view3, viewsPositions[2])#es la vista

@@ -44,7 +44,7 @@ player4 = Jugador("player2", "none", player_texture,
 players_list.append(player1)
 players_list.append(player2)
 players_list.append(player3)
-players_list.append(player4)
+#players_list.append(player4)
 
 
 collide_level1 = get_collider_matrix(scene_level)
@@ -129,7 +129,10 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             exit()
-        player1.move(event)
+        player1.move(event,0)
+        player2.move(event,1)
+        player3.move(event,2)
+        player4.move(event,3)
 
     # RENDER GAME HERE
     if furniture_animation_update_time >= MAX_FURNITURE_ANIMATION_FPS:
@@ -149,6 +152,9 @@ while True:
 
     # Dibujo al jugador
     player1.draw(screen)
+    player2.draw(screen)
+    player3.draw(screen)
+    player4.draw(screen)
 
     # Dibujar vistas
     drawViews(players_list,screen)  
