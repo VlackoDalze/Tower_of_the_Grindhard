@@ -5,8 +5,8 @@ WHITE = (255, 255, 255)
 
 
 class Jugador(Personaje):
-    def __init__(self, nombre, descripcion, imagen, estadisticasBase, habilidadesActivas, habilidadesPasivas, posicionX, posicionY, raza):
-        super().__init__(nombre, descripcion, imagen, estadisticasBase,
+    def __init__(self,screen: pygame.Surface, nombre, descripcion, imagen, estadisticasBase, habilidadesActivas, habilidadesPasivas, posicionX, posicionY, raza):
+        super().__init__(screen,nombre, descripcion, imagen, estadisticasBase,
                          habilidadesActivas, habilidadesPasivas, posicionX, posicionY)
         self.flip = False
         self.direction = 1

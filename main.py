@@ -33,13 +33,13 @@ scene_level = 'level00'
 # Textura de jugador
 player_texture = pygame.image.load("assets/player/base/elf_male.png")
 players_list = []
-player1 = Jugador("player1", "none", player_texture,
+player1 = Jugador(screen,"player1", "none", player_texture,
                  None, None, None, 3, 19, "Humano")
-player2 = Jugador("player2", "none", player_texture,
+player2 = Jugador(screen,"player2", "none", player_texture,
                  None, None, None, 3, 19, "Humano")
-player3 = Jugador("player1", "none", player_texture,
+player3 = Jugador(screen,"player1", "none", player_texture,
                  None, None, None, 3, 19, "Humano")
-player4 = Jugador("player2", "none", player_texture,
+player4 = Jugador(screen,"player2", "none", player_texture,
                  None, None, None, 3, 19, "Humano")
 players_list.append(player1)
 players_list.append(player2)
@@ -50,7 +50,7 @@ players_list.append(player3)
 collide_level1 = get_collider_matrix(scene_level)
 animated_decorations_matrix = get_animated_decorations_matrix(scene_level)
 
-def drawMap(level,players):
+def drawMap(level):
     level_texture = pygame.image.load(f'scene/{level}/_composite.png')
     screen.blit(level_texture, (0, 0))
    
