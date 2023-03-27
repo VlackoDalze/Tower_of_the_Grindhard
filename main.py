@@ -5,7 +5,6 @@ from scripts.jugador import Jugador
 from scripts.collider_matrix_maker import get_collider_matrix, get_animated_decorations_matrix
 from scripts.torch import Torch
 from scripts.players_views import Views
-from scripts.sistemaColisiones import colisionCollider,colisionTrigger
 
 # Inicio el programa
 pygame.init()
@@ -18,7 +17,7 @@ MAX_FPS = setting.MAX_FPS
 # FPS 60/5 = 12
 MAX_MOVEMENT_FPS = MAX_FPS/5
 MAX_FURNITURE_ANIMATION_FPS = MAX_FPS/4
-BLANCO = (255, 255, 255)
+WHITE = (255, 255, 255)
 
 # definiendo el tamaño de la pantalla
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -34,63 +33,49 @@ scene_level = 'level00'
 # Textura de jugador
 player_texture = pygame.image.load("assets/player/base/elf_male.png")
 players_list = []
-player1 = Jugador("player1", "none", player_texture,
+player1 = Jugador(screen,"player1", "none", player_texture,
                  None, None, None, 3, 19, "Humano")
-player2 = Jugador("player2", "none", player_texture,
+player2 = Jugador(screen,"player2", "none", player_texture,
                  None, None, None, 3, 19, "Humano")
-player3 = Jugador("player1", "none", player_texture,
+player3 = Jugador(screen,"player1", "none", player_texture,
                  None, None, None, 3, 19, "Humano")
-player4 = Jugador("player2", "none", player_texture,
+player4 = Jugador(screen,"player2", "none", player_texture,
                  None, None, None, 3, 19, "Humano")
 players_list.append(player1)
 players_list.append(player2)
 players_list.append(player3)
-players_list.append(player4)
+#players_list.append(player4)
 
 
 collide_level1 = get_collider_matrix(scene_level)
 animated_decorations_matrix = get_animated_decorations_matrix(scene_level)
 
-# defining font attributes
-myFont = pygame.font.SysFont("Segoe UI", 90)
-helloWorld = myFont.render("Hello World", 1, (255, 0, 255), (255, 255, 255))
-
-
-def drawMap(level,players):
+def drawMap(level):
     level_texture = pygame.image.load(f'scene/{level}/_composite.png')
     screen.blit(level_texture, (0, 0))
+   
+def drawViews(players,screen):
     createViews=Views(players,screen) 
     createViews.playerView()
-   
 
-
-def drawCollider(map_collider_matriz,player):
+def drawCollider(map_collider_matriz):
     eje_x = 0  # eje x
     eje_y = 0  # eje y
-
-    playr = pygame.Rect(player.getPosX(),player.getPosY(),CELL_SIZE,CELL_SIZE)
 
     for row in map_collider_matriz:
         for column in row:
 
             if (column == '1'):  # Muro
-                muro = pygame.Rect(eje_x, eje_y, 32, 32)
-                pygame.draw.rect(screen, BLANCO, muro)
-                colisionCollider(muro,playr,player)
+                pygame.draw.rect(screen, WHITE, (eje_x, eje_y, 32, 32))
             if (column == '2'):  # La puerta
-                puerta = pygame.Rect(eje_x, eje_y, 32, 32)
-                pygame.draw.rect(screen, (126, 126, 0), puerta)
-                colisionTrigger(puerta,playr,"puerta")
+                pygame.draw.rect(screen, (126, 126, 0), (eje_x, eje_y, 32, 32))
             if (column == '3'):  # Cofres
-                cofres = pygame.Rect(eje_x, eje_y, 32, 32)
-                pygame.draw.rect(screen, (0, 126, 0), cofres)
-                colisionTrigger(cofres,playr,"cofre")
+                pygame.draw.rect(screen, (0, 126, 0), (eje_x, eje_y, 32, 32))
             if (column == '4'):  # Muebles
-                muebles = pygame.Rect(eje_x, eje_y, 32, 32)
-                pygame.draw.rect(screen, (0, 126, 126), muebles)
-                colisionCollider(muebles,playr,player)
+                pygame.draw.rect(screen, (0, 126, 126), (eje_x, eje_y, 32, 32))
+
             eje_x = eje_x + CELL_SIZE  # aumenta x +32
-        
+
         eje_y = eje_y + CELL_SIZE  # aumenta y+32
         eje_x = 0  # resets x
 
@@ -138,8 +123,10 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             exit()
-        player1.move(event)
-
+        player1.move(event,0)
+        player2.move(event,1)
+        player3.move(event,2)
+        player4.move(event,3)
 
     # RENDER GAME HERE
     if furniture_animation_update_time >= MAX_FURNITURE_ANIMATION_FPS:
@@ -149,17 +136,23 @@ while True:
         furniture_animation_update_time = 0
 
     # dibujo el mapa
-    drawMap(scene_level,players_list)
+    drawMap(scene_level)
 
     # dibujo las colisiones en el mapa a partir de una matriz
-    drawCollider(collide_level1,player1)
+    # drawCollider(collide_level1)
 
     # dibujo las antorchas en el mapa a partir de una matriz
     draw_list_torch(screen, list_torch, current_sprite_anim)
 
     # Dibujo al jugador
     player1.draw(screen)
+    player2.draw(screen)
+    player3.draw(screen)
+    player4.draw(screen)
 
+    # Dibujar vistas
+    drawViews(players_list,screen)  
+    
     # flip() la pantalla para poner su trabajo en la pantalla
     pygame.display.flip()
     data_time = clock.tick(MAX_FPS)  # limito el FPS a 60

@@ -1,11 +1,11 @@
 import pygame
-from scripts.estadisticas import Estadisticas as Estadisticas
+from scripts.estadisticas import Estadisticas
 import scripts.setting as setting
 from scripts.habilidad_pasiva_unica import PasivaUnica
 
 
 class Personaje(pygame.sprite.Sprite):
-    def __init__(self, nombre, descripcion, imagen, estadisticasBase, habilidadesActivas, habilidadesPasivas, posicionX, posicionY):
+    def __init__(self, screen: pygame.Surface, nombre: str, descripcion: str, imagen: pygame.Surface, estadisticasBase: Estadisticas, habilidadesActivas, habilidadesPasivas, posicionX, posicionY):
         pygame.sprite.Sprite.__init__(self)
         self.CELL_SIZE = setting.CELL_SIZE
         self.player_texture = imagen
@@ -13,14 +13,25 @@ class Personaje(pygame.sprite.Sprite):
         self.rect.center = ((posicionX * self.CELL_SIZE)+16,
                             (posicionY * self.CELL_SIZE)+16)
 
+        self.screen = screen
         self.nombre = nombre
         self.descripcion = descripcion
         self.imagen = imagen
         self.estadisticasBase = estadisticasBase
         self.habilidadesActivas = habilidadesActivas
         self.habilidadesPasivas = habilidadesPasivas
-
+        # revisar las posiciones no me van usando rect
+        self.posicionX = posicionX*self.CELL_SIZE
+        self.posicionY = posicionY*self.CELL_SIZE
     # metodos
+    # get de posicion del jugador
+
+    def getPositionX(self):
+        return self.posicionX
+
+    def getPositionY(self):
+        return self.posicionY
+
     # recibe ataque es un array con dos valores el daño  y el tipo de daño
     def defender(self, recibeAtaque):
         dano = recibeAtaque[0]
