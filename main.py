@@ -33,18 +33,18 @@ scene_level = 'level00'
 # Textura de jugador
 player_texture = pygame.image.load("assets/player/base/elf_male.png")
 players_list = []
-player1 = Jugador(screen,"player1", "none", player_texture,
-                 None, None, None, 3, 19, "Humano")
-player2 = Jugador(screen,"player2", "none", player_texture,
-                 None, None, None, 3, 19, "Humano")
-player3 = Jugador(screen,"player1", "none", player_texture,
-                 None, None, None, 3, 19, "Humano")
-player4 = Jugador(screen,"player2", "none", player_texture,
-                 None, None, None, 3, 19, "Humano")
+player1 = Jugador(screen, "player1", "none", player_texture,
+                  None, None, None, 3, 19, "Humano")
+player2 = Jugador(screen, "player2", "none", player_texture,
+                  None, None, None, 3, 19, "Humano")
+player3 = Jugador(screen, "player3", "none", player_texture,
+                  None, None, None, 3, 19, "Humano")
+player4 = Jugador(screen, "player4 ", "none", player_texture,
+                  None, None, None, 3, 19, "Humano")
 players_list.append(player1)
 players_list.append(player2)
 players_list.append(player3)
-#players_list.append(player4)
+players_list.append(player4)
 
 
 collide_level1 = get_collider_matrix(scene_level)
@@ -53,10 +53,11 @@ animated_decorations_matrix = get_animated_decorations_matrix(scene_level)
 def drawMap(level):
     level_texture = pygame.image.load(f'scene/{level}/_composite.png')
     screen.blit(level_texture, (0, 0))
-   
-def drawViews(players,screen):
-    createViews=Views(players,screen) 
+
+def drawViews(players, screen):
+    createViews = Views(players, screen)
     createViews.playerView()
+
 
 def drawCollider(map_collider_matriz):
     eje_x = 0  # eje x
@@ -123,10 +124,10 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             exit()
-        player1.move(event,0)
-        player2.move(event,1)
-        player3.move(event,2)
-        player4.move(event,3)
+        player1.move(event, 0)
+        player2.move(event, 1)
+        player3.move(event, 2)
+        player4.move(event, 3)
 
     # RENDER GAME HERE
     if furniture_animation_update_time >= MAX_FURNITURE_ANIMATION_FPS:
@@ -145,14 +146,18 @@ while True:
     draw_list_torch(screen, list_torch, current_sprite_anim)
 
     # Dibujo al jugador
-    player1.draw(screen)
-    player2.draw(screen)
-    player3.draw(screen)
-    player4.draw(screen)
+    player1.draw()
+    player2.draw()
+    player3.draw()
+    player4.draw()
 
     # Dibujar vistas
-    drawViews(players_list,screen)  
-    
+    drawViews(players_list,screen)
+
+    player1.drawGUI()
+    player2.drawGUI()
+    player3.drawGUI()
+    player4.drawGUI()
     # flip() la pantalla para poner su trabajo en la pantalla
     pygame.display.flip()
     data_time = clock.tick(MAX_FPS)  # limito el FPS a 60

@@ -47,8 +47,8 @@ class Personaje(pygame.sprite.Sprite):
         else:  # 1 magico
             return (Estadisticas(self.estadisticasBase).getAtaqueMagico(), 1)
 
-    def draw(self, screen):
-        screen.blit(self.player_texture, self.rect)
+    def draw(self):
+        self.screen.blit(self.player_texture, self.rect)
 
     def getCellSize(self):
         return self.CELL_SIZE
