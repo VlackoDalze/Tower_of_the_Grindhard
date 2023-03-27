@@ -8,15 +8,14 @@ SCREEN_HEIGHT = setting.SCREEN_HEIGHT
 
 viewsPositions = [(0, 0),  # player 1
                   ((SCREEN_WIDTH/2), 0),  # player 2
-                  (CELL_SIZE, (SCREEN_HEIGHT/2)+CELL_SIZE/2),  # player 3
-                  ((SCREEN_WIDTH/2)+CELL_SIZE/2,
-                  (SCREEN_HEIGHT/2)+CELL_SIZE/2)  # player 4
-                  ]
+                  (0, (SCREEN_HEIGHT/2)),  # player 3
+                  ((SCREEN_WIDTH/2),(SCREEN_HEIGHT/2))]  # player 4
+                  
 
 viewsSizes = [(SCREEN_WIDTH, SCREEN_HEIGHT),  # 1 player
               (SCREEN_WIDTH/2, SCREEN_HEIGHT),  # 2 players
-              (SCREEN_WIDTH/2-CELL_SIZE*1.5, SCREEN_HEIGHT /2-CELL_SIZE *1.5)  # 3 and 4 players
-              ]  # restamos 2 celdas la del inicio y la del final
+              (SCREEN_WIDTH/2, SCREEN_HEIGHT /2)]  # 3 and 4 players
+                # restamos 2 celdas la del inicio y la del final
 
 
 class Views:
@@ -34,6 +33,7 @@ class Views:
         
         self.screen = screen
         self.numPlayers = len(players)
+       
         if self.numPlayers == 1:
             self.sizePlayer = (viewsSizes[0])
         elif self.numPlayers == 2:
@@ -42,9 +42,8 @@ class Views:
             self.sizePlayer = (viewsSizes[2])
 
     def playerView(self):
-       
-        print(self.numPlayers)
-        for i in range(self.numPlayers):
+    
+        for i in reversed(range(self.numPlayers)):
             view = pygame.Surface(self.sizePlayer)
             jugador = self.playerList[i]
             
@@ -56,7 +55,7 @@ class Views:
         # ubicar la vista, respetando los limites, por alguna razon tiene errores si no lo haces
             Views.positionx = jugador.getPositionX()  
             Views.positiony = jugador.getPositionY()
-            print(Views.positionx, Views.positiony)
+           
             # aqui hay que hacer lo de los hilos para que las camaras se fijen en c/u de los players
             if self.numPlayers==1:
                 if Views.positiony>=256 and Views.positiony<=576:
@@ -82,20 +81,30 @@ class Views:
                 Views.POSITIONX_PREV=Views.positionx
                 Views.POSITIONY_PREV=Views.positiony
                 # recorte de screen esot varia segun la posicion del personaje
-                print(Views.widthView)
+               
                 recorte= self.screen.subsurface((Views.basex, Views.basey, Views.widthView, Views.heightView))
                 recorte= pygame.transform.scale(recorte,viewsSizes[0]) #redimiension
-            else:       
+          
+            elif self.numPlayers==2: 
+                #faltan los controles para 2players
                 Views.POSITIONX_PREV=Views.positionx
                 Views.POSITIONY_PREV=Views.positiony
                 # recorte de screen esot varia segun la posicion del personaje
-                print(Views.widthView)
-                recorte= self.screen.subsurface((Views.basex, Views.basey, Views.widthView, Views.heightView))
-                recorte= pygame.transform.scale(recorte,viewsSizes[1]) #redimiension
-                # ubica dentro del view el recorte del screen
-               
                 
+                recorte= self.screen.subsurface((Views.basex, Views.basey, Views.widthView, Views.heightView))
+                recorte= pygame.transform.scale(recorte, viewsSizes[1]) #redimiension
+            else:
+                #faltan los controles para 3 y 4players
+                Views.POSITIONX_PREV=Views.positionx
+                Views.POSITIONY_PREV=Views.positiony
+                # recorte de screen esot varia segun la posicion del personaje
+            
+                recorte= self.screen.subsurface((Views.basex, Views.basey, Views.widthView, Views.heightView))
+                recorte= pygame.transform.scale(recorte, viewsSizes[2]) #redimiension
+                
+           # ubica dentro del view el recorte del screen
             view.blit(recorte, (0,0))#es el relleno de la vista
             self.screen.blit(view, viewsPositions[i])#es la vista
-           
-           
+            if self.numPlayers == 3:
+                view = pygame.Surface(self.sizePlayer)
+                self.screen.blit(view, viewsPositions[3])#es la vista
