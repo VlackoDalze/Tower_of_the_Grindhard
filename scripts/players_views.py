@@ -43,7 +43,7 @@ class Views:
 
     def playerView(self):
        
-       
+        print(self.numPlayers)
         for i in range(self.numPlayers):
             view = pygame.Surface(self.sizePlayer)
             jugador = self.playerList[i]
@@ -58,32 +58,44 @@ class Views:
             Views.positiony = jugador.getPositionY()
             print(Views.positionx, Views.positiony)
             # aqui hay que hacer lo de los hilos para que las camaras se fijen en c/u de los players
-            if Views.positiony>=256 and Views.positiony<=576:
-                if Views.positiony>Views.POSITIONY_PREV:
-                    Views.basey+=CELL_SIZE    
-                elif Views.positiony<Views.POSITIONY_PREV:
-                    Views.basey-=CELL_SIZE
-        
-                
-               
-           
-            if Views.positionx>=128 and Views.positionx<=608:
-                if Views.positionx>Views.POSITIONX_PREV:
-                    Views.basex+=CELL_SIZE    
-                elif Views.positionx<Views.POSITIONX_PREV:
-                    Views.basex-=CELL_SIZE
-            
-          
+            if self.numPlayers==1:
+                if Views.positiony>=256 and Views.positiony<=576:
+                    if Views.positiony>Views.POSITIONY_PREV:
+                        Views.basey+=CELL_SIZE    
+                    elif Views.positiony<Views.POSITIONY_PREV:
+                        Views.basey-=CELL_SIZE
+                elif Views.positiony<256:
+                    Views.basey=0
+                elif Views.positiony>576:
+                    Views.basey=Views.heightView
                     
-            Views.POSITIONX_PREV=Views.positionx
-            Views.POSITIONY_PREV=Views.positiony
-            # recorte de screen esot varia segun la posicion del personaje
-            print(Views.widthView)
-            recorte= self.screen.subsurface((Views.basex, Views.basey, Views.widthView+16, Views.heightView))
-            recorte= pygame.transform.scale(recorte,viewsSizes[i]) #redimiension
-            # ubica dentro del view el recorte del screen
+                if Views.positionx>=128 and Views.positionx<=608:
+                    if Views.positionx>Views.POSITIONX_PREV:
+                        Views.basex+=CELL_SIZE    
+                    elif Views.positionx<Views.POSITIONX_PREV:
+                        Views.basex-=CELL_SIZE
+                elif Views.positionx<128:
+                    Views.basex=0
+                elif Views.positionx>608:
+                    Views.basex=Views.widthView
+                        
+                Views.POSITIONX_PREV=Views.positionx
+                Views.POSITIONY_PREV=Views.positiony
+                # recorte de screen esot varia segun la posicion del personaje
+                print(Views.widthView)
+                recorte= self.screen.subsurface((Views.basex, Views.basey, Views.widthView+16, Views.heightView))
+                recorte= pygame.transform.scale(recorte,viewsSizes[0]) #redimiension
+            else:       
+                Views.POSITIONX_PREV=Views.positionx
+                Views.POSITIONY_PREV=Views.positiony
+                # recorte de screen esot varia segun la posicion del personaje
+                print(Views.widthView)
+                recorte= self.screen.subsurface((Views.basex, Views.basey, Views.widthView, Views.heightView-16))
+                recorte= pygame.transform.scale(recorte,viewsSizes[1]) #redimiension
+                # ubica dentro del view el recorte del screen
+               
+                
             view.blit(recorte, (0,0))#es el relleno de la vista
-      
             self.screen.blit(view, viewsPositions[i])#es la vista
-         
+           
            
