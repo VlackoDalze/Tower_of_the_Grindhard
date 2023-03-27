@@ -50,7 +50,7 @@ players_list.append(player4)
 collide_level1 = get_collider_matrix(scene_level)
 animated_decorations_matrix = get_animated_decorations_matrix(scene_level)
 
-def drawMap(level,players):
+def drawMap(level):
     level_texture = pygame.image.load(f'scene/{level}/_composite.png')
     screen.blit(level_texture, (0, 0))
    
