@@ -1,5 +1,7 @@
 from scripts.personaje import Personaje as Personaje
+from scripts.setting import SILVER_MEDIUM_FONT
 import pygame
+WHITE = (255, 255, 255)
 
 
 class Jugador(Personaje):
@@ -21,6 +23,24 @@ class Jugador(Personaje):
         self._inventory_active = False
         self._map_active = False
         self._setting_active = False
+
+        self.inventory_bag_texture = pygame.image.load(
+            'assets/gui/inventory/inventory_bag_panel.png')
+        self.inventory_button_texture = pygame.image.load(
+            'assets/gui/inventory/inventory_button.png')
+        self.inventory_equipment_panel_texture = pygame.image.load(
+            'assets/gui/inventory/inventory_equipment_panel.png')
+        self.inventory_equipment_area_texture = pygame.image.load(
+            'assets/gui/inventory/equipment_area.png')
+        self.Inventory_slot = pygame.image.load(
+            "./assets/gui/inventory/inventory_slot.png")
+
+        # Crea un grupo de Sprite y añade los Sprite dentro al grupo
+        # self.inventory_sprites_group = pygame.sprite.Group()
+        # self.inventory_sprites_group.add(self.inventory_bag_texture)
+        # self.inventory_sprites_group.add(self.inventory_button_texture)
+        # self.inventory_sprites_group.add(self.inventory_equipment_panel_texture)
+        # self.inventory_sprites_group.add(self.inventory_equipment_area_texture)
 
     # metodos
 
@@ -113,8 +133,7 @@ class Jugador(Personaje):
     def draw(self, screen):
         screen.blit(pygame.transform.flip(
             self.player_texture, self.flip, False), self.rect)
-
-        #self.drawGUI(screen, self._interface_active)
+        self.drawGUI(screen, self._interface_active)
 
     # Dibuja la interfaz de usuario
     def drawGUI(self, screen, interface_active):
@@ -129,7 +148,18 @@ class Jugador(Personaje):
     # Dibuja el inventario
     def drawInventory(self, screen):
         if self._inventory_active:
-            self.drawSlots(screen, 50, 50, 5, 0, 0, 5)
+            screen.blit(self.inventory_bag_texture, (288, 16))
+            screen.blit(self.inventory_equipment_panel_texture, (16, 16))
+            screen.blit(self.inventory_equipment_area_texture, (32, 96))
+            screen.blit(self.inventory_button_texture, (24, 28))
+            screen.blit(self.inventory_button_texture, (144, 28))
+
+            # *Slots
+            self.drawSlots(screen, 320, 106, 12, 14, 3, 0, 0, 3)
+            # * Text
+            self.drawText(screen, 'Inventario', 64, 432, 21)
+            self.drawText(screen, 'Equipamiento', 24, 36, 38)
+            self.drawText(screen, 'Estadísticas', 24, 156, 38)
 
     def drawMap(self, screen):
         if self._map_active:
@@ -141,15 +171,16 @@ class Jugador(Personaje):
             rectangle = pygame.Rect(32, 32, 50, 50)
             pygame.draw.rect(screen, (255, 0, 255), rectangle)
 
-    def drawSlots(self, screen, positionX, posicionY, margin_top=0, margin_right=0, margin_bottom=0, margin_left=0, apply_initial_margin_X=False, apply_initial_margin_Y=False):
+    def drawSlots(self, screen, positionX, posicionY, amount_x, amount_y, margin_top=0, margin_right=0, margin_bottom=0, margin_left=0, apply_initial_margin_X=False, apply_initial_margin_Y=False):
         position_x = positionX  # eje x
         position_y = posicionY  # eje y
-        slot_texture = pygame.image.load("./assets/gui/abilities/dig.png")
+        slot_texture = pygame.image.load(
+            "./assets/gui/inventory/Inventory_slot.png")
 
-        for row in range(4):
+        for row in range(amount_y):
             if (row > 0 or apply_initial_margin_Y):
                 position_y = position_y + margin_top
-            for column in range(2):
+            for column in range(amount_x):
                 if (column > 0 or apply_initial_margin_X):
                     position_x = position_x + margin_left
                 screen.blit(slot_texture, (position_x, position_y))
@@ -157,3 +188,8 @@ class Jugador(Personaje):
 
             position_y = position_y + super().getCellSize() + margin_bottom  # aumenta y+32
             position_x = positionX  # resets x
+
+    def drawText(self, screen, text, size, positionX=0, posicionY=0):
+        myFont = pygame.font.Font(SILVER_MEDIUM_FONT, size)
+        text_gui = myFont.render(text, 1, WHITE)
+        screen.blit(text_gui, (positionX, posicionY))

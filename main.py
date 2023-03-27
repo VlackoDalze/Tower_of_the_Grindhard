@@ -17,7 +17,7 @@ MAX_FPS = setting.MAX_FPS
 # FPS 60/5 = 12
 MAX_MOVEMENT_FPS = MAX_FPS/5
 MAX_FURNITURE_ANIMATION_FPS = MAX_FPS/4
-BLANCO = (255, 255, 255)
+WHITE = (255, 255, 255)
 
 # definiendo el tamaño de la pantalla
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -50,11 +50,6 @@ players_list.append(player4)
 collide_level1 = get_collider_matrix(scene_level)
 animated_decorations_matrix = get_animated_decorations_matrix(scene_level)
 
-# defining font attributes
-myFont = pygame.font.SysFont("Segoe UI", 90)
-helloWorld = myFont.render("Hello World", 1, (255, 0, 255), (255, 255, 255))
-
-
 def drawMap(level,players):
     level_texture = pygame.image.load(f'scene/{level}/_composite.png')
     screen.blit(level_texture, (0, 0))
@@ -71,7 +66,7 @@ def drawCollider(map_collider_matriz):
         for column in row:
 
             if (column == '1'):  # Muro
-                pygame.draw.rect(screen, BLANCO, (eje_x, eje_y, 32, 32))
+                pygame.draw.rect(screen, WHITE, (eje_x, eje_y, 32, 32))
             if (column == '2'):  # La puerta
                 pygame.draw.rect(screen, (126, 126, 0), (eje_x, eje_y, 32, 32))
             if (column == '3'):  # Cofres
