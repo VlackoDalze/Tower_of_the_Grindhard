@@ -212,7 +212,7 @@ class Jugador(Personaje):
     def drawText(self, text, size, positionX=0, posicionY=0):
         myFont = pygame.font.Font(SILVER_MEDIUM_FONT, size)
         text_gui = myFont.render(text, 1, WHITE)
-        screen.blit(text_gui, (positionX, posicionY))
+        self.screen.blit(text_gui, (positionX, posicionY))
         self.screen.blit(text_gui, (positionX, posicionY))
         
 def drawCollider(sizeCell):

@@ -6,6 +6,7 @@ from scripts.collider_matrix_maker import get_collider_matrix, get_animated_deco
 from scripts.torch import Torch
 from scripts.players_views import Views
 
+
 # Inicio el programa
 pygame.init()
 
@@ -42,9 +43,9 @@ player3 = Jugador(screen, "player3", "none", player_texture,
 player4 = Jugador(screen, "player4 ", "none", player_texture,
                   None, None, None, 3, 19, "Humano")
 players_list.append(player1)
-players_list.append(player2)
-players_list.append(player3)
-players_list.append(player4)
+#players_list.append(player2)
+#players_list.append(player3)
+#players_list.append(player4)
 
 
 #collide_level1 = get_collider_matrix(scene_level)
@@ -86,6 +87,12 @@ def draw_list_torch(screen, list_torch, current_sprite_anim):
             torch.drawTorch(screen, current_sprite_anim)
 
 
+def drawFog(screen):
+    fog=pygame.Surface((SCREEN_WIDTH,SCREEN_HEIGHT))
+    foco=pygame.Surface((100,100), pygame.SRCALPHA)
+    foco.fill((255,255,255,200))
+    fog.blit(foco,(0,0))
+    screen.blit(fog,(0,0))
 # obtengo la lista de objetos del mapa que tengan animación y la guardo en la variable list_torch
 list_torch = get_animated_decoration_array(animated_decorations_matrix)
 
@@ -115,6 +122,7 @@ while True:
 
     # dibujo el mapa
     drawMap(scene_level)
+    
 
     # dibujo las colisiones en el mapa a partir de una matriz
     # drawCollider(collide_level1)
@@ -135,6 +143,8 @@ while True:
     player2.drawGUI()
     player3.drawGUI()
     player4.drawGUI()
+
+    drawFog(screen)
     # flip() la pantalla para poner su trabajo en la pantalla
     pygame.display.flip()
     data_time = clock.tick(MAX_FPS)  # limito el FPS a 60
