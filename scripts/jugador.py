@@ -104,13 +104,12 @@ class Jugador(Personaje):
         # * Area de movimientos
         direction_x = 0
         direction_y = 0
-     
 
         if movimiento_izquierda:
             direction_x = -movement_speed
             self.flip = True
             self.direction = -1
-           
+
         if movimiento_derecha:
             direction_x = movement_speed
             self.flip = False
