@@ -67,7 +67,7 @@ class Jugador(Personaje):
         movimiento_abajo = False
         movement_speed = super().getCellSize()
         listaKeys=[[pygame.K_a, pygame.K_d, pygame.K_w, pygame.K_s],
-                   [ pygame.K_g, pygame.K_j, pygame.K_y, pygame.K_h],
+                   [pygame.K_g, pygame.K_j, pygame.K_y, pygame.K_h],
                    [pygame.K_LEFT, pygame.K_RIGHT, pygame.K_UP, pygame.K_DOWN],
                    [pygame.K_KP_4, pygame.K_KP_6, pygame.K_KP_8, pygame.K_KP_5]]
         if event.type == pygame.KEYDOWN:
