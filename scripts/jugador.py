@@ -68,7 +68,7 @@ class Jugador(Personaje):
         movimiento_abajo = False
         movement_speed = super().getCellSize()
         listaKeys=[[pygame.K_a, pygame.K_d, pygame.K_w, pygame.K_s],
-                   [ pygame.K_g, pygame.K_j, pygame.K_y, pygame.K_h],
+                   [pygame.K_g, pygame.K_j, pygame.K_y, pygame.K_h],
                    [pygame.K_LEFT, pygame.K_RIGHT, pygame.K_UP, pygame.K_DOWN],
                    [pygame.K_KP_4, pygame.K_KP_6, pygame.K_KP_8, pygame.K_KP_5]]
         if event.type == pygame.KEYDOWN:
@@ -105,13 +105,12 @@ class Jugador(Personaje):
         # * Area de movimientos
         direction_x = 0
         direction_y = 0
-     
 
         if movimiento_izquierda:
             direction_x = -movement_speed
             self.flip = True
             self.direction = -1
-           
+
         if movimiento_derecha:
             direction_x = movement_speed
             self.flip = False
@@ -152,48 +151,47 @@ class Jugador(Personaje):
         self.toggleGUI()
         self._setting_active = self.toggleBoolean(self._setting_active)
 
-    def draw(self, screen):
-        screen.blit(pygame.transform.flip(
+    def draw(self):
+        self.screen.blit(pygame.transform.flip(
             self.player_texture, self.flip, False), self.rect)
-        self.drawGUI(screen, self._interface_active)
 
     # Dibuja la interfaz de usuario
-    def drawGUI(self, screen, interface_active):
-        if interface_active == True:
+    def drawGUI(self):
+        if self._interface_active == True:
             rectangle = pygame.Rect(50, 50, 50, 50)
-            pygame.draw.rect(screen, (255, 255, 255), rectangle)
+            pygame.draw.rect(self.screen, (255, 255, 255), rectangle)
         else:
-            self.drawInventory(screen)
-            self.drawMap(screen)
-            self.drawSetting(screen)
+            self.drawInventory()
+            self.drawMap()
+            self.drawSetting()
 
     # Dibuja el inventario
-    def drawInventory(self, screen):
+    def drawInventory(self):
         if self._inventory_active:
-            screen.blit(self.inventory_bag_texture, (288, 16))
-            screen.blit(self.inventory_equipment_panel_texture, (16, 16))
-            screen.blit(self.inventory_equipment_area_texture, (32, 96))
-            screen.blit(self.inventory_button_texture, (24, 28))
-            screen.blit(self.inventory_button_texture, (144, 28))
+            self.screen.blit(self.inventory_bag_texture, (288, 16))
+            self.screen.blit(self.inventory_equipment_panel_texture, (16, 16))
+            self.screen.blit(self.inventory_equipment_area_texture, (32, 96))
+            self.screen.blit(self.inventory_button_texture, (24, 28))
+            self.screen.blit(self.inventory_button_texture, (144, 28))
 
             # *Slots
-            self.drawSlots(screen, 320, 106, 12, 14, 3, 0, 0, 3)
+            self.drawSlots(320, 106, 12, 14, 3, 0, 0, 3)
             # * Text
-            self.drawText(screen, 'Inventario', 64, 432, 21)
-            self.drawText(screen, 'Equipamiento', 24, 36, 38)
-            self.drawText(screen, 'Estadísticas', 24, 156, 38)
+            self.drawText('Inventario', 64, 432, 21)
+            self.drawText('Equipamiento', 24, 36, 38)
+            self.drawText('Estadísticas', 24, 156, 38)
 
-    def drawMap(self, screen):
+    def drawMap(self):
         if self._map_active:
             rectangle = pygame.Rect(32, 32, 50, 50)
-            pygame.draw.rect(screen, (0, 0, 255), rectangle)
+            pygame.draw.rect(self.screen, (0, 0, 255), rectangle)
 
-    def drawSetting(self, screen):
+    def drawSetting(self):
         if self._setting_active:
             rectangle = pygame.Rect(32, 32, 50, 50)
-            pygame.draw.rect(screen, (255, 0, 255), rectangle)
+            pygame.draw.rect((255, 0, 255), rectangle)
 
-    def drawSlots(self, screen, positionX, posicionY, amount_x, amount_y, margin_top=0, margin_right=0, margin_bottom=0, margin_left=0, apply_initial_margin_X=False, apply_initial_margin_Y=False):
+    def drawSlots(self,positionX, posicionY, amount_x, amount_y, margin_top=0, margin_right=0, margin_bottom=0, margin_left=0, apply_initial_margin_X=False, apply_initial_margin_Y=False):
         position_x = positionX  # eje x
         position_y = posicionY  # eje y
         slot_texture = pygame.image.load(
@@ -205,16 +203,17 @@ class Jugador(Personaje):
             for column in range(amount_x):
                 if (column > 0 or apply_initial_margin_X):
                     position_x = position_x + margin_left
-                screen.blit(slot_texture, (position_x, position_y))
+                self.screen.blit(slot_texture, (position_x, position_y))
                 position_x = position_x + super().getCellSize() + margin_right  # aumenta x +32
 
             position_y = position_y + super().getCellSize() + margin_bottom  # aumenta y+32
             position_x = positionX  # resets x
 
-    def drawText(self, screen, text, size, positionX=0, posicionY=0):
+    def drawText(self, text, size, positionX=0, posicionY=0):
         myFont = pygame.font.Font(SILVER_MEDIUM_FONT, size)
         text_gui = myFont.render(text, 1, WHITE)
         screen.blit(text_gui, (positionX, posicionY))
+        self.screen.blit(text_gui, (positionX, posicionY))
         
 def drawCollider(sizeCell):
     map_collider_matriz=get_collider_matrix('level00')

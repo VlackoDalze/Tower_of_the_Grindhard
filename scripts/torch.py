@@ -3,7 +3,7 @@ import scripts.setting as setting
 
 
 class Torch(pygame.sprite.Sprite):
-    def __init__(self, pos_x, pos_y):
+    def __init__(self, pos_x:int, pos_y:int):
         super().__init__()
         self.torch_sprites = []
         self.torch_sprites.append(pygame.image.load(
@@ -18,7 +18,7 @@ class Torch(pygame.sprite.Sprite):
         self.pos_x = pos_x
         self.pos_y = pos_y
 
-    def drawTorch(self, screen, current_torch):
+    def drawTorch(self, screen:pygame.Surface, current_torch:int):
         screen.blit(self.torch_sprites[current_torch], (self.pos_x *
                     setting.CELL_SIZE, self.pos_y*setting.CELL_SIZE))
 
