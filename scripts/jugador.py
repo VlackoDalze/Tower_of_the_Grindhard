@@ -5,12 +5,12 @@ WHITE = (255, 255, 255)
 
 
 class Jugador(Personaje):
-    def __init__(self, nombre, descripcion, imagen, estadisticasBase, habilidadesActivas, habilidadesPasivas, posicionX, posicionY, raza):
-        super().__init__(nombre, descripcion, imagen, estadisticasBase,
+    def __init__(self,screen: pygame.Surface, nombre, descripcion, imagen, estadisticasBase, habilidadesActivas, habilidadesPasivas, posicionX, posicionY, raza):
+        super().__init__(screen, nombre, descripcion, imagen, estadisticasBase,
                          habilidadesActivas, habilidadesPasivas, posicionX, posicionY)
         self.flip = False
         self.direction = 1
-
+        self.movementSpeed = super().getCellSize()
         self.raza = raza
 
         self.inventory = [
@@ -59,13 +59,19 @@ class Jugador(Personaje):
     def removeFromInventario(self, item):
         self.inventario.remove(item)
 
+    def getMovementSpeed(self):
+        return self.movementSpeed
+
+    def setMovementSpeed(self,speed):
+        self.movementSpeed = speed
+
     def move(self, event,assignedKeys):
         # *Area de controles
         movimiento_izquierda = False
         movimiento_derecha = False
         movimiento_arriba = False
         movimiento_abajo = False
-        movement_speed = super().getCellSize()
+        move = self.movementSpeed
         listaKeys=[[pygame.K_a, pygame.K_d, pygame.K_w, pygame.K_s],
                    [ pygame.K_g, pygame.K_j, pygame.K_y, pygame.K_h],
                    [pygame.K_LEFT, pygame.K_RIGHT, pygame.K_UP, pygame.K_DOWN],
@@ -74,16 +80,16 @@ class Jugador(Personaje):
             
             if event.key == listaKeys[assignedKeys][0]:
                 movimiento_izquierda = True
-                self.posicionX -= movement_speed
+                self.posicionX -= move
             if event.key ==  listaKeys[assignedKeys][1]:
                 movimiento_derecha = True
-                self.posicionX += movement_speed
+                self.posicionX += move
             if event.key ==  listaKeys[assignedKeys][2]:
                 movimiento_arriba = True
-                self.posicionY -= movement_speed
+                self.posicionY -= move
             if event.key ==  listaKeys[assignedKeys][3]:
                 movimiento_abajo = True
-                self.posicionY += movement_speed
+                self.posicionY += move
             if event.key == pygame.K_i:  # Inventario
                 self.toggleInventory()
             if event.key == pygame.K_m:  # Mapa
@@ -107,20 +113,20 @@ class Jugador(Personaje):
      
 
         if movimiento_izquierda:
-            direction_x = -movement_speed
+            direction_x = -move
             self.flip = True
             self.direction = -1
            
         if movimiento_derecha:
-            direction_x = movement_speed
+            direction_x = move
             self.flip = False
             self.direction = 1
             
         if movimiento_abajo:
-            direction_y = movement_speed
+            direction_y = move
             
         if movimiento_arriba:
-            direction_y = -movement_speed
+            direction_y = -move
             
 
         self.rect.x += direction_x
