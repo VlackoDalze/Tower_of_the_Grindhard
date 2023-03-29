@@ -87,16 +87,6 @@ def draw_list_torch(screen, list_torch, current_sprite_anim):
             torch.drawTorch(screen, current_sprite_anim)
 
 
-def drawFog(screen):
-    fog=pygame.Surface((SCREEN_WIDTH,SCREEN_HEIGHT))
-    #fog.blit(foco,(0,0))
-    
-    color=pygame.Color(255,255,255)
-    foco=pygame.draw.circle(fog,color,(200,200),100)
-    fog.set_alpha(100)
-   
-    
-    screen.blit(fog,(0,0))
 # obtengo la lista de objetos del mapa que tengan animación y la guardo en la variable list_torch
 list_torch = get_animated_decoration_array(animated_decorations_matrix)
 
@@ -148,7 +138,7 @@ while True:
     player3.drawGUI()
     player4.drawGUI()
 
-    drawFog(screen)
+
     # flip() la pantalla para poner su trabajo en la pantalla
     pygame.display.flip()
     data_time = clock.tick(MAX_FPS)  # limito el FPS a 60
