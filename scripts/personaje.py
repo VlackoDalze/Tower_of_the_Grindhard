@@ -5,7 +5,7 @@ from scripts.habilidad_pasiva_unica import PasivaUnica
 
 
 class Personaje(pygame.sprite.Sprite):
-    def __init__(self, screen: pygame.Surface, nombre: str, descripcion: str, imagen: pygame.Surface, estadisticasBase: Estadisticas, habilidadesActivas, habilidadesPasivas, posicionX, posicionY):
+    def __init__(self, screen: pygame.Surface, nombre: str, descripcion: str, imagen: pygame.Surface, estadisticasBase: Estadisticas, habilidadesActivas, habilidadesPasivas, posicionX:int, posicionY:int):
         pygame.sprite.Sprite.__init__(self)
         self.CELL_SIZE = setting.CELL_SIZE
         self.player_texture = imagen
@@ -53,8 +53,8 @@ class Personaje(pygame.sprite.Sprite):
         else:  # 1 magico
             return (Estadisticas(self.estadisticasBase).getAtaqueMagico(), 1)
 
-    def draw(self, screen):
-        screen.blit(self.player_texture, self.rect)
+    def draw(self):
+        self.screen.blit(self.player_texture, self.rect)
 
     def getCellSize(self):
         return self.CELL_SIZE

@@ -5,7 +5,6 @@ from scripts.jugador import Jugador
 from scripts.collider_matrix_maker import get_collider_matrix, get_animated_decorations_matrix
 from scripts.torch import Torch
 from scripts.players_views import Views
-from scripts.sistemaColisiones import colisionTrigger
 
 # Inicio el programa
 pygame.init()
@@ -34,18 +33,18 @@ scene_level = 'level00'
 # Textura de jugador
 player_texture = pygame.image.load("assets/player/base/elf_male.png")
 players_list = []
-player1 = Jugador(screen,"player1", "none", player_texture,
-                 None, None, None, 3, 19, "Humano")
-player2 = Jugador(screen,"player2", "none", player_texture,
-                 None, None, None, 3, 19, "Humano")
-player3 = Jugador(screen,"player1", "none", player_texture,
-                 None, None, None, 3, 19, "Humano")
-player4 = Jugador(screen,"player2", "none", player_texture,
-                 None, None, None, 3, 19, "Humano")
+player1 = Jugador(screen, "player1", "none", player_texture,
+                  None, None, None, 3, 19, "Humano")
+player2 = Jugador(screen, "player2", "none", player_texture,
+                  None, None, None, 3, 19, "Humano")
+player3 = Jugador(screen, "player3", "none", player_texture,
+                  None, None, None, 3, 19, "Humano")
+player4 = Jugador(screen, "player4 ", "none", player_texture,
+                  None, None, None, 3, 19, "Humano")
 players_list.append(player1)
 players_list.append(player2)
 players_list.append(player3)
-#players_list.append(player4)
+players_list.append(player4)
 
 
 collide_level1 = get_collider_matrix(scene_level)
@@ -54,29 +53,27 @@ animated_decorations_matrix = get_animated_decorations_matrix(scene_level)
 def drawMap(level):
     level_texture = pygame.image.load(f'scene/{level}/_composite.png')
     screen.blit(level_texture, (0, 0))
-   
-def drawViews(players,screen):
-    createViews=Views(players,screen) 
+
+def drawViews(players, screen):
+    createViews = Views(players, screen)
     createViews.playerView()
 
-def drawCollider(map_collider_matriz,player: Jugador):
+
+def drawCollider(map_collider_matriz):
     eje_x = 0  # eje x
     eje_y = 0  # eje y
 
-    playr = pygame.Rect(player.getPositionX(),player.getPositionY(),CELL_SIZE,CELL_SIZE)
     for row in map_collider_matriz:
         for column in row:
-            
+
             if (column == '1'):  # Muro
-                muro = pygame.rect
+                pygame.draw.rect(screen, WHITE, (eje_x, eje_y, 32, 32))
             if (column == '2'):  # La puerta
-                puerta = pygame.Rect(eje_x, eje_y, 32, 32)
-                colisionTrigger(puerta,playr,"puerta")
+                pygame.draw.rect(screen, (126, 126, 0), (eje_x, eje_y, 32, 32))
             if (column == '3'):  # Cofres
-                cofres = pygame.Rect(eje_x, eje_y, 32, 32)
-                colisionTrigger(cofres,playr,"cofre")
+                pygame.draw.rect(screen, (0, 126, 0), (eje_x, eje_y, 32, 32))
             if (column == '4'):  # Muebles
-                muebles = pygame.rect
+                pygame.draw.rect(screen, (0, 126, 126), (eje_x, eje_y, 32, 32))
 
             eje_x = eje_x + CELL_SIZE  # aumenta x +32
 
@@ -127,10 +124,10 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             exit()
-        player1.move(event,0)
-        player2.move(event,1)
-        player3.move(event,2)
-        player4.move(event,3)
+        player1.move(event, 0)
+        player2.move(event, 1)
+        player3.move(event, 2)
+        player4.move(event, 3)
 
     # RENDER GAME HERE
     if furniture_animation_update_time >= MAX_FURNITURE_ANIMATION_FPS:
@@ -143,20 +140,24 @@ while True:
     drawMap(scene_level)
 
     # dibujo las colisiones en el mapa a partir de una matriz
-    drawCollider(collide_level1,player1)
+    # drawCollider(collide_level1)
 
     # dibujo las antorchas en el mapa a partir de una matriz
     draw_list_torch(screen, list_torch, current_sprite_anim)
 
     # Dibujo al jugador
-    player1.draw(screen)
-    player2.draw(screen)
-    player3.draw(screen)
-    player4.draw(screen)
+    player1.draw()
+    player2.draw()
+    player3.draw()
+    player4.draw()
 
     # Dibujar vistas
-    drawViews(players_list,screen)  
-    
+    drawViews(players_list,screen)
+
+    player1.drawGUI()
+    player2.drawGUI()
+    player3.drawGUI()
+    player4.drawGUI()
     # flip() la pantalla para poner su trabajo en la pantalla
     pygame.display.flip()
     data_time = clock.tick(MAX_FPS)  # limito el FPS a 60
