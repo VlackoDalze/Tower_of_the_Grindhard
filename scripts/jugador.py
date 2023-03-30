@@ -1,6 +1,7 @@
 from scripts.personaje import Personaje as Personaje
 from scripts.setting import SILVER_MEDIUM_FONT
 import pygame
+from scripts.collider_matrix_maker import get_collider_matrix
 WHITE = (255, 255, 255)
 
 
@@ -74,16 +75,16 @@ class Jugador(Personaje):
             
             if event.key == listaKeys[assignedKeys][0]:
                 movimiento_izquierda = True
-                self.posicionX -= movement_speed
+                #self.posicionX -= movement_speed
             if event.key ==  listaKeys[assignedKeys][1]:
                 movimiento_derecha = True
-                self.posicionX += movement_speed
+                #self.posicionX += movement_speed
             if event.key ==  listaKeys[assignedKeys][2]:
                 movimiento_arriba = True
-                self.posicionY -= movement_speed
+                #self.posicionY -= movement_speed
             if event.key ==  listaKeys[assignedKeys][3]:
                 movimiento_abajo = True
-                self.posicionY += movement_speed
+                #self.posicionY += movement_speed
             if event.key == pygame.K_i:  # Inventario
                 self.toggleInventory()
             if event.key == pygame.K_m:  # Mapa
@@ -121,10 +122,17 @@ class Jugador(Personaje):
         if movimiento_arriba:
             direction_y = -movement_speed
             
-
-        self.rect.x += direction_x
-        self.rect.y += direction_y
+        #aqui aplicas la modificacion
+        aux_x=self.rect.x + direction_x
+        aux_y=self.rect.y+direction_y
+        colisiones=drawCollider(super().getCellSize())
+        if str(aux_x)+"-"+str(aux_y) not in colisiones:
+            self.rect.x += direction_x
+            self.rect.y += direction_y
+            self.posicionX=self.rect.x
+            self.posicionY=self.rect.y
     
+        
     # * Interfaz de usuario
 
     def toggleGUI(self):
@@ -205,3 +213,21 @@ class Jugador(Personaje):
         myFont = pygame.font.Font(SILVER_MEDIUM_FONT, size)
         text_gui = myFont.render(text, 1, WHITE)
         self.screen.blit(text_gui, (positionX, posicionY))
+        self.screen.blit(text_gui, (positionX, posicionY))
+        
+def drawCollider(sizeCell):
+    map_collider_matriz=get_collider_matrix('level00')
+    eje_x = 0  # eje x
+    eje_y = 0  # eje y
+    colisiones=[]
+    for row in map_collider_matriz:
+        for column in row:
+
+            if (column == '1'or column == '2'or column == '3' or column == '4'):  # colision
+                colisiones.append(str(eje_x)+"-"+str(eje_y))
+
+            eje_x = eje_x + sizeCell # aumenta x +32
+
+        eje_y = eje_y + sizeCell  # aumenta y+32
+        eje_x = 0  # resets x    
+    return colisiones

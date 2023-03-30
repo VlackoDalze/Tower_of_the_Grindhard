@@ -6,6 +6,7 @@ from scripts.collider_matrix_maker import get_collider_matrix, get_animated_deco
 from scripts.torch import Torch
 from scripts.players_views import Views
 
+
 # Inicio el programa
 pygame.init()
 
@@ -42,12 +43,12 @@ player3 = Jugador(screen, "player3", "none", player_texture,
 player4 = Jugador(screen, "player4 ", "none", player_texture,
                   None, None, None, 3, 19, "Humano")
 players_list.append(player1)
-players_list.append(player2)
-players_list.append(player3)
-players_list.append(player4)
+#players_list.append(player2)
+#players_list.append(player3)
+#players_list.append(player4)
 
 
-collide_level1 = get_collider_matrix(scene_level)
+#collide_level1 = get_collider_matrix(scene_level)
 animated_decorations_matrix = get_animated_decorations_matrix(scene_level)
 
 def drawMap(level):
@@ -57,29 +58,6 @@ def drawMap(level):
 def drawViews(players, screen):
     createViews = Views(players, screen)
     createViews.playerView()
-
-
-def drawCollider(map_collider_matriz):
-    eje_x = 0  # eje x
-    eje_y = 0  # eje y
-
-    for row in map_collider_matriz:
-        for column in row:
-
-            if (column == '1'):  # Muro
-                pygame.draw.rect(screen, WHITE, (eje_x, eje_y, 32, 32))
-            if (column == '2'):  # La puerta
-                pygame.draw.rect(screen, (126, 126, 0), (eje_x, eje_y, 32, 32))
-            if (column == '3'):  # Cofres
-                pygame.draw.rect(screen, (0, 126, 0), (eje_x, eje_y, 32, 32))
-            if (column == '4'):  # Muebles
-                pygame.draw.rect(screen, (0, 126, 126), (eje_x, eje_y, 32, 32))
-
-            eje_x = eje_x + CELL_SIZE  # aumenta x +32
-
-        eje_y = eje_y + CELL_SIZE  # aumenta y+32
-        eje_x = 0  # resets x
-
 
 def get_animated_decoration_array(map_animated_decorations_matrix):
     eje_x = 0  # eje x
@@ -138,6 +116,7 @@ while True:
 
     # dibujo el mapa
     drawMap(scene_level)
+    
 
     # dibujo las colisiones en el mapa a partir de una matriz
     # drawCollider(collide_level1)
@@ -158,6 +137,8 @@ while True:
     player2.drawGUI()
     player3.drawGUI()
     player4.drawGUI()
+
+
     # flip() la pantalla para poner su trabajo en la pantalla
     pygame.display.flip()
     data_time = clock.tick(MAX_FPS)  # limito el FPS a 60
