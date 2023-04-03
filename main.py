@@ -82,7 +82,7 @@ def drawCollider(map_collider_matriz):
         eje_x = 0  # resets x
 
 
-def get_animated_decoration_array(map_animated_decorations_matrix):
+def get_animated_decoration_array(screen,map_animated_decorations_matrix):
     eje_x = 0  # eje x
     eje_y = 0  # eje y
     list_animated_decoration = []
