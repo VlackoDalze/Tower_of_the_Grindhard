@@ -6,6 +6,7 @@ from scripts.collider_matrix_maker import get_collider_matrix, get_animated_deco
 from scripts.torch import Torch
 from scripts.players_views import Views
 
+
 # Inicio el programa
 pygame.init()
 
@@ -14,6 +15,7 @@ CELL_SIZE = setting.CELL_SIZE
 SCREEN_WIDTH = setting.SCREEN_WIDTH
 SCREEN_HEIGHT = setting.SCREEN_HEIGHT
 MAX_FPS = setting.MAX_FPS
+
 # FPS 60/5 = 12
 MAX_MOVEMENT_FPS = MAX_FPS/5
 MAX_FURNITURE_ANIMATION_FPS = MAX_FPS/4
@@ -33,14 +35,10 @@ scene_level = 'level00'
 # Textura de jugador
 player_texture = pygame.image.load("assets/player/base/elf_male.png")
 players_list = []
-player1 = Jugador(screen, "player1", "none", player_texture,
-                  None, None, None, 3, 19, "Humano")
-player2 = Jugador(screen, "player2", "none", player_texture,
-                  None, None, None, 3, 19, "Humano")
-player3 = Jugador(screen, "player3", "none", player_texture,
-                  None, None, None, 3, 19, "Humano")
-player4 = Jugador(screen, "player4 ", "none", player_texture,
-                  None, None, None, 3, 19, "Humano")
+player1 = Jugador(screen, "player1", "none", player_texture, None, None, None, 3, 19, "Humano")
+player2 = Jugador(screen, "player2", "none", player_texture, None, None, None, 3, 19, "Humano")
+player3 = Jugador(screen, "player3", "none", player_texture, None, None, None, 3, 19, "Humano")
+player4 = Jugador(screen, "player4 ", "none", player_texture, None, None, None, 3, 19, "Humano")
 players_list.append(player1)
 players_list.append(player2)
 players_list.append(player3)
@@ -115,6 +113,7 @@ while True:
 
     # dibujo el mapa
     drawMap(scene_level)
+    
 
     # dibujo las colisiones en el mapa a partir de una matriz
     # drawCollider(collide_level1)
@@ -135,6 +134,8 @@ while True:
     player2.drawGUI()
     player3.drawGUI()
     player4.drawGUI()
+
+
     # flip() la pantalla para poner su trabajo en la pantalla
     pygame.display.flip()
     data_time = clock.tick(MAX_FPS)  # limito el FPS a 60
