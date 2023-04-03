@@ -1,10 +1,11 @@
 import pygame
 import scripts.setting as setting
-import threading
+
 # Variables statics
 CELL_SIZE = setting.CELL_SIZE
 SCREEN_WIDTH = setting.SCREEN_WIDTH
 SCREEN_HEIGHT = setting.SCREEN_HEIGHT
+
 
 viewsPositions = [(0, 0),  # player 1
                   ((SCREEN_WIDTH/2), 0),  # player 2
@@ -21,6 +22,8 @@ viewsSizes = [(SCREEN_WIDTH, SCREEN_HEIGHT),  # 1 player
 class Views:
     widthView =  SCREEN_WIDTH/2
     heightView = SCREEN_HEIGHT/2
+    DEFAULT_X_PLAYER=0
+    DEFAULT_Y_PLAYER=0
     #basex/basey/positionx/positiony/POSITIONX_PREV/POSITIONY_PREV
     #  0     1       2         3           4               5
     varListforViews=[[0,heightView,0,0,0,0],[0,heightView,0,0,0,0],[0,heightView,0,0,0,0],[0,heightView,0,0,0,0]]
@@ -40,18 +43,27 @@ class Views:
         else:
             self.sizePlayer = (viewsSizes[2])
 
-    def movCamera(num_view):
-        miny=256
-        maxy=576
-        minx=128
-        maxx=608
-        
+    def movCamera(num_view):    
+       
         basex=Views.varListforViews[num_view][0]
         basey=Views.varListforViews[num_view][1]
         positionx=Views.varListforViews[num_view][2]
         positiony=Views.varListforViews[num_view][3]
         POSITIONX_PREV=Views.varListforViews[num_view][4]
         POSITIONY_PREV=Views.varListforViews[num_view][5]
+
+         #h 704, w 1056
+        # al crear al personaje se pasan dos parametros x=3 y y=19
+        if(Views.DEFAULT_X_PLAYER==0 and Views.DEFAULT_Y_PLAYER==0):
+            Views.DEFAULT_X_PLAYER=positionx/CELL_SIZE
+            Views.DEFAULT_Y_PLAYER=positiony/CELL_SIZE
+            
+        miny=Views.heightView-(CELL_SIZE*(SCREEN_HEIGHT/CELL_SIZE-Views.DEFAULT_Y_PLAYER)) #256 ->altura/2-((total celdas - celdas por defecto)*tamaño de celda)
+        maxy=CELL_SIZE*(Views.DEFAULT_Y_PLAYER-1) #576  ->tamaño de celda *(celdas por defecto -1) -> se le resta el tamaño de la imagen del jugador
+        
+        minx=(Views.DEFAULT_X_PLAYER+1) *CELL_SIZE #128  ->(celdas por defecto +1)*tamaño de celda -> se le suma el tamaño de la imagen
+        maxx=Views.widthView + ((Views.DEFAULT_X_PLAYER*CELL_SIZE) -CELL_SIZE/2) #608  ->ancho/2+((celdas por defecto * tamaño de celda)-tamaño de celda/2) -> se resta 16 porque 1056/32=33 es impar
+
         
         if positiony>=miny and positiony<=maxy:
             if positiony>POSITIONY_PREV:

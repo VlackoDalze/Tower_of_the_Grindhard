@@ -15,6 +15,7 @@ CELL_SIZE = setting.CELL_SIZE
 SCREEN_WIDTH = setting.SCREEN_WIDTH
 SCREEN_HEIGHT = setting.SCREEN_HEIGHT
 MAX_FPS = setting.MAX_FPS
+
 # FPS 60/5 = 12
 MAX_MOVEMENT_FPS = MAX_FPS/5
 MAX_FURNITURE_ANIMATION_FPS = MAX_FPS/4
@@ -34,18 +35,14 @@ scene_level = 'level00'
 # Textura de jugador
 player_texture = pygame.image.load("assets/player/base/elf_male.png")
 players_list = []
-player1 = Jugador(screen, "player1", "none", player_texture,
-                  None, None, None, 3, 19, "Humano")
-player2 = Jugador(screen, "player2", "none", player_texture,
-                  None, None, None, 3, 19, "Humano")
-player3 = Jugador(screen, "player3", "none", player_texture,
-                  None, None, None, 3, 19, "Humano")
-player4 = Jugador(screen, "player4 ", "none", player_texture,
-                  None, None, None, 3, 19, "Humano")
+player1 = Jugador(screen, "player1", "none", player_texture, None, None, None, 3, 19, "Humano")
+player2 = Jugador(screen, "player2", "none", player_texture, None, None, None, 3, 19, "Humano")
+player3 = Jugador(screen, "player3", "none", player_texture, None, None, None, 3, 19, "Humano")
+player4 = Jugador(screen, "player4 ", "none", player_texture, None, None, None, 3, 19, "Humano")
 players_list.append(player1)
-#players_list.append(player2)
-#players_list.append(player3)
-#players_list.append(player4)
+players_list.append(player2)
+players_list.append(player3)
+players_list.append(player4)
 
 
 #collide_level1 = get_collider_matrix(scene_level)
