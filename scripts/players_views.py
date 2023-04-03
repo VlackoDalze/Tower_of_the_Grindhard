@@ -113,7 +113,7 @@ class Views:
                 Views.varListforViews[0][2] = self.playerList[0].getPositionX()  
                 Views.varListforViews[0][3] = self.playerList[0].getPositionY()
            
-                recorte= self.screen.subsurface(Views.movCamera(0,self.playerList[0]))
+                recorte= self.screen.subsurface(Views.movCamera(0))
                 recorte= pygame.transform.scale(recorte,viewsSizes[0]) #redimiension
           
                 view.blit(recorte, (0,0))#es el relleno de la vista
