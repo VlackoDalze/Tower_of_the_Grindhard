@@ -5,6 +5,7 @@ from scripts.jugador import Jugador
 from scripts.collider_matrix_maker import get_collider_matrix, get_animated_decorations_matrix
 from scripts.torch import Torch
 from scripts.players_views import Views
+from scripts.ui_fragment import UI_fragment
 
 
 # Inicio el programa
@@ -48,6 +49,8 @@ players_list.append(player4)
 #collide_level1 = get_collider_matrix(scene_level)
 animated_decorations_matrix = get_animated_decorations_matrix(scene_level)
 
+ui_frag = UI_fragment(screen,player_texture,(0,0))
+
 def drawMap(level):
     level_texture = pygame.image.load(f'scene/{level}/_composite.png')
     screen.blit(level_texture, (0, 0))
@@ -55,6 +58,29 @@ def drawMap(level):
 def drawViews(players, screen):
     createViews = Views(players, screen)
     createViews.playerView()
+
+
+def drawCollider(map_collider_matriz):
+    eje_x = 0  # eje x
+    eje_y = 0  # eje y
+
+    for row in map_collider_matriz:
+        for column in row:
+
+            if (column == '1'):  # Muro
+                pygame.draw.rect(screen, WHITE, (eje_x, eje_y, 32, 32))
+            if (column == '2'):  # La puerta
+                pygame.draw.rect(screen, (126, 126, 0), (eje_x, eje_y, 32, 32))
+            if (column == '3'):  # Cofres
+                pygame.draw.rect(screen, (0, 126, 0), (eje_x, eje_y, 32, 32))
+            if (column == '4'):  # Muebles
+                pygame.draw.rect(screen, (0, 126, 126), (eje_x, eje_y, 32, 32))
+
+            eje_x = eje_x + CELL_SIZE  # aumenta x +32
+
+        eje_y = eje_y + CELL_SIZE  # aumenta y+32
+        eje_x = 0  # resets x
+
 
 def get_animated_decoration_array(map_animated_decorations_matrix):
     eje_x = 0  # eje x
@@ -66,7 +92,7 @@ def get_animated_decoration_array(map_animated_decorations_matrix):
 
             # almaceno en la lista de objetos si se encuentra el valor 1
             if (column == '1'):  # Antorcha
-                torch = Torch(eje_x, eje_y)
+                torch = Torch(screen, eje_x, eje_y)
                 list_animated_decoration.append(torch)
 
             eje_x += 1  # aumenta x +1 (x*32)
@@ -78,14 +104,14 @@ def get_animated_decoration_array(map_animated_decorations_matrix):
 # recorro la lista de objetos del mapa que tengan animación y dibujo el objeto en el mapa
 
 
-def draw_list_torch(screen, list_torch, current_sprite_anim):
+def draw_list_torch(list_torch, current_sprite_anim):
     for torch in list_torch:
         if isinstance(torch, Torch):
-            torch.drawTorch(screen, current_sprite_anim)
+            torch.drawTorch(current_sprite_anim)
 
 
 # obtengo la lista de objetos del mapa que tengan animación y la guardo en la variable list_torch
-list_torch = get_animated_decoration_array(animated_decorations_matrix)
+list_torch = get_animated_decoration_array(screen, animated_decorations_matrix)
 
 # Estados de animación para la antorcha
 current_sprite_anim = 0
@@ -119,7 +145,7 @@ while True:
     # drawCollider(collide_level1)
 
     # dibujo las antorchas en el mapa a partir de una matriz
-    draw_list_torch(screen, list_torch, current_sprite_anim)
+    draw_list_torch(list_torch, current_sprite_anim)
 
     # Dibujo al jugador
     player1.draw()
@@ -128,7 +154,9 @@ while True:
     player4.draw()
 
     # Dibujar vistas
-    drawViews(players_list,screen)
+    drawViews(players_list, screen)
+
+    ui_frag.draw()
 
     player1.drawGUI()
     player2.drawGUI()
