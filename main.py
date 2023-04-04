@@ -6,6 +6,7 @@ from scripts.collider_matrix_maker import get_collider_matrix, get_animated_deco
 from scripts.torch import Torch
 from scripts.players_views import Views
 from scripts.ui_fragment import UI_fragment
+from scripts.music import Music
 
 
 # Inicio el programa
@@ -32,10 +33,6 @@ pygame.display.set_caption("Tower of the Grindhard")
 
 # * Variables
 data_time = 0  # Se usa para los movimiento de físicas
-background_sound_1 =  pygame.mixer.Sound("./assets/sounds/adventures_of_flying_jack.mp3")# sonido de fondo
-background_sound_2 =  pygame.mixer.Sound("./assets/sounds/epic_blockbuster 2.mp3")
-battle_sound = pygame.mixer.Sound("./assets/sounds/battle_ready.mp3")
-boss_battle_sound = pygame.mixer.Sound("./assets/sounds/epic_boss_battle.mp3")
 scene_level = 'level00'
 player_texture = pygame.image.load(
     "assets/player/base/elf_male.png")  # Textura de jugador
@@ -204,7 +201,6 @@ furniture_animation_update_time = 0
 #memoria de sombras
 list_shadows = []
 
-
 #dibujado de sombras
 def drawShadows(screen):
     
@@ -253,19 +249,17 @@ def drawShadows(screen):
             list_shadows.append(shadows[i+1])
         screen.blit(shadow,(0,shadows[i]))
 
-#desde aqui empieza el programa
+background_music = Music(setting.musics_url_list)
 
+#desde aquí empieza el programa
 while True:
+    background_music.play_random_background_music()
     # El evento pygame.QUIT significa que el usuario hizo click en X para cerrar la ventana
     for event in pygame.event.get():
         # salir
         if event.type == pygame.QUIT:
             pygame.quit()
             exit()
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_1:
-                pygame.mixer.Sound.play(background_sound_2)
-                print("2")
 
         # menu previo a las vistas
         if len(players_list) == 0:
