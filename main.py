@@ -70,12 +70,12 @@ def setPlayers(event,screen: pygame.Surface):
     text6=textoFont.render(intro_setPlayers[5],1,(255,255,255))
     text7=textoFont.render(intro_setPlayers[6],1,(255,255,255))
     text8=textoFont.render(intro_setPlayers[7],1,(255,255,255))
-    
+
     screen.blit(text1,(width_center,height_center))
     screen.blit(text2,(width_center+len(intro_setPlayers[0])*(letter_size),height_center))
     screen.blit(text3,(width_center+(line_size-len(intro_setPlayers[2])*letter_size)/2,height_center+CELL_SIZE))
     screen.blit(text4,(width_center+(line_size-len(intro_setPlayers[3])*letter_size)/2,height_center+CELL_SIZE*2))
-   
+
     screen.blit(text5,(width_center+CELL_SIZE*1.5*center_menu,height_center+CELL_SIZE*5))
     screen.blit(text6,(width_center+CELL_SIZE*1.5*center_menu,height_center+CELL_SIZE*6))
     screen.blit(text7,(width_center+CELL_SIZE*1.5*center_menu,height_center+CELL_SIZE*7))
@@ -100,14 +100,12 @@ def setPlayers(event,screen: pygame.Surface):
     #mueve el circulo            
     if aux_circle_y>=0 and aux_circle_y<=CELL_SIZE*3:
         circle_y=aux_circle_y 
-         
+
     circulo=pygame.Surface((CELL_SIZE,CELL_SIZE*4)) #surface
     pygame.draw.circle(circulo,(255,0,0),(CELL_SIZE/2,CELL_SIZE/2+circle_y),CELL_SIZE/2) #circulo
     screen.blit(circulo,(width_center+CELL_SIZE*center_menu,height_center+CELL_SIZE*5+center_circle)) 
     
     return circle_y #retornas posicion del circulo o puntero de seleccion
-    
-       
 
 #collide_level1 = get_collider_matrix(scene_level)
 animated_decorations_matrix = get_animated_decorations_matrix(scene_level)
