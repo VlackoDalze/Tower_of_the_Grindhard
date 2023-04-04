@@ -122,7 +122,9 @@ class Views:
                 self.screen.blit(view, viewsPositions[0])#es la vista
                 
             elif self.numPlayers==2: 
-                
+                aux_transform_x=SCREEN_WIDTH/2 
+                aux_transform_y=SCREEN_HEIGHT/5*3
+                aux_center_recorte=CELL_SIZE*4.5
                 view = pygame.Surface(self.sizePlayer)
                 view2 = pygame.Surface(self.sizePlayer)
                 
@@ -140,15 +142,17 @@ class Views:
                 recorte= self.screen.subsurface( Views.movCamera(0))
                 recorte2= self.screen.subsurface( Views.movCamera(1))
                 
-                recorte= pygame.transform.scale(recorte, viewsSizes[1]) #redimiension
-                recorte2= pygame.transform.scale(recorte2, viewsSizes[1]) #redimiension
+                recorte= pygame.transform.scale(recorte, (aux_transform_x,aux_transform_y)) #redimiension
+                recorte2= pygame.transform.scale(recorte2, (aux_transform_x,aux_transform_y)) #redimiension
                     
-                view.blit(recorte, (0,0))#es el relleno de la vista
-                view2.blit(recorte2, (0,0))#es el relleno de la vista 
+                view.blit(recorte, (0,aux_center_recorte))#es el relleno de la vista
+                view2.blit(recorte2, (0,aux_center_recorte))#es el relleno de la vista 
                  
                 self.screen.blit(view, viewsPositions[0])#es la vista  
-                self.screen.blit(view2, viewsPositions[1])#es la vista  
-               
+                self.screen.blit(view2, viewsPositions[1])#es la vista 
+                 
+                Views.marginView(self.screen, 2)
+                
             elif self.numPlayers==3:
                 
                 view = pygame.Surface(self.sizePlayer)
@@ -188,6 +192,8 @@ class Views:
                 self.screen.blit(view2, viewsPositions[1])#es la vista
                 self.screen.blit(view3, viewsPositions[2])#es la vista
                 self.screen.blit(view4, viewsPositions[3])#ventana negra
+
+                Views.marginView(self.screen, 3)
                 
             elif self.numPlayers==4:
                 
@@ -236,6 +242,12 @@ class Views:
                 self.screen.blit(view2, viewsPositions[1])#es la vista
                 self.screen.blit(view3, viewsPositions[2])#es la vista
                 self.screen.blit(view4, viewsPositions[3])#ventana negra
-                    
+
+                Views.marginView(self.screen, 4)    
            
-           
+    def marginView(screen, numViews):   
+        if numViews==2:
+            pygame.draw.line(screen,(0,0,0),(SCREEN_WIDTH/2,0),(SCREEN_WIDTH/2,SCREEN_HEIGHT),3)
+        if numViews>2:
+            pygame.draw.line(screen,(0,0,0),(SCREEN_WIDTH/2,0),(SCREEN_WIDTH/2,SCREEN_HEIGHT),3)
+            pygame.draw.line(screen,(0,0,0),(0,SCREEN_HEIGHT/2),(SCREEN_WIDTH,SCREEN_HEIGHT/2),3)    
