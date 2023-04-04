@@ -10,6 +10,7 @@ from scripts.ui_fragment import UI_fragment
 
 # Inicio el programa
 pygame.init()
+pygame.mixer.init()
 
 # Variables statics
 CELL_SIZE = setting.CELL_SIZE
@@ -29,13 +30,16 @@ clock = pygame.time.Clock()
 # Titulo de la pantalla
 pygame.display.set_caption("Tower of the Grindhard")
 
-# Variables
+# * Variables
 data_time = 0  # Se usa para los movimiento de físicas
+background_sound_1 =  pygame.mixer.Sound("./assets/sounds/adventures_of_flying_jack.mp3")# sonido de fondo
+background_sound_2 =  pygame.mixer.Sound("./assets/sounds/epic_blockbuster 2.mp3")
+battle_sound = pygame.mixer.Sound("./assets/sounds/battle_ready.mp3")
+boss_battle_sound = pygame.mixer.Sound("./assets/sounds/epic_boss_battle.mp3")
 scene_level = 'level00'
-# Textura de jugador
-player_texture = pygame.image.load("assets/player/base/elf_male.png")
-# lista jugadores
-players_list = []
+player_texture = pygame.image.load(
+    "assets/player/base/elf_male.png")  # Textura de jugador
+players_list = []  # lista jugadores
 
 # intro de juego
 intro_setPlayers = ["Bienvendo a ", "Tower of the Grindhard", "desea empezar esta aventura",
@@ -248,17 +252,20 @@ def drawShadows(screen):
         if alpha==0:
             list_shadows.append(shadows[i+1])
         screen.blit(shadow,(0,shadows[i]))
-         
+
 #desde aqui empieza el programa
 
 while True:
     # El evento pygame.QUIT significa que el usuario hizo click en X para cerrar la ventana
-
     for event in pygame.event.get():
         # salir
         if event.type == pygame.QUIT:
             pygame.quit()
             exit()
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_1:
+                pygame.mixer.Sound.play(background_sound_2)
+                print("2")
 
         # menu previo a las vistas
         if len(players_list) == 0:
@@ -286,8 +293,11 @@ while True:
         draw_list_torch(list_torch, current_sprite_anim)
 
         # Dibujo al jugador
-        for p in range(len(players_list)):
-            players_list[p].draw()
+        for player in players_list:
+            player.draw()
+
+        #dibujo sombras
+        drawShadows(screen)
 
         #dibujo sombras
         drawShadows(screen)
@@ -297,8 +307,9 @@ while True:
 
         ui_frag.draw()
 
-        for p in range(len(players_list)):
-            players_list[p].drawGUI()
+        for player in players_list:
+            player.drawGUI()
+
 
 
     # flip() la pantalla para poner su trabajo en la pantalla
