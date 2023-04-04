@@ -52,7 +52,7 @@ class Views:
         POSITIONX_PREV=Views.varListforViews[num_view][4]
         POSITIONY_PREV=Views.varListforViews[num_view][5]
         centerx=CELL_SIZE*4.5
-        centery=CELL_SIZE*3
+        centery=CELL_SIZE*2
         #h 704, w 1056
         # al crear al personaje se pasan dos parametros x=3 y y=19
         if(Views.DEFAULT_X_PLAYER==0 and Views.DEFAULT_Y_PLAYER==0):
@@ -251,3 +251,6 @@ class Views:
         if numViews>2:
             pygame.draw.line(screen,(0,0,0),(SCREEN_WIDTH/2,0),(SCREEN_WIDTH/2,SCREEN_HEIGHT),3)
             pygame.draw.line(screen,(0,0,0),(0,SCREEN_HEIGHT/2),(SCREEN_WIDTH,SCREEN_HEIGHT/2),3)    
+
+   
+ 

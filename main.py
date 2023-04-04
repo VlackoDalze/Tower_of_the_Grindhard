@@ -178,7 +178,57 @@ list_torch = get_animated_decoration_array(screen, animated_decorations_matrix)
 current_sprite_anim = 0
 player_update_time = 0
 furniture_animation_update_time = 0
+#memoria de sombras
+list_shadows = []
 
+#dibujado de sombras
+def drawShadows(screen):
+    
+    map_collider_matriz=get_collider_matrix('level00')
+    eje_y = 0  # eje y  
+    cont=0
+    shadows=[]
+
+    #trackero de muros, más de 9 muros, crea una sombra
+    for row in map_collider_matriz:
+        for column in row:
+            if (column == '1'):  # colision
+                cont+=1
+                if cont>9:
+                    shadows.append(eje_y)
+                    break          
+            else: 
+                cont=0
+        eje_y = eje_y + CELL_SIZE  # aumenta y+32
+        cont=0  
+    
+    for i in range(len(shadows)-1):
+        if len(players_list)==1:
+            if players_list[0].getPositionY()<shadows[i+1] or shadows[i+1] in list_shadows:
+                alpha=0 
+            else: 
+                alpha=215
+        elif len(players_list)==2:
+            if players_list[0].getPositionY()<shadows[i+1] or  players_list[1].getPositionY()<shadows[i+1] or shadows[i+1] in list_shadows:
+                alpha=0 
+            else: 
+                alpha=215
+        elif len(players_list)==3:
+            if players_list[0].getPositionY()<shadows[i+1] or  players_list[1].getPositionY()<shadows[i+1] or  players_list[2].getPositionY()<shadows[i+1] or shadows[i+1] in list_shadows:
+                alpha=0 
+            else: 
+                alpha=215
+        else:
+            if players_list[0].getPositionY()<shadows[i+1] or  players_list[1].getPositionY()<shadows[i+1] or  players_list[2].getPositionY()<shadows[i+1] or  players_list[3].getPositionY()<shadows[i+1] or shadows[i+1] in list_shadows:
+                alpha=0 
+            else: 
+                alpha=215
+        shadow=pygame.Surface((SCREEN_WIDTH,shadows[i+1]-shadows[i]))
+        shadow.set_alpha(alpha)
+        if alpha==0:
+            list_shadows.append(shadows[i+1])
+        screen.blit(shadow,(0,shadows[i]))
+         
 #desde aqui empieza el programa
 
 while True:
@@ -220,7 +270,9 @@ while True:
         for p in range(len(players_list)):
             players_list[p].draw()
 
-    
+        #dibujo sombras
+        drawShadows(screen)
+            
         # Dibujar vistas
         drawViews(players_list, screen)
 
@@ -229,7 +281,7 @@ while True:
         for p in range(len(players_list)):
             players_list[p].drawGUI()
         
-
+       
 
 
     # flip() la pantalla para poner su trabajo en la pantalla
