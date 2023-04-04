@@ -41,9 +41,9 @@ player2 = Jugador(screen, "player2", "none", player_texture, None, None, None, 3
 player3 = Jugador(screen, "player3", "none", player_texture, None, None, None, 3, 19, "Humano")
 player4 = Jugador(screen, "player4 ", "none", player_texture, None, None, None, 3, 19, "Humano")
 players_list.append(player1)
-players_list.append(player2)
-players_list.append(player3)
-players_list.append(player4)
+# players_list.append(player2)
+# players_list.append(player3)
+# players_list.append(player4)
 
 
 #collide_level1 = get_collider_matrix(scene_level)
@@ -125,10 +125,8 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             exit()
-        player1.move(event, 0)
-        player2.move(event, 1)
-        player3.move(event, 2)
-        player4.move(event, 3)
+        for i in range(len(players_list)):
+            players_list[i].move(event, i)
 
     # RENDER GAME HERE
     if furniture_animation_update_time >= MAX_FURNITURE_ANIMATION_FPS:
@@ -148,21 +146,16 @@ while True:
     draw_list_torch(list_torch, current_sprite_anim)
 
     # Dibujo al jugador
-    player1.draw()
-    player2.draw()
-    player3.draw()
-    player4.draw()
+    for player in players_list:
+        player.draw()
 
     # Dibujar vistas
     drawViews(players_list, screen)
 
     ui_frag.draw()
 
-    player1.drawGUI()
-    player2.drawGUI()
-    player3.drawGUI()
-    player4.drawGUI()
-
+    for player in players_list:
+        player.drawGUI()
 
     # flip() la pantalla para poner su trabajo en la pantalla
     pygame.display.flip()
