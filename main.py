@@ -252,7 +252,7 @@ def drawShadows(screen):
         if alpha==0:
             list_shadows.append(shadows[i+1])
         screen.blit(shadow,(0,shadows[i]))
-         
+
 #desde aqui empieza el programa
 
 while True:
