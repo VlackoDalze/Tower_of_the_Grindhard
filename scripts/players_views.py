@@ -51,18 +51,19 @@ class Views:
         positiony=Views.varListforViews[num_view][3]
         POSITIONX_PREV=Views.varListforViews[num_view][4]
         POSITIONY_PREV=Views.varListforViews[num_view][5]
-
-         #h 704, w 1056
+        centerx=CELL_SIZE*4.5
+        centery=CELL_SIZE*3
+        #h 704, w 1056
         # al crear al personaje se pasan dos parametros x=3 y y=19
         if(Views.DEFAULT_X_PLAYER==0 and Views.DEFAULT_Y_PLAYER==0):
             Views.DEFAULT_X_PLAYER=positionx/CELL_SIZE
             Views.DEFAULT_Y_PLAYER=positiony/CELL_SIZE
             
-        miny=Views.heightView-(CELL_SIZE*(SCREEN_HEIGHT/CELL_SIZE-Views.DEFAULT_Y_PLAYER)) #256 ->altura/2-((total celdas - celdas por defecto)*tamaño de celda)
-        maxy=CELL_SIZE*(Views.DEFAULT_Y_PLAYER-1) #576  ->tamaño de celda *(celdas por defecto -1) -> se le resta el tamaño de la imagen del jugador
+        miny=Views.heightView-(CELL_SIZE*(SCREEN_HEIGHT/CELL_SIZE-Views.DEFAULT_Y_PLAYER))-centery #256 ->altura/2-((total celdas - celdas por defecto)*tamaño de celda)
+        maxy=CELL_SIZE*(Views.DEFAULT_Y_PLAYER-1)-centery #576  ->tamaño de celda *(celdas por defecto -1) -> se le resta el tamaño de la imagen del jugador
         
-        minx=(Views.DEFAULT_X_PLAYER+1) *CELL_SIZE #128  ->(celdas por defecto +1)*tamaño de celda -> se le suma el tamaño de la imagen
-        maxx=Views.widthView + ((Views.DEFAULT_X_PLAYER*CELL_SIZE) -CELL_SIZE/2) #608  ->ancho/2+((celdas por defecto * tamaño de celda)-tamaño de celda/2) -> se resta 16 porque 1056/32=33 es impar
+        minx=(Views.DEFAULT_X_PLAYER+1) *CELL_SIZE+centerx #128  ->(celdas por defecto +1)*tamaño de celda -> se le suma el tamaño de la imagen
+        maxx=Views.widthView + ((Views.DEFAULT_X_PLAYER*CELL_SIZE) -CELL_SIZE/2) +centerx#608  ->ancho/2+((celdas por defecto * tamaño de celda)-tamaño de celda/2) -> se resta 16 porque 1056/32=33 es impar
 
         
         if positiony>=miny and positiony<=maxy:
