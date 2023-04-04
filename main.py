@@ -36,6 +36,7 @@ scene_level = 'level00'
 player_texture = pygame.image.load("assets/player/base/elf_male.png")
 #lista jugadores
 players_list = []
+
 #intro de juego
 intro_setPlayers =["Bienvendo a ","Tower of the Grindhard","desea empezar esta aventura","sólo o acompañado?","1 jugador","2 jugadores","3 jugadores","4 jugadores"]
 memoryPositionCircle=0
@@ -46,6 +47,7 @@ def playersInGame(num_players):
     for i in range(num_players):
         player = Jugador(screen, "player"+str(i+1), "none", player_texture, None, None, None, 3, 19, "Humano")
         players_list.append(player)
+
 
 
 
@@ -189,6 +191,7 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             exit()
+
         #menu previo a las vistas
         if len(players_list)==0:
             memoryPositionCircle=setPlayers(event,screen)
@@ -218,6 +221,7 @@ while True:
         # Dibujo al jugador
         for p in range(len(players_list)):
             players_list[p].draw()
+
     
         # Dibujar vistas
         drawViews(players_list, screen)
@@ -227,6 +231,7 @@ while True:
         for p in range(len(players_list)):
             players_list[p].drawGUI()
         
+
 
 
     # flip() la pantalla para poner su trabajo en la pantalla
