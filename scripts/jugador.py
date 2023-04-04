@@ -131,8 +131,7 @@ class Jugador(Personaje):
             self.rect.y += direction_y
             self.posicionX=self.rect.x
             self.posicionY=self.rect.y
-    
-        
+
     # * Interfaz de usuario
 
     def toggleGUI(self):
@@ -231,3 +230,6 @@ def drawCollider(sizeCell):
         eje_y = eje_y + sizeCell  # aumenta y+32
         eje_x = 0  # resets x    
     return colisiones
+
+def setMovementSpeed(self,movement_speed):
+    this.movement_speed = movement_speed
