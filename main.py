@@ -34,86 +34,106 @@ data_time = 0  # Se usa para los movimiento de físicas
 scene_level = 'level00'
 # Textura de jugador
 player_texture = pygame.image.load("assets/player/base/elf_male.png")
-#lista jugadores
+# lista jugadores
 players_list = []
 
-#intro de juego
-intro_setPlayers =["Bienvendo a ","Tower of the Grindhard","desea empezar esta aventura","sólo o acompañado?","1 jugador","2 jugadores","3 jugadores","4 jugadores"]
-memoryPositionCircle=0
-letter_style="assets/font/Silver.ttf"
+# intro de juego
+intro_setPlayers = ["Bienvendo a ", "Tower of the Grindhard", "desea empezar esta aventura",
+                    "sólo o acompañado?", "1 jugador", "2 jugadores", "3 jugadores", "4 jugadores"]
+memoryPositionCircle = 0
+letter_style = "assets/font/Silver.ttf"
+
 
 def playersInGame(num_players):
     for i in range(num_players):
-        player = Jugador(screen, "player"+str(i+1), "none", player_texture, None, None, None, 3, 19, "Humano")
+        player = Jugador(screen, "player"+str(i+1), "none",
+                         player_texture, None, None, None, 3, 19, "Humano")
         players_list.append(player)
 
 
+def setPlayers(event, screen: pygame.Surface):
 
+    letter_size = 15  # ancho de cada letra en px
+    # centrar texto linea horizontal esta relacionado al tamaño de la letra importada
+    width_center = SCREEN_WIDTH/4
+    # centrar texto linea vertical esta relacionado al tamaño de la letra importada
+    height_center = SCREEN_HEIGHT/4
+    # tamaño de linea centrada en px
+    line_size = (len(intro_setPlayers[0])+len(intro_setPlayers[1]))*letter_size
+    # guarda la posicion del circulo o puntero de seleccion
+    circle_y = memoryPositionCircle
+    # letra importada desde font
+    textoFont = pygame.font.Font(letter_style, 50)
+    # al ser un circulo su tamaño es distinto al de las letras, por lo tanto hay que centrarlo
+    center_circle = 3
+    # esto es para mover 3 celdas el menu de opciones, en otras palabras centrarlo
+    center_menu = 3
 
-def setPlayers(event,screen: pygame.Surface):
-    
-    letter_size=15 #ancho de cada letra en px
-    width_center=SCREEN_WIDTH/4 #centrar texto linea horizontal esta relacionado al tamaño de la letra importada
-    height_center=SCREEN_HEIGHT/4 #centrar texto linea vertical esta relacionado al tamaño de la letra importada
-    line_size=(len(intro_setPlayers[0])+len(intro_setPlayers[1]))*letter_size #tamaño de linea centrada en px
-    circle_y=memoryPositionCircle #guarda la posicion del circulo o puntero de seleccion
-    textoFont = pygame.font.Font(letter_style, 50) #letra importada desde font
-    center_circle=3 #al ser un circulo su tamaño es distinto al de las letras, por lo tanto hay que centrarlo
-    center_menu=3 #esto es para mover 3 celdas el menu de opciones, en otras palabras centrarlo
-    
-    text1=textoFont.render(intro_setPlayers[0],1,(255,255,255))
-    text2=textoFont.render(intro_setPlayers[1],1,(255,0,0))
-    text3=textoFont.render(intro_setPlayers[2],1,(255,255,255))
-    text4=textoFont.render(intro_setPlayers[3],1,(255,255,255))
-    text5=textoFont.render(intro_setPlayers[4],1,(255,255,255))
-    text6=textoFont.render(intro_setPlayers[5],1,(255,255,255))
-    text7=textoFont.render(intro_setPlayers[6],1,(255,255,255))
-    text8=textoFont.render(intro_setPlayers[7],1,(255,255,255))
+    text1 = textoFont.render(intro_setPlayers[0], 1, (255, 255, 255))
+    text2 = textoFont.render(intro_setPlayers[1], 1, (255, 0, 0))
+    text3 = textoFont.render(intro_setPlayers[2], 1, (255, 255, 255))
+    text4 = textoFont.render(intro_setPlayers[3], 1, (255, 255, 255))
+    text5 = textoFont.render(intro_setPlayers[4], 1, (255, 255, 255))
+    text6 = textoFont.render(intro_setPlayers[5], 1, (255, 255, 255))
+    text7 = textoFont.render(intro_setPlayers[6], 1, (255, 255, 255))
+    text8 = textoFont.render(intro_setPlayers[7], 1, (255, 255, 255))
 
-    screen.blit(text1,(width_center,height_center))
-    screen.blit(text2,(width_center+len(intro_setPlayers[0])*(letter_size),height_center))
-    screen.blit(text3,(width_center+(line_size-len(intro_setPlayers[2])*letter_size)/2,height_center+CELL_SIZE))
-    screen.blit(text4,(width_center+(line_size-len(intro_setPlayers[3])*letter_size)/2,height_center+CELL_SIZE*2))
+    screen.blit(text1, (width_center, height_center))
+    screen.blit(
+        text2, (width_center+len(intro_setPlayers[0])*(letter_size), height_center))
+    screen.blit(text3, (width_center+(line_size -
+                len(intro_setPlayers[2])*letter_size)/2, height_center+CELL_SIZE))
+    screen.blit(text4, (width_center+(line_size -
+                len(intro_setPlayers[3])*letter_size)/2, height_center+CELL_SIZE*2))
 
-    screen.blit(text5,(width_center+CELL_SIZE*1.5*center_menu,height_center+CELL_SIZE*5))
-    screen.blit(text6,(width_center+CELL_SIZE*1.5*center_menu,height_center+CELL_SIZE*6))
-    screen.blit(text7,(width_center+CELL_SIZE*1.5*center_menu,height_center+CELL_SIZE*7))
-    screen.blit(text8,(width_center+CELL_SIZE*1.5*center_menu,height_center+CELL_SIZE*8))
-    
-    aux_circle_y=circle_y #auxiliar para limites del eje y
-    
+    screen.blit(text5, (width_center+CELL_SIZE*1.5 *
+                center_menu, height_center+CELL_SIZE*5))
+    screen.blit(text6, (width_center+CELL_SIZE*1.5 *
+                center_menu, height_center+CELL_SIZE*6))
+    screen.blit(text7, (width_center+CELL_SIZE*1.5 *
+                center_menu, height_center+CELL_SIZE*7))
+    screen.blit(text8, (width_center+CELL_SIZE*1.5 *
+                center_menu, height_center+CELL_SIZE*8))
+
+    aux_circle_y = circle_y  # auxiliar para limites del eje y
+
     if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_UP:              
-                aux_circle_y -= CELL_SIZE  
-            if event.key == pygame.K_DOWN:
-                aux_circle_y += CELL_SIZE
-            if event.key == pygame.K_KP_ENTER: #crea a los jugadores
-                if circle_y==0:
-                    playersInGame(1)
-                elif circle_y==CELL_SIZE:
-                    playersInGame(2)
-                elif circle_y==CELL_SIZE*2:
-                    playersInGame(3)
-                else:
-                    playersInGame(4)
-    #mueve el circulo            
-    if aux_circle_y>=0 and aux_circle_y<=CELL_SIZE*3:
-        circle_y=aux_circle_y 
+        if event.key == pygame.K_UP:
+            aux_circle_y -= CELL_SIZE
+        if event.key == pygame.K_DOWN:
+            aux_circle_y += CELL_SIZE
+        if event.key == pygame.K_KP_ENTER or event.key == pygame.K_RETURN:  # crea a los jugadores
+            if circle_y == 0:
+                playersInGame(1)
+            elif circle_y == CELL_SIZE:
+                playersInGame(2)
+            elif circle_y == CELL_SIZE*2:
+                playersInGame(3)
+            else:
+                playersInGame(4)
+    # mueve el circulo
+    if aux_circle_y >= 0 and aux_circle_y <= CELL_SIZE*3:
+        circle_y = aux_circle_y
 
-    circulo=pygame.Surface((CELL_SIZE,CELL_SIZE*4)) #surface
-    pygame.draw.circle(circulo,(255,0,0),(CELL_SIZE/2,CELL_SIZE/2+circle_y),CELL_SIZE/2) #circulo
-    screen.blit(circulo,(width_center+CELL_SIZE*center_menu,height_center+CELL_SIZE*5+center_circle)) 
-    
-    return circle_y #retornas posicion del circulo o puntero de seleccion
+    circulo = pygame.Surface((CELL_SIZE, CELL_SIZE*4))  # surface
+    pygame.draw.circle(circulo, (255, 0, 0), (CELL_SIZE/2,
+                       CELL_SIZE/2+circle_y), CELL_SIZE/2)  # circulo
+    screen.blit(circulo, (width_center+CELL_SIZE*center_menu,
+                height_center+CELL_SIZE*5+center_circle))
 
-#collide_level1 = get_collider_matrix(scene_level)
+    return circle_y  # retornas posicion del circulo o puntero de seleccion
+
+
+# collide_level1 = get_collider_matrix(scene_level)
 animated_decorations_matrix = get_animated_decorations_matrix(scene_level)
 
-ui_frag = UI_fragment(screen,player_texture,(0,0))
+ui_frag = UI_fragment(screen, player_texture, (0, 0))
+
 
 def drawMap(level):
     level_texture = pygame.image.load(f'scene/{level}/_composite.png')
     screen.blit(level_texture, (0, 0))
+
 
 def drawViews(players, screen):
     createViews = Views(players, screen)
@@ -142,7 +162,7 @@ def drawCollider(map_collider_matriz):
         eje_x = 0  # resets x
 
 
-def get_animated_decoration_array(screen,map_animated_decorations_matrix):
+def get_animated_decoration_array(screen, map_animated_decorations_matrix):
     eje_x = 0  # eje x
     eje_y = 0  # eje y
     list_animated_decoration = []
@@ -178,26 +198,26 @@ current_sprite_anim = 0
 player_update_time = 0
 furniture_animation_update_time = 0
 
-#desde aqui empieza el programa
+# desde aqui empieza el programa
 
 while True:
     # El evento pygame.QUIT significa que el usuario hizo click en X para cerrar la ventana
-    
+
     for event in pygame.event.get():
-        #salir
+        # salir
         if event.type == pygame.QUIT:
             pygame.quit()
             exit()
 
-        #menu previo a las vistas
-        if len(players_list)==0:
-            memoryPositionCircle=setPlayers(event,screen)
-        else:#vistas
+        # menu previo a las vistas
+        if len(players_list) == 0:
+            memoryPositionCircle = setPlayers(event, screen)
+        else:  # vistas
             for i in range(len(players_list)):
-                players_list[i].move(event, i)   
-      
-    if len(players_list)>0:   #primero debes definir el numero de jugadores
-      
+                players_list[i].move(event, i)
+
+    if len(players_list) > 0:  # primero debes definir el numero de jugadores
+
         # RENDER GAME HERE
         if furniture_animation_update_time >= MAX_FURNITURE_ANIMATION_FPS:
             current_sprite_anim += 1
@@ -207,7 +227,6 @@ while True:
 
         # dibujo el mapa
         drawMap(scene_level)
-        
 
         # dibujo las colisiones en el mapa a partir de una matriz
         # drawCollider(collide_level1)
@@ -219,17 +238,13 @@ while True:
         for p in range(len(players_list)):
             players_list[p].draw()
 
-    
         # Dibujar vistas
         drawViews(players_list, screen)
 
         ui_frag.draw()
-        
+
         for p in range(len(players_list)):
             players_list[p].drawGUI()
-        
-
-
 
     # flip() la pantalla para poner su trabajo en la pantalla
     pygame.display.flip()
@@ -237,5 +252,5 @@ while True:
     # incremento el temporizador
     player_update_time += 1
     furniture_animation_update_time += 1
-    
+
     pygame.display.update()
