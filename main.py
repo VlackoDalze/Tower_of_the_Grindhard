@@ -43,7 +43,6 @@ memoryPositionCircle=0
 letter_style="assets/font/Silver.ttf"
 
 def playersInGame(num_players):
-    
     for i in range(num_players):
         player = Jugador(screen, "player"+str(i+1), "none", player_texture, None, None, None, 3, 19, "Humano")
         players_list.append(player)
