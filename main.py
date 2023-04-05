@@ -298,8 +298,6 @@ while True:
         for player in players_list:
             player.drawGUI()
 
-    
-
     # flip() la pantalla para poner su trabajo en la pantalla
     pygame.display.flip()
     data_time = clock.tick(MAX_FPS)  # limito el FPS a 60
