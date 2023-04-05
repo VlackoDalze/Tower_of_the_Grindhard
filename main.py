@@ -201,8 +201,11 @@ list_torch = get_animated_decoration_array(screen, animated_decorations_matrix)
 current_sprite_anim = 0
 player_update_time = 0
 furniture_animation_update_time = 0
+
 #memoria de sombras
-list_shadows = []
+list_shadows_y = []
+list_shadows_x = []
+
 
 
 #dibujado de sombras
@@ -210,48 +213,96 @@ def drawShadows(screen):
     
     map_collider_matriz=get_collider_matrix('level00')
     eje_y = 0  # eje y  
-    cont=0
-    shadows=[]
+    eje_x=0
+    cont_y=0
+    cont_x=0
+    shadows_y=[]
+    shadows_x=[]
+    
 
-    #trackero de muros, más de 9 muros, crea una sombra
+    #trackero de muros, más de 9 muros, crea una sombra horizontal
     for row in map_collider_matriz:
         for column in row:
             if (column == '1'):  # colision
-                cont+=1
-                if cont>9:
-                    shadows.append(eje_y)
+                cont_y+=1
+                if cont_y>9:
+                    shadows_y.append(eje_y)
                     break          
             else: 
-                cont=0
-        eje_y = eje_y + CELL_SIZE  # aumenta y+32
-        cont=0  
-    
-    for i in range(len(shadows)-1):
-        if len(players_list)==1:
-            if players_list[0].getPositionY()<shadows[i+1] or shadows[i+1] in list_shadows:
-                alpha=0 
-            else: 
-                alpha=215
-        elif len(players_list)==2:
-            if players_list[0].getPositionY()<shadows[i+1] or  players_list[1].getPositionY()<shadows[i+1] or shadows[i+1] in list_shadows:
-                alpha=0 
-            else: 
-                alpha=215
-        elif len(players_list)==3:
-            if players_list[0].getPositionY()<shadows[i+1] or  players_list[1].getPositionY()<shadows[i+1] or  players_list[2].getPositionY()<shadows[i+1] or shadows[i+1] in list_shadows:
-                alpha=0 
-            else: 
-                alpha=215
-        else:
-            if players_list[0].getPositionY()<shadows[i+1] or  players_list[1].getPositionY()<shadows[i+1] or  players_list[2].getPositionY()<shadows[i+1] or  players_list[3].getPositionY()<shadows[i+1] or shadows[i+1] in list_shadows:
-                alpha=0 
-            else: 
-                alpha=215
-        shadow=pygame.Surface((SCREEN_WIDTH,shadows[i+1]-shadows[i]))
-        shadow.set_alpha(alpha)
-        if alpha==0:
-            list_shadows.append(shadows[i+1])
-        screen.blit(shadow,(0,shadows[i]))
+                cont_y=0
+        eje_y+=CELL_SIZE  # aumenta y+32
+        cont_y=0  
+ 
+   
+     #trackero de muros, más de 9 muros, crea una sombra vertical
+    shadows_x_row=[]
+    for  i in range(0,len(shadows_y)-1):
+        valueRow=int(shadows_y[i]/CELL_SIZE)
+        limitColumn=int(SCREEN_WIDTH/CELL_SIZE)
+        eje_x=0
+        shadows_x_row.clear()
+        for h in range(0,limitColumn):
+            for j in range(0,4):
+                if ( map_collider_matriz[valueRow+j][eje_x] == '1'): # colision
+                    cont_x+=1 
+         
+                if cont_x>2:
+                    shadows_x_row.append([valueRow,eje_x])
+                    break
+                
+            if eje_x<limitColumn:  
+                eje_x+=1
+                cont_x=0
+        
+        aux_list=shadows_x_row.copy()
+        shadows_x.append(aux_list)    
+                 
+    index_shadows_y=0
+    for fila in shadows_x:
+        for i in range(0,len(fila)-1):
+
+            if i==len(fila)-2 and index_shadows_y==len(shadows_y)-2: 
+                shadow=pygame.Surface(((fila[i+1][1]-fila[i][1])*CELL_SIZE+CELL_SIZE,shadows_y[index_shadows_y+1]-shadows_y[index_shadows_y]+CELL_SIZE))
+            elif i==len(fila)-2:
+                shadow=pygame.Surface(((fila[i+1][1]-fila[i][1])*CELL_SIZE+CELL_SIZE,shadows_y[index_shadows_y+1]-shadows_y[index_shadows_y]))
+            elif index_shadows_y==len(shadows_y)-2:
+                shadow=pygame.Surface(((fila[i+1][1]-fila[i][1])*CELL_SIZE,shadows_y[index_shadows_y+1]-shadows_y[index_shadows_y]+CELL_SIZE))
+            else:
+                shadow=pygame.Surface(((fila[i+1][1]-fila[i][1])*CELL_SIZE,shadows_y[index_shadows_y+1]-shadows_y[index_shadows_y]))
+
+
+            if len(players_list)==1:
+                if  players_list[0].getPositionY()<shadows_y[index_shadows_y+1] or shadows_y[index_shadows_y+1] in list_shadows_y:
+                    alpha=0
+                else: 
+                    alpha=215
+            elif len(players_list)==2:
+                if players_list[0].getPositionY()<shadows_y[index_shadows_y+1] or  players_list[1].getPositionY()<shadows_y[index_shadows_y+1] or shadows_y[index_shadows_y+1] in list_shadows_y:
+                    alpha=0 
+                else: 
+                    alpha=215
+            elif len(players_list)==3:
+                if players_list[0].getPositionY()<shadows_y[index_shadows_y+1] or  players_list[1].getPositionY()<shadows_y[index_shadows_y+1] or  players_list[2].getPositionY()<shadows_y[index_shadows_y+1] or shadows_y[index_shadows_y+1] in list_shadows_y:
+                    alpha=0 
+                else: 
+                    alpha=215
+            else:
+                if players_list[0].getPositionY()<shadows_y[index_shadows_y+1] or  players_list[1].getPositionY()<shadows_y[index_shadows_y+1] or  players_list[2].getPositionY()<shadows_y[index_shadows_y+1] or  players_list[3].getPositionY()<shadows_y[index_shadows_y+1] or shadows_y[index_shadows_y+1] in list_shadows_y:
+                    alpha=0 
+                else: 
+                    alpha=215
+            
+            
+           
+            shadow.set_alpha(alpha)
+            
+            if alpha==0:
+                list_shadows_y.append(shadows_y[index_shadows_y+1])
+                list_shadows_x.append(fila[i+1][1])
+            
+            screen.blit(shadow,(fila[i][1]*CELL_SIZE,fila[i][0]*CELL_SIZE))
+            
+        index_shadows_y+=1
 
 #desde aqui empieza el programa
 
