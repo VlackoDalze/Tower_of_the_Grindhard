@@ -50,13 +50,11 @@ intro_setPlayers = ["Bienvendo a ", "Tower of the Grindhard", "desea empezar est
 memoryPositionCircle = 0
 letter_style = setting.SILVER_MEDIUM_FONT
 
-
 def playersInGame(num_players):
     for i in range(num_players):
         player = Jugador(screen, "player"+str(i+1), "none",
                          player_texture, None, None, None, 3, 19, "Humano")
         players_list.append(player)
-
 
 def setPlayers(event, screen: pygame.Surface):
     #fondo del menu necesario para se reinicie las textura de sobras
@@ -129,20 +127,16 @@ def setPlayers(event, screen: pygame.Surface):
 
     return circle_y  # retornas posicion del circulo o puntero de selección
 
-
 # collide_level1 = get_collider_matrix(scene_level)
 animated_decorations_matrix = get_animated_decorations_matrix(scene_level)
-
 
 def drawMap(level):
     level_texture = pygame.image.load(f'scene/{level}/_composite.png')
     screen.blit(level_texture, (0, 0))
 
-
 def drawViews(players, screen):
     createViews = Views(players, screen)
     createViews.playerView()
-
 
 def drawCollider(map_collider_matriz):
     eje_x = 0  # eje x
@@ -165,7 +159,6 @@ def drawCollider(map_collider_matriz):
         eje_y = eje_y + CELL_SIZE  # aumenta y+32
         eje_x = 0  # resets x
 
-
 def get_animated_decoration_array(screen, map_animated_decorations_matrix):
     eje_x = 0  # eje x
     eje_y = 0  # eje y
@@ -187,12 +180,10 @@ def get_animated_decoration_array(screen, map_animated_decorations_matrix):
 
 # recorro la lista de objetos del mapa que tengan animación y dibujo el objeto en el mapa
 
-
 def draw_list_torch(list_torch, current_sprite_anim):
     for torch in list_torch:
         if isinstance(torch, Torch):
             torch.drawTorch(current_sprite_anim)
-
 
 # obtengo la lista de objetos del mapa que tengan animación y la guardo en la variable list_torch
 list_torch = get_animated_decoration_array(screen, animated_decorations_matrix)
