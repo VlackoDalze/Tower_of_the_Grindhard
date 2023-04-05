@@ -37,12 +37,18 @@ scene_level = 'level00'
 player_texture = pygame.image.load(
     "assets/player/base/elf_male.png")  # Textura de jugador
 players_list = []  # lista jugadores
+ui_frag = UI_fragment(screen, player_texture, (0, 0))
+
+#*Pointer texture
+pointer_texture = pygame.image.load('./assets/gui/pointer.png')
+pointer_color = (245, 230, 100) # Definir el color que deseas multiplicar 
+pointer_texture_rect = ui_frag.getMultiplyColorTexture(pointer_texture, pointer_color)
 
 # intro de juego
 intro_setPlayers = ["Bienvendo a ", "Tower of the Grindhard", "desea empezar esta aventura",
                     "sólo o acompañado?", "1 jugador", "2 jugadores", "3 jugadores", "4 jugadores"]
 memoryPositionCircle = 0
-letter_style = "assets/font/Silver.ttf"
+letter_style = setting.SILVER_MEDIUM_FONT
 
 
 def playersInGame(num_players):
@@ -53,6 +59,8 @@ def playersInGame(num_players):
 
 
 def setPlayers(event, screen: pygame.Surface):
+    #fondo del menu necesario para se reinicie las textura de sobras
+    screen.fill((0,0,0))
 
     letter_size = 15  # ancho de cada letra en px
     # centrar texto linea horizontal esta relacionado al tamaño de la letra importada
@@ -61,12 +69,10 @@ def setPlayers(event, screen: pygame.Surface):
     height_center = SCREEN_HEIGHT/4
     # tamaño de linea centrada en px
     line_size = (len(intro_setPlayers[0])+len(intro_setPlayers[1]))*letter_size
-    # guarda la posicion del circulo o puntero de seleccion
+    # guarda la posicion del circulo o puntero de selección
     circle_y = memoryPositionCircle
     # letra importada desde font
     textoFont = pygame.font.Font(letter_style, 50)
-    # al ser un circulo su tamaño es distinto al de las letras, por lo tanto hay que centrarlo
-    center_circle = 3
     # esto es para mover 3 celdas el menu de opciones, en otras palabras centrarlo
     center_menu = 3
 
@@ -116,19 +122,16 @@ def setPlayers(event, screen: pygame.Surface):
     if aux_circle_y >= 0 and aux_circle_y <= CELL_SIZE*3:
         circle_y = aux_circle_y
 
-    circulo = pygame.Surface((CELL_SIZE, CELL_SIZE*4))  # surface
-    pygame.draw.circle(circulo, (255, 0, 0), (CELL_SIZE/2,
-                       CELL_SIZE/2+circle_y), CELL_SIZE/2)  # circulo
-    screen.blit(circulo, (width_center+CELL_SIZE*center_menu,
-                height_center+CELL_SIZE*5+center_circle))
+    pointer_texture_rect = pointer_texture.get_rect()
+    pointer_texture_rect.x = 32
+    pointer_texture_rect.y = 32
+    screen.blit(pointer_texture, (width_center+pointer_texture_rect.x*center_menu,height_center+pointer_texture_rect.y*5+center_menu+circle_y))
 
-    return circle_y  # retornas posicion del circulo o puntero de seleccion
+    return circle_y  # retornas posicion del circulo o puntero de selección
 
 
 # collide_level1 = get_collider_matrix(scene_level)
 animated_decorations_matrix = get_animated_decorations_matrix(scene_level)
-
-ui_frag = UI_fragment(screen, player_texture, (0, 0))
 
 
 def drawMap(level):
@@ -304,7 +307,7 @@ while True:
         for player in players_list:
             player.drawGUI()
 
-
+    
 
     # flip() la pantalla para poner su trabajo en la pantalla
     pygame.display.flip()

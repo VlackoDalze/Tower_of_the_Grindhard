@@ -6,7 +6,7 @@ SILVER_MEDIUM_FONT = "./assets/font/Silver.ttf"
 
 
 #* Opciones de sonido
-volume = 1
+volume = 0.5
 
 musics_url_list = []
 
