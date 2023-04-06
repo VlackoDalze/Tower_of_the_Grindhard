@@ -123,7 +123,7 @@ class Views:
                 
             elif self.numPlayers==2: 
                 aux_transform_x=SCREEN_WIDTH/2 
-                aux_transform_y=SCREEN_HEIGHT/5*3
+                aux_transform_y=SCREEN_HEIGHT/2
                 aux_center_recorte=CELL_SIZE*4.5
                 view = pygame.Surface(self.sizePlayer)
                 view2 = pygame.Surface(self.sizePlayer)
