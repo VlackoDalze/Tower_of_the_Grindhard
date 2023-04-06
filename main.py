@@ -6,9 +6,9 @@ from scripts.collider_matrix_maker import get_collider_matrix, get_animated_deco
 from scripts.torch import Torch
 from scripts.players_views import Views
 from scripts.ui_fragment import UI_fragment
+from scripts.music import Music
 from scripts.menu import Menu
 from scripts.shadows import Shadows
-from scripts.music import Music
 
 # Inicio el programa
 pygame.init()
