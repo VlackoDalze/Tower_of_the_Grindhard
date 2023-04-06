@@ -139,7 +139,6 @@ while True:
                 players_list[i].move(event, i)
 
     if len(players_list) > 0:  # primero debes definir el numero de jugadores
-
         # RENDER GAME HERE
         if furniture_animation_update_time >= MAX_FURNITURE_ANIMATION_FPS:
             current_sprite_anim += 1
