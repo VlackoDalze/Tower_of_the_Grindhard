@@ -2,4 +2,3 @@
 
 Librerias necesarias:
 pip install pygame
-pip install numpy
