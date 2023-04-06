@@ -17,5 +17,6 @@ class UI_fragment(pygame.sprite.Sprite):
             self.screen.blit(self.ui_image, self.position.xy)
 
     # Pintar la superficie de la imagen con el color deseado
-    def getMultiplyColorTexture(self, texture: pygame.Surface, color: typing.Union[Vector3, typing.Tuple[int, int, int]]):
+    @staticmethod
+    def getMultiplyColorTexture(texture: pygame.Surface, color: typing.Union[Vector3, typing.Tuple[int, int, int]]):
         return texture.fill(color, special_flags=pygame.BLEND_MULT)
