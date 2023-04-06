@@ -9,8 +9,11 @@ SILVER_MEDIUM_FONT = "./assets/font/Silver.ttf"
 volume = 0.5
 
 musics_url_list = []
-
-musics_url_list.append("./assets/sounds/adventures_of_flying_jack.mp3")
-musics_url_list.append("./assets/sounds/epic_blockbuster 2.mp3")
 musics_url_list.append("./assets/sounds/battle_ready.mp3")
 musics_url_list.append("./assets/sounds/epic_boss_battle.mp3")
+
+background_music_list = []
+background_music_list.append("./assets/sounds/adventures_of_flying_jack.mp3")
+background_music_list.append("./assets/sounds/epic_blockbuster 2.mp3")
+
+effect_music_list = []
