@@ -8,6 +8,7 @@ from scripts.players_views import Views
 from scripts.ui_fragment import UI_fragment
 from scripts.menu import Menu
 from scripts.shadows import Shadows
+from scripts.music import Music
 
 # Inicio el programa
 pygame.init()
@@ -33,10 +34,6 @@ pygame.display.set_caption("Tower of the Grindhard")
 
 # * Variables
 data_time = 0  # Se usa para los movimiento de físicas
-background_sound_1 =  pygame.mixer.Sound("./assets/sounds/adventures_of_flying_jack.mp3")# sonido de fondo
-background_sound_2 =  pygame.mixer.Sound("./assets/sounds/epic_blockbuster 2.mp3")
-battle_sound = pygame.mixer.Sound("./assets/sounds/battle_ready.mp3")
-boss_battle_sound = pygame.mixer.Sound("./assets/sounds/epic_boss_battle.mp3")
 scene_level = 'level00'
 player_texture = pygame.image.load(
     "assets/player/base/elf_male.png")  # Textura de jugador
@@ -44,18 +41,13 @@ player_texture = pygame.image.load(
 # collide_level1 = get_collider_matrix(scene_level)
 animated_decorations_matrix = get_animated_decorations_matrix(scene_level)
 
-ui_frag = UI_fragment(screen, player_texture, (0, 0))
-
-
 def drawMap(level):
     level_texture = pygame.image.load(f'scene/{level}/_composite.png')
     screen.blit(level_texture, (0, 0))
 
-
 def drawViews(players, screen):
     createViews = Views(players, screen)
     createViews.playerView()
-
 
 def drawCollider(map_collider_matriz):
     eje_x = 0  # eje x
@@ -78,7 +70,6 @@ def drawCollider(map_collider_matriz):
         eje_y = eje_y + CELL_SIZE  # aumenta y+32
         eje_x = 0  # resets x
 
-
 def get_animated_decoration_array(screen, map_animated_decorations_matrix):
     eje_x = 0  # eje x
     eje_y = 0  # eje y
@@ -100,12 +91,10 @@ def get_animated_decoration_array(screen, map_animated_decorations_matrix):
 
 # recorro la lista de objetos del mapa que tengan animación y dibujo el objeto en el mapa
 
-
 def draw_list_torch(list_torch, current_sprite_anim):
     for torch in list_torch:
         if isinstance(torch, Torch):
             torch.drawTorch(current_sprite_anim)
-
 
 # obtengo la lista de objetos del mapa que tengan animación y la guardo en la variable list_torch
 list_torch = get_animated_decoration_array(screen, animated_decorations_matrix)
@@ -120,21 +109,19 @@ list_shadows= []
 # lista jugadores
 players_list = [] 
 #posicion del circulo cursor 
-memoryPositionCircle = 0 
+memoryPositionCircle = 0
 
-#desde aqui empieza el programa
+background_music = Music(setting.musics_url_list)
 
+#desde aquí empieza el programa
 while True:
+    background_music.play_random_background_music()
     # El evento pygame.QUIT significa que el usuario hizo click en X para cerrar la ventana
     for event in pygame.event.get():
         # salir
         if event.type == pygame.QUIT:
             pygame.quit()
             exit()
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_1:
-                pygame.mixer.Sound.play(background_sound_2)
-                print("2")
 
         # menu previo a las vistas
         if len(players_list) == 0:
@@ -175,8 +162,6 @@ while True:
 
         for player in players_list:
             player.drawGUI()
-
-
 
     # flip() la pantalla para poner su trabajo en la pantalla
     pygame.display.flip()

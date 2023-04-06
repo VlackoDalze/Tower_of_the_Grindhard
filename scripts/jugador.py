@@ -188,7 +188,7 @@ class Jugador(Personaje):
     def drawSetting(self):
         if self._setting_active:
             rectangle = pygame.Rect(32, 32, 50, 50)
-            pygame.draw.rect((255, 0, 255), rectangle)
+            pygame.draw.rect(self.screen,(255, 0, 255), rectangle)
 
     def drawSlots(self,positionX, posicionY, amount_x, amount_y, margin_top=0, margin_right=0, margin_bottom=0, margin_left=0, apply_initial_margin_X=False, apply_initial_margin_Y=False):
         position_x = positionX  # eje x
