@@ -9,7 +9,7 @@ from scripts.ui_fragment import Ui_fragment, Complex_fragment, Panel_fragment, T
 from scripts.music import Music
 from scripts.menu import Menu
 from scripts.shadows import Shadows
-
+from scripts.triggers import Triggers
 # Inicio el programa
 pygame.init()
 pygame.mixer.init()
@@ -141,14 +141,15 @@ while True:
     for event in pygame.event.get():
         # salir
         if event.type == pygame.QUIT:
-            pygame.quit()
+            pygame.quit()   
             exit()
 
         # menu previo a las vistas
         if len(players_list) == 0:
             memoryPositionCircle = Menu(
-                players_list, player_texture, screen, event).setPlayers(memoryPositionCircle)
+                players_list, player_texture, screen, event,scene_level).setPlayers(memoryPositionCircle)
         else:  # vistas
+            Triggers.setCountPlayers(len(players_list))
             for i in range(len(players_list)):
                 players_list[i].move(event, i)
 
@@ -173,8 +174,11 @@ while True:
         for player in players_list:
             player.draw()
 
+        #draw triggers
+        Triggers.drawListTriggersActive(screen)
+        
         # dibujo sombras
-        Shadows.drawShadows(screen, players_list)
+        Shadows.drawShadows(screen, players_list,scene_level)
 
         # Dibujar vistas
         drawViews(players_list, screen)
@@ -183,7 +187,7 @@ while True:
         for player in players_list:
             player.drawGUI()
 
-        ui_frag.drawListFragments()
+        #ui_frag.drawListFragments()
 
     # flip() la pantalla para poner su trabajo en la pantalla
     pygame.display.flip()

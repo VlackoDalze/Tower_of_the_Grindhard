@@ -14,9 +14,9 @@ class Shadows(object):
     shadows_y=[]
     shadows_X=[]
     
-    def shadowsY():
+    def shadowsY(scene_level):
         
-        map_collider_matriz=get_collider_matrix('level00')
+        map_collider_matriz=get_collider_matrix(scene_level)
         eje_y = 0  # eje y  
         cont_y=0
         shadows_y=[]
@@ -38,9 +38,9 @@ class Shadows(object):
             
         return shadows_y
 
-    def shadowsX(shadows_y):
+    def shadowsX(shadows_y,scene_level):
     
-        map_collider_matriz=get_collider_matrix('level00')
+        map_collider_matriz=get_collider_matrix(scene_level)
         eje_x=0
         cont_x=0
         shadows_x=[]
@@ -92,11 +92,11 @@ class Shadows(object):
         return True
             
     #dibujado de sombras
-    def drawShadows(screen:pygame.Surface,players_list):
+    def drawShadows(screen:pygame.Surface,players_list,scene_level):
         
         if len(Shadows.shadows_y)==0:
-            shadows_y=Shadows.shadowsY()
-            shadows_x=Shadows.shadowsX(shadows_y)
+            shadows_y=Shadows.shadowsY(scene_level)
+            shadows_x=Shadows.shadowsX(shadows_y,scene_level)
               
         index_shadows_y=0  
         

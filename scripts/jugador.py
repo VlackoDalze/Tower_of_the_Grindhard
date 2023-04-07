@@ -2,18 +2,21 @@ from scripts.personaje import Personaje as Personaje
 from scripts.setting import SILVER_MEDIUM_FONT
 import pygame
 from scripts.collider_matrix_maker import get_collider_matrix
+from scripts.triggers import Triggers
 WHITE = (255, 255, 255)
 
 
 class Jugador(Personaje):
-    def __init__(self, screen: pygame.Surface, nombre, descripcion, imagen, estadisticasBase, habilidadesActivas, habilidadesPasivas, posicionX, posicionY, raza):
+    def __init__(self, screen: pygame.Surface, nombre, descripcion, imagen, estadisticasBase, habilidadesActivas, habilidadesPasivas, posicionX, posicionY, raza, scene_level):
         super().__init__(screen, nombre, descripcion, imagen, estadisticasBase,
                          habilidadesActivas, habilidadesPasivas, posicionX, posicionY)
         self.flip = False
         self.direction = 1
 
         self.raza = raza
-
+        
+        self.scene_level=scene_level
+        
         self.inventory = [
             [1, 1, 1, 1, 1, 1, 1],
             [1, 1, 1, 1, 1, 1, 1]
@@ -120,17 +123,23 @@ class Jugador(Personaje):
             direction_y = movement_speed
 
         if movimiento_arriba:
-            direction_y = -movement_speed
+            direction_y = -movement_speed   
 
         # aqui aplicas la modificacion
         aux_x = self.rect.x + direction_x
         aux_y = self.rect.y+direction_y
-        colisiones = drawCollider(super().getCellSize())
+        
+        colisiones = drawCollider(super().getCellSize(),self.scene_level)
+        
         if str(aux_x)+"-"+str(aux_y) not in colisiones:
+            
             self.rect.x += direction_x
             self.rect.y += direction_y
             self.posicionX = self.rect.x
             self.posicionY = self.rect.y
+            
+            #comprobar triggers
+            Triggers.searchListTriggers([self.posicionX ,self.posicionY],self.scene_level,event)
 
     # * Interfaz de usuario
 
@@ -214,15 +223,15 @@ class Jugador(Personaje):
         self.screen.blit(text_gui, (positionX, posicionY))
 
 
-def drawCollider(sizeCell):
-    map_collider_matriz = get_collider_matrix('level00')
+def drawCollider(sizeCell,scene_level):
+    map_collider_matriz = get_collider_matrix(scene_level)
     eje_x = 0  # eje x
     eje_y = 0  # eje y
     colisiones = []
     for row in map_collider_matriz:
         for column in row:
 
-            if (column == '1' or column == '2' or column == '3' or column == '4'):  # colision
+            if (column == '1'  or column == '4'):  # colision murosy adornos
                 colisiones.append(str(eje_x)+"-"+str(eje_y))
 
             eje_x = eje_x + sizeCell  # aumenta x +32
@@ -230,7 +239,3 @@ def drawCollider(sizeCell):
         eje_y = eje_y + sizeCell  # aumenta y+32
         eje_x = 0  # resets x
     return colisiones
-
-
-def setMovementSpeed(self, movement_speed):
-    this.movement_speed = movement_speed
