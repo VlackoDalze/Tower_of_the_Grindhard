@@ -1,7 +1,7 @@
 import pygame
 import scripts.setting as setting
 from scripts.jugador import Jugador
-from scripts.ui_fragment import UI_fragment
+from scripts.ui_fragment import Ui_fragment
 
 # Variables statics
 CELL_SIZE = setting.CELL_SIZE
@@ -20,7 +20,7 @@ pointer_color = (245, 230, 100)
 
 
 class Menu(object):
-    pointer_texture = UI_fragment.getMultiplyColorTexture(
+    pointer_texture = Ui_fragment.getMultiplyColorTexture(
         pointer_texture, pointer_color)
 
     def __init__(self, players_list, player_texture, screen, event):
