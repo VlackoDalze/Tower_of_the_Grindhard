@@ -5,7 +5,7 @@ from scripts.jugador import Jugador
 from scripts.collider_matrix_maker import get_collider_matrix, get_animated_decorations_matrix
 from scripts.torch import Torch
 from scripts.players_views import Views
-from scripts.ui_fragment import UI_fragment
+from scripts.ui_fragment import Ui_fragment, Complex_fragment, Panel_fragment, Text_area_fragment
 from scripts.music import Music
 from scripts.menu import Menu
 from scripts.shadows import Shadows
@@ -37,7 +37,21 @@ data_time = 0  # Se usa para los movimiento de físicas
 scene_level = 'level00'
 player_texture = pygame.image.load(
     "assets/player/base/elf_male.png")  # Textura de jugador
-ui_frag = UI_fragment(screen, player_texture, (0, 0))
+
+# * GUI
+panel_texture = pygame.image.load(
+    "assets/gui/inventory/sheet_of_old_paper.png")  # Textura de papel
+
+panel_area = (500, 500)
+position_percentage_values = ('25%', '10%')
+
+ui_frag = Ui_fragment(screen)
+panel = Panel_fragment(ui_frag.getScreen(),
+                       panel_texture, position_percentage_values, panel_area)
+bigText = "Exerci sanctus amet. Diam at dolor <color(182,200,32)>dolor consectetuer</color> imperdiet. Tempor ea sanctus sit eum ipsum aliquyam erat erat <color(255,255,0)>sanctus</color> tincidunt lorem elitr. Ea sadipscing no accumsan tempor invidunt takimata invidunt eos option sed. Diam blandit dolor eirmod et ea eos rebum stet erat lorem et ipsum invidunt eos clita sanctus kasd labore. Takimata et lorem consequat. Iusto sit voluptua vel ut eros at volutpat odio clita magna clita elitr dolore. Diam erat elitr diam sadipscing et accusam. Elitr sit magna duis zzril et duo justo facilisis ut velit ipsum justo sit option clita et. Dolor diam diam dolor erat stet erat sed aliquyam quis. Dolore elitr te. Consetetur no tempor lorem erat gubergren doming assum elitr ut. Tempor aliquyam sea voluptua autem erat justo elit et exerci kasd diam. Dolores blandit sea elitr ut elitr aliquyam minim rebum esse. Liber clita nonummy placerat elit at. Magna praesent sed vel lorem eirmod ipsum ea zzril erat nulla est sed labore eos sed velit."
+text_area = Text_area_fragment(
+    ui_frag.getScreen(), bigText, 23, position_percentage_values, panel_area, (50, 30, 40, 0), (112, 66, 20))
+ui_frag.addFragment(panel, text_area)
 
 # collide_level1 = get_collider_matrix(scene_level)
 animated_decorations_matrix = get_animated_decorations_matrix(scene_level)
@@ -165,10 +179,11 @@ while True:
         # Dibujar vistas
         drawViews(players_list, screen)
 
-        ui_frag.draw()
-
+        # * Interfaz de usuario
         for player in players_list:
             player.drawGUI()
+
+        ui_frag.drawListFragments()
 
     # flip() la pantalla para poner su trabajo en la pantalla
     pygame.display.flip()
