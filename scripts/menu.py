@@ -31,6 +31,7 @@ class Menu(object):
         self.scene_level=scene_level
         
     def playersInGame(self, num_players):
+        
         for i in range(num_players):
             player = Jugador(self.screen, "player"+str(i+1), "none",
                              self.player_texture, None, None, None, 3, 19, "Humano",self.scene_level)

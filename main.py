@@ -173,13 +173,14 @@ while True:
         # Dibujo al jugador
         for player in players_list:
             player.draw()
+            
+        # dibujo sombras
+        Shadows.drawShadows(screen, players_list,scene_level)
 
         #draw triggers
         Triggers.drawListTriggersActive(screen)
         
-        # dibujo sombras
-        Shadows.drawShadows(screen, players_list,scene_level)
-
+       
         # Dibujar vistas
         drawViews(players_list, screen)
 
@@ -195,5 +196,5 @@ while True:
     # incremento el temporizador
     player_update_time += 1
     furniture_animation_update_time += 1
-
+    
     pygame.display.update()
