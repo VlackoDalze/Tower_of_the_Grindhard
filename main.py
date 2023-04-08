@@ -5,7 +5,7 @@ from scripts.jugador import Jugador
 from scripts.collider_matrix_maker import get_collider_matrix, get_animated_decorations_matrix
 from scripts.torch import Torch
 from scripts.players_views import Views
-from scripts.ui_fragment import Ui_fragment, Complex_fragment, Panel_fragment, Text_area_fragment
+from scripts.ui_fragment import Ui_fragment, Complex_fragment, Panel_fragment, Text_area_fragment, Button_fragment
 from scripts.music import Music
 from scripts.menu import Menu
 from scripts.shadows import Shadows
@@ -41,17 +41,44 @@ player_texture = pygame.image.load(
 # * GUI
 panel_texture = pygame.image.load(
     "assets/gui/inventory/sheet_of_old_paper.png")  # Textura de papel
+button_texture = pygame.image.load("assets/gui/inventory/inventory_button.png")
 
 panel_area = (500, 500)
-position_percentage_values = ('25%', '10%')
+position_percentage_values = ('35%', '10%')
 
-ui_frag = Ui_fragment(screen)
+button_position_values = ('90%', '60%')
+button_area_values = (100, 40)
+
+Gui_fragment_group = Ui_fragment(screen)
+
+ui_frag = Ui_fragment(Gui_fragment_group.getScreen())
+button_fragment_group = Ui_fragment(Gui_fragment_group.getScreen())
+
 panel = Panel_fragment(ui_frag.getScreen(),
                        panel_texture, position_percentage_values, panel_area)
-bigText = "Exerci sanctus amet. Diam at dolor <color(182,200,32)>dolor consectetuer</color> imperdiet. Tempor ea sanctus sit eum ipsum aliquyam erat erat <color(255,255,0)>sanctus</color> tincidunt lorem elitr. Ea sadipscing no accumsan tempor invidunt takimata invidunt eos option sed. Diam blandit dolor eirmod et ea eos rebum stet erat lorem et ipsum invidunt eos clita sanctus kasd labore. Takimata et lorem consequat. Iusto sit voluptua vel ut eros at volutpat odio clita magna clita elitr dolore. Diam erat elitr diam sadipscing et accusam. Elitr sit magna duis zzril et duo justo facilisis ut velit ipsum justo sit option clita et. Dolor diam diam dolor erat stet erat sed aliquyam quis. Dolore elitr te. Consetetur no tempor lorem erat gubergren doming assum elitr ut. Tempor aliquyam sea voluptua autem erat justo elit et exerci kasd diam. Dolores blandit sea elitr ut elitr aliquyam minim rebum esse. Liber clita nonummy placerat elit at. Magna praesent sed vel lorem eirmod ipsum ea zzril erat nulla est sed labore eos sed velit."
+bigText = "Exerci sanctus amet. Diam at dolor <color(220,10,120)>dolor consectetuer</color> imperdiet. Tempor ea sanctus sit eum ipsum aliquyam erat erat <color(255,255,0)>sanctus</color> tincidunt lorem elitr. Ea sadipscing no accumsan tempor invidunt takimata invidunt eos option sed. Diam blandit dolor eirmod et ea eos rebum stet erat lorem et ipsum invidunt eos clita sanctus kasd labore. Takimata et lorem consequat. Iusto sit voluptua vel ut eros at volutpat odio clita magna clita elitr dolore. Diam erat elitr diam sadipscing et accusam. Elitr sit magna duis zzril et duo justo facilisis ut velit ipsum justo sit option clita et. Dolor diam diam dolor erat stet erat sed aliquyam quis. Dolore elitr te. Consetetur no tempor lorem erat gubergren doming assum elitr ut. Tempor aliquyam sea voluptua autem erat justo elit et exerci kasd diam. Dolores blandit sea elitr ut elitr aliquyam minim rebum esse. Liber clita nonummy placerat elit at. Magna praesent sed vel lorem eirmod ipsum ea zzril erat nulla est sed labore eos sed velit."
 text_area = Text_area_fragment(
     ui_frag.getScreen(), bigText, 23, position_percentage_values, panel_area, (50, 30, 40, 0), (112, 66, 20))
-ui_frag.addFragment(panel, text_area)
+ui_frag.add_fragment(panel, text_area)
+
+
+button_fragment = Button_fragment(ui_frag.getScreen(
+), button_texture, button_position_values, button_area_values)
+width, height = button_fragment.get_image_size()
+text_button = Text_area_fragment(button_fragment_group.getScreen(
+), 'Close', 18, button_position_values, button_area_values, (width/3, height/3, 0, 0), WHITE)
+
+
+button_fragment_group.add_fragment(button_fragment, text_button)
+
+
+def testMethod():
+    Ui_fragment.clear_fragments(Gui_fragment_group)
+
+
+button_fragment.setOnClick(testMethod)
+
+Gui_fragment_group.add_fragment(ui_frag, button_fragment_group)
 
 # collide_level1 = get_collider_matrix(scene_level)
 animated_decorations_matrix = get_animated_decorations_matrix(scene_level)
@@ -145,6 +172,7 @@ while True:
             pygame.quit()   
             exit()
 
+        button_fragment.setEventListener(event)
         # menu previo a las vistas
         if len(players_list) == 0:
             memoryPositionCircle = Menu(
@@ -189,7 +217,7 @@ while True:
         for player in players_list:
             player.drawGUI()
 
-        #ui_frag.drawListFragments()
+        Gui_fragment_group.drawListFragments()
 
     pygame.display.flip() # actulizar solo los cambios
     #  pygame.display.flip() la pantalla para poner su trabajo en la pantalla ->actualiza toda la pantalla, es lo mismo que update()

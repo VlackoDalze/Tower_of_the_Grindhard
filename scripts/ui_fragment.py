@@ -9,6 +9,10 @@ WHITE = (255, 255, 255)
 RECT_WIDTH = 2
 
 
+def defaultMethod():
+    print("Empty method")
+
+
 class Ui_fragment(pygame.sprite.Sprite):
     def __init__(self, screen: pygame.Surface):
         pygame.sprite.Sprite.__init__(self)
@@ -19,14 +23,29 @@ class Ui_fragment(pygame.sprite.Sprite):
 
     def drawListFragments(self):
         for fragment in self.fragment_list:
-            fragment.draw()
+            if isinstance(fragment, Complex_fragment) or isinstance(fragment, Text_area_fragment):
+                fragment.draw()
+            else:
+                fragment.drawListFragments()
 
-    def addFragment(self, *fragment_list):
+    def add_fragment(self, *fragment_list):
         for fragment in fragment_list:
             self.fragment_list.append(fragment)
 
+    def close_fragment(self, *fragment_list):
+        for fragment in fragment_list:
+            self.fragment_list.remove(fragment)
+
+    def get_fragment_list(self):
+        return self.fragment_list
+
     def getScreen(self):
         return self.screen
+
+    @staticmethod
+    def clear_fragments(*fragment_group_list):
+        for fragment in fragment_group_list:
+            fragment.get_fragment_list().clear()
 
     # Pintar la superficie de la imagen con el color deseado
     @staticmethod
@@ -60,9 +79,12 @@ class Complex_fragment(Ui_fragment):
         else:
             self.screen.blit(self.ui_image, self.position.xy)
 
+    def get_image_size(self):
+        return self.ui_image.get_size()
+
 
 class Interactable_fragment(Complex_fragment):
-    def __init__(self, screen: pygame.Surface, ui_image: pygame.Surface, position: typing.Union[Vector2, typing.Tuple[int, int]]):
+    def __init__(self, screen: pygame.Surface, ui_image: pygame.Surface, position: typing.Union[Vector2, typing.Tuple[str, str]]):
         super().__init__(screen, ui_image, position)
 
     def getPosition(self):
@@ -81,11 +103,30 @@ class Panel_fragment(Complex_fragment):
 
 
 class Button_fragment(Complex_fragment):
-    def __init__(self, screen: pygame.Surface, ui_image: pygame.Surface, position: typing.Union[Vector2, typing.Tuple[str, str]]):
+    def __init__(self, screen: pygame.Surface, ui_image: pygame.Surface, position: typing.Union[Vector2, typing.Tuple[str, str]], area: typing.Union[Vector2, typing.Tuple[int, int]], onClick=defaultMethod):
         super().__init__(screen, ui_image, position)
+        self.area = Vector2(area[0], area[1])
+        self._pressed = False
+        self.onClick = onClick
 
-    def onClick(self):
-        print("Pressed")
+    def draw(self):
+        x, y = self.position_x, self.position_y
+        button_width, button_height = self.area.x, self.area.y
+        self.ui_image = pygame.transform.scale(self.ui_image, self.area)
+        self.screen.blit(self.ui_image, (x, y))
+        if self.event.type == pygame.MOUSEBUTTONDOWN and (self._pressed == False):
+            mouse_pos = pygame.mouse.get_pos()
+            if x < mouse_pos[0] < x + button_width and y < mouse_pos[1] < y + button_height:
+                self._pressed = True
+                self.onClick()
+        if self.event.type == pygame.MOUSEBUTTONUP:
+            self._pressed = False
+
+    def setEventListener(self, event):
+        self.event = event
+
+    def setOnClick(self, onClick):
+        self.onClick = onClick
 
 
 class Text_area_fragment(Ui_fragment):
@@ -161,3 +202,6 @@ class Text_area_fragment(Ui_fragment):
         if (self.show_text_area):
             pygame.draw.rect(self.screen, WHITE, (initial_x,
                              initial_y, self.area.x, self.area.y), RECT_WIDTH)
+
+    def setText(self, text):
+        self.text = text
