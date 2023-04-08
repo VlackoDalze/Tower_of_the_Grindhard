@@ -1,6 +1,7 @@
 from scripts.collider_matrix_maker import get_collider_matrix
 import pygame
 import scripts.setting as setting
+import scripts.ui_fragment as ui_fragment
 
 # Variables statics
 CELL_SIZE = setting.CELL_SIZE
@@ -60,8 +61,8 @@ class Triggers():
        
 
     def drawListTriggersActive(screen:pygame.Surface):
-        
-        textoFont = pygame.font.Font(letter_style, 20) 
+        font_size = 20
+        textoFont = pygame.font.Font(letter_style, font_size) 
        
         size_messageOpen=120
         size_messageExit=90
@@ -74,24 +75,24 @@ class Triggers():
             
             if not (triggers == Triggers.ActionNextScene):
                 newMessage="Desea abrir el cofre?"
-                text = textoFont.render(newMessage, 1, color)
                 if float(aux[0])-centerx_text<0:
                     centerx_text=CELL_SIZE
                 if float(aux[0])-centerx_text>=SCREEN_WIDTH-size_messageOpen:
                     centerx_text=CELL_SIZE/2
-                screen.blit(text, (float(aux[0])-centerx_text,float(aux[1])-centery_text))
-                
+                position = (str(float(aux[0])-centerx_text),str(float(aux[1])-centery_text))
+                ui_fragment.Text_area_fragment(screen, newMessage, font_size, position,(200,100)).draw()
+
             else:
                 newMessage="Esperando..."  + str( Triggers.numPlayersReady)+"/"+str( Triggers.countPlayersNextScene)
-                text2 = textoFont.render(newMessage, 1, color)
                 if float(aux[0])-centerx_text2<0:
                     centerx_text2=CELL_SIZE
                 if float(aux[0])-centerx_text2>=SCREEN_WIDTH-size_messageExit:
                     centerx_text2+=CELL_SIZE
-                screen.blit(text2, (float(aux[0])-centerx_text2,float(aux[1])-centery_text)) 
-                
+                position = (str(float(aux[0])-centerx_text2),str(float(aux[1])-centery_text))
+                ui_fragment.Text_area_fragment(screen, newMessage, font_size, position,(200,100)).draw()
+
             centerx_text=size_messageOpen/3
-   
+
         if  len(Triggers.listTriggersActivated)>0:
             for chest in Triggers.listTriggersActivated:
                 aux=chest.split('-')
@@ -197,8 +198,8 @@ class Triggers():
                     trigger=aux_chestAction[0]+"-"+aux_chestAction[1]
                     chest=aux_chestAction[2]+"-"+aux_chestAction[3]
                     if trigger  in aux_list  and chest not in Triggers.listTriggersActivated:
-                       Triggers.listTriggersScreen.append(chest)  
-                                      
+                        Triggers.listTriggersScreen.append(chest)  
+
         elif  Triggers.aux_cont==Triggers.countPlayersNextScene and len(Triggers.listTriggersScreen)>0   and  Triggers.messageOpen and Triggers.ActionNextScene  in Triggers.listTriggersScreen and event.type != pygame.KEYDOWN:
             
             Triggers.listTriggersScreen.clear()
@@ -210,7 +211,7 @@ class Triggers():
                     trigger=aux_chestAction[0]+"-"+aux_chestAction[1]
                     chest=aux_chestAction[2]+"-"+aux_chestAction[3]
                     if trigger  in aux_list  and chest not in Triggers.listTriggersActivated:
-                       Triggers.listTriggersScreen.append(chest)  
+                        Triggers.listTriggersScreen.append(chest)  
 
             if Triggers.ActionNextScene in Triggers.listPositions:
                 Triggers.listTriggersScreen.append(Triggers.ActionNextScene)  
@@ -227,21 +228,21 @@ class Triggers():
         elif Triggers.aux_cont==Triggers.countPlayersNextScene and len(Triggers.listTriggersScreen)>0   and not Triggers.messageOpen and Triggers.ActionNextScene  not in Triggers.listTriggersScreen\
             and event.type != pygame.KEYDOWN:
             Triggers.listTriggersScreen.pop()
-              
-            
+
+
         elif len(Triggers.listTriggersActivated) >0:
             
             for delete in Triggers.listTriggersActivated:
                 if delete in Triggers.listTriggersScreen:
                     Triggers.listTriggersScreen.remove(delete)    
         #falta cuando empieza y ya esta uno en una posicion 
-                         
+
         if Triggers.aux_cont== Triggers.countPlayersNextScene:
             Triggers.aux_cont=0
             Triggers.messageOpen=False
             Triggers.messageExit=False
-          
-          
+
+
             # if Triggers.isMoved():
             #     Triggers.memoryListPositions.clear()
             #     Triggers.memoryListPositions=Triggers.listPositions.copy()    
