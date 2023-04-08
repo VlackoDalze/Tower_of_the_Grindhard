@@ -2,18 +2,23 @@ from scripts.personaje import Personaje as Personaje
 from scripts.setting import SILVER_MEDIUM_FONT
 import pygame
 from scripts.collider_matrix_maker import get_collider_matrix
+from scripts.triggers import Triggers
 WHITE = (255, 255, 255)
 
 
 class Jugador(Personaje):
-    def __init__(self, screen: pygame.Surface, nombre, descripcion, imagen, estadisticasBase, habilidadesActivas, habilidadesPasivas, posicionX, posicionY, raza):
+    newID=0
+    def __init__(self, screen: pygame.Surface, nombre, descripcion, imagen, estadisticasBase, habilidadesActivas, habilidadesPasivas, posicionX, posicionY, raza, scene_level):
         super().__init__(screen, nombre, descripcion, imagen, estadisticasBase,
                          habilidadesActivas, habilidadesPasivas, posicionX, posicionY)
         self.flip = False
         self.direction = 1
-
+        self.id=Jugador.newID
+        Jugador.newID+=1
         self.raza = raza
-
+        
+        self.scene_level=scene_level
+        
         self.inventory = [
             [1, 1, 1, 1, 1, 1, 1],
             [1, 1, 1, 1, 1, 1, 1]
@@ -60,79 +65,57 @@ class Jugador(Personaje):
     def removeFromInventario(self, item):
         self.inventario.remove(item)
 
+    def getId(self):
+        return self.id
+    
     def move(self, event, assignedKeys):
         # *Area de controles
-        movimiento_izquierda = False
-        movimiento_derecha = False
-        movimiento_arriba = False
-        movimiento_abajo = False
         movement_speed = super().getCellSize()
-        listaKeys = [[pygame.K_a, pygame.K_d, pygame.K_w, pygame.K_s],
-                     [pygame.K_g, pygame.K_j, pygame.K_y, pygame.K_h],
-                     [pygame.K_LEFT, pygame.K_RIGHT, pygame.K_UP, pygame.K_DOWN],
-                     [pygame.K_KP_4, pygame.K_KP_6, pygame.K_KP_8, pygame.K_KP_5]]
-        if event.type == pygame.KEYDOWN:
+        listaKeys = [[pygame.K_a, pygame.K_d, pygame.K_w, pygame.K_s,pygame.K_q],
+                     [pygame.K_g, pygame.K_j, pygame.K_y, pygame.K_h,pygame.K_t],
+                     [pygame.K_LEFT, pygame.K_RIGHT, pygame.K_UP, pygame.K_DOWN,pygame.K_RSHIFT],
+                     [pygame.K_KP_4, pygame.K_KP_6, pygame.K_KP_8, pygame.K_KP_5,pygame.K_KP_7]]
+           # * Area de movimientos
+        aux_x =self.posicionX
+            
+        aux_y = self.posicionY
+        
+       
 
-            if event.key == listaKeys[assignedKeys][0]:
-                movimiento_izquierda = True
-                # self.posicionX -= movement_speed
-            if event.key == listaKeys[assignedKeys][1]:
-                movimiento_derecha = True
-                # self.posicionX += movement_speed
-            if event.key == listaKeys[assignedKeys][2]:
-                movimiento_arriba = True
-                # self.posicionY -= movement_speed
-            if event.key == listaKeys[assignedKeys][3]:
-                movimiento_abajo = True
-                # self.posicionY += movement_speed
-            if event.key == pygame.K_i:  # Inventario
-                self.toggleInventory()
-            if event.key == pygame.K_m:  # Mapa
-                self.toggleMap()
-            if event.key == pygame.K_ESCAPE:  # Opciones
-                self.toggleSetting()
+        if event.type == pygame.KEYDOWN and event.key == listaKeys[assignedKeys][0]:
+            aux_x  -=movement_speed  
+            # self.posicionX -= movement_speed
+        if  event.type == pygame.KEYDOWN and event.key == listaKeys[assignedKeys][1]:
+            aux_x  += movement_speed
+            # self.posicionX += movement_speed
+        if  event.type == pygame.KEYDOWN and event.key == listaKeys[assignedKeys][2]:
+            aux_y-=movement_speed
+            # self.posicionY -= movement_speed
+        if  event.type == pygame.KEYDOWN and event.key == listaKeys[assignedKeys][3]:
+            aux_y+=movement_speed
+            # self.posicionY += movement_speed      
+        if  event.type == pygame.KEYDOWN and event.key == pygame.K_i:  # Inventario
+            self.toggleInventory()
+        if  event.type == pygame.KEYDOWN and  event.key == pygame.K_m:  # Mapa
+            self.toggleMap()
+        if event.type == pygame.KEYDOWN and  event.key == pygame.K_ESCAPE:  # Opciones
+            self.toggleSetting()
 
-        if event.type == pygame.KEYUP:
-            if event.key == pygame.K_a:
-                movimiento_izquierda = False
-            if event.key == pygame.K_d:
-                movimiento_derecha = False
-            if event.key == pygame.K_w:
-                movimiento_arriba = False
-            if event.key == pygame.K_s:
-                movimiento_abajo = False
-
-        # * Area de movimientos
-        direction_x = 0
-        direction_y = 0
-
-        if movimiento_izquierda:
-            direction_x = -movement_speed
-            self.flip = True
-            self.direction = -1
-
-        if movimiento_derecha:
-            direction_x = movement_speed
-            self.flip = False
-            self.direction = 1
-
-        if movimiento_abajo:
-            direction_y = movement_speed
-
-        if movimiento_arriba:
-            direction_y = -movement_speed
-
-        # aqui aplicas la modificacion
-        aux_x = self.rect.x + direction_x
-        aux_y = self.rect.y+direction_y
-        colisiones = drawCollider(super().getCellSize())
+        colisiones = drawCollider(super().getCellSize(),self.scene_level)
+        
         if str(aux_x)+"-"+str(aux_y) not in colisiones:
-            self.rect.x += direction_x
-            self.rect.y += direction_y
-            self.posicionX = self.rect.x
-            self.posicionY = self.rect.y
+            
+            self.posicionX = aux_x
+            self.posicionY = aux_y
+            self.rect.x = aux_x
+            self.rect.y = aux_y
+            
+            #if event.type == pygame.KEYUP :
+            #comprobar triggers
+       
+            Triggers.searchListTriggers([self.posicionX ,self.posicionY],self.scene_level,event,self.id)
 
-    # * Interfaz de usuario
+        # * Interfaz de usuario
 
     def toggleGUI(self):
         self._interface_active = self.toggleBoolean(self._interface_active)
@@ -214,15 +197,15 @@ class Jugador(Personaje):
         self.screen.blit(text_gui, (positionX, posicionY))
 
 
-def drawCollider(sizeCell):
-    map_collider_matriz = get_collider_matrix('level00')
+def drawCollider(sizeCell,scene_level):
+    map_collider_matriz = get_collider_matrix(scene_level)
     eje_x = 0  # eje x
     eje_y = 0  # eje y
     colisiones = []
     for row in map_collider_matriz:
         for column in row:
 
-            if (column == '1' or column == '2' or column == '3' or column == '4'):  # colision
+            if (column == '1'  or column == '4'):  # colision murosy adornos
                 colisiones.append(str(eje_x)+"-"+str(eje_y))
 
             eje_x = eje_x + sizeCell  # aumenta x +32
@@ -230,7 +213,3 @@ def drawCollider(sizeCell):
         eje_y = eje_y + sizeCell  # aumenta y+32
         eje_x = 0  # resets x
     return colisiones
-
-
-def setMovementSpeed(self, movement_speed):
-    this.movement_speed = movement_speed

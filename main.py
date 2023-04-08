@@ -9,7 +9,7 @@ from scripts.ui_fragment import Ui_fragment, Complex_fragment, Panel_fragment, T
 from scripts.music import Music
 from scripts.menu import Menu
 from scripts.shadows import Shadows
-
+from scripts.triggers import Triggers
 # Inicio el programa
 pygame.init()
 pygame.mixer.init()
@@ -158,7 +158,8 @@ list_shadows = []
 players_list = []
 # posicion del circulo cursor
 memoryPositionCircle = 0
-
+#muero de iteracion
+iteration=0
 background_music = Music(setting.musics_url_list)
 
 # desde aquí empieza el programa
@@ -168,17 +169,19 @@ while True:
     for event in pygame.event.get():
         # salir
         if event.type == pygame.QUIT:
-            pygame.quit()
+            pygame.quit()   
             exit()
 
         button_fragment.setEventListener(event)
         # menu previo a las vistas
         if len(players_list) == 0:
             memoryPositionCircle = Menu(
-                players_list, player_texture, screen, event).setPlayers(memoryPositionCircle)
+                players_list, player_texture, screen, event,scene_level).setPlayers(memoryPositionCircle)
         else:  # vistas
-            for i in range(len(players_list)):
-                players_list[i].move(event, i)
+            Triggers.setCountPlayers(len(players_list))
+            for i in range(0,len(players_list)):
+                # if event.type == pygame.KEYDOWN:
+                    players_list[i].move(event, i)
 
     if len(players_list) > 0:  # primero debes definir el numero de jugadores
         # RENDER GAME HERE
@@ -200,10 +203,13 @@ while True:
         # Dibujo al jugador
         for player in players_list:
             player.draw()
-
+            
         # dibujo sombras
-        Shadows.drawShadows(screen, players_list)
+        Shadows.drawShadows(screen, players_list,scene_level)
 
+        #draw triggers deben hacer antes de las vistas
+        Triggers.drawListTriggersActive(screen)
+       
         # Dibujar vistas
         drawViews(players_list, screen)
 
@@ -213,11 +219,11 @@ while True:
 
         Gui_fragment_group.drawListFragments()
 
-    # flip() la pantalla para poner su trabajo en la pantalla
-    pygame.display.flip()
-    data_time = clock.tick(MAX_FPS)  # limito el FPS a 60
-    # incremento el temporizador
+    pygame.display.flip() # actulizar solo los cambios
+    #  pygame.display.flip() la pantalla para poner su trabajo en la pantalla ->actualiza toda la pantalla, es lo mismo que update()
+    clock.tick(MAX_FPS)  # limito el FPS a 60
+    
+    iteration+=1
+     # incremento el temporizador
     player_update_time += 1
     furniture_animation_update_time += 1
-
-    pygame.display.update()

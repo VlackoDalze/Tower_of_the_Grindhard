@@ -23,16 +23,18 @@ class Menu(object):
     pointer_texture = Ui_fragment.getMultiplyColorTexture(
         pointer_texture, pointer_color)
 
-    def __init__(self, players_list, player_texture, screen, event):
+    def __init__(self, players_list, player_texture, screen, event,scene_level):
         self.players_list = players_list
         self.player_texture = player_texture
         self.screen = screen
         self.event = event
-
+        self.scene_level=scene_level
+        
     def playersInGame(self, num_players):
+        
         for i in range(num_players):
             player = Jugador(self.screen, "player"+str(i+1), "none",
-                             self.player_texture, None, None, None, 3, 19, "Humano")
+                             self.player_texture, None, None, None, 3, 19, "Humano",self.scene_level)
             self.players_list.append(player)
 
     def setPlayers(self, memoryPositionCircle):
