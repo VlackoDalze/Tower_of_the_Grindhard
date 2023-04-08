@@ -21,6 +21,7 @@ class Triggers():
     numPlayersReady=0
     ActionNextScene=""
     listTriggersScreen=[]
+    
     def createListTriggers(scene_level) :
         
         map_collider_matriz = get_collider_matrix(scene_level)
@@ -56,7 +57,7 @@ class Triggers():
 
     def setCountPlayers(numPlayers):
         Triggers.countPlayersNextScene =numPlayers
-        Triggers.numPlayersReady = numPlayers
+       
 
     def drawListTriggersActive(screen:pygame.Surface):
         
@@ -70,27 +71,27 @@ class Triggers():
         
         for triggers  in  Triggers.listTriggersScreen  : 
             aux=triggers.split('-')
-            if triggers!=Triggers.ActionNextScene:
+            
+            if not (triggers == Triggers.ActionNextScene):
                 newMessage="Desea abrir el cofre?"
                 text = textoFont.render(newMessage, 1, color)
                 if float(aux[0])-centerx_text<0:
                     centerx_text=CELL_SIZE
                 if float(aux[0])-centerx_text>=SCREEN_WIDTH-size_messageOpen:
                     centerx_text=CELL_SIZE/2
-                    
                 screen.blit(text, (float(aux[0])-centerx_text,float(aux[1])-centery_text))
-            else: 
+                
+            else:
                 newMessage="Esperando..."  + str( Triggers.numPlayersReady)+"/"+str( Triggers.countPlayersNextScene)
-                text = textoFont.render(newMessage, 1, color)
+                text2 = textoFont.render(newMessage, 1, color)
                 if float(aux[0])-centerx_text2<0:
                     centerx_text2=CELL_SIZE
                 if float(aux[0])-centerx_text2>=SCREEN_WIDTH-size_messageExit:
                     centerx_text2+=CELL_SIZE
-                
-                screen.blit(text, (float(aux[0])-centerx_text2,float(aux[1])-centery_text))
+                screen.blit(text2, (float(aux[0])-centerx_text2,float(aux[1])-centery_text)) 
                 
             centerx_text=size_messageOpen/3
-            
+   
         if  len(Triggers.listTriggersActivated)>0:
             for chest in Triggers.listTriggersActivated:
                 aux=chest.split('-')
@@ -99,14 +100,16 @@ class Triggers():
                 mix2=pygame.image.load(image)
                 changeChest.blit(mix1, (0,0))
                 changeChest.blit(mix2, (0,0))
-                screen.blit(changeChest,(float(aux[0]),float(aux[1])) )
-            
-   
+                screen.blit(changeChest,(float(aux[0]),float(aux[1])) )          
+        
     aux_cont= 0
+    prev_aux_cont= aux_cont
     messageOpen=False
     messageExit=False
     listPositions=[]
-
+    memoryListPositions=[]
+    playersReaady=[]
+    
     def twoTriggersActivated():
         aux_list=[]
         for position in Triggers.listPositions:
@@ -122,9 +125,13 @@ class Triggers():
         if  Triggers.aux_cont<Triggers.countPlayersNextScene:
             Triggers.listPositions.append(str(position[0])+"-"+str(position[1]))
             
+            
         Triggers.aux_cont+=1
         
+        # if len(Triggers.memoryListPositions)< Triggers.aux_cont:
+        #     Triggers.memoryListPositions.append(str(position[0])+"-"+str(position[1]))
         #action cofres
+        
         for chestAction in Triggers.chestTriggerList: #recorre las acciones de apertura de cofre
             aux_chestAction = str(chestAction).split('-')
             trigger=aux_chestAction[0]+"-"+aux_chestAction[1]
@@ -133,42 +140,54 @@ class Triggers():
             if trigger==str(position[0])+"-"+str(position[1]) and chest not in  Triggers.listTriggersActivated:#si uno abre el cofre, otro ya no puede
                 Triggers.messageOpen=True
                 
-                if event.type == pygame.KEYDOWN:
-
-                    if event.key ==pygame.K_q and id==0:#cambiar imagen de cofre
-                       Triggers.listTriggersActivated.append(chest)
-                    if event.key ==pygame.K_RSHIFT and id==2:#cambiar imagen de cofre
-                       Triggers.listTriggersActivated.append(chest)
-                    if event.key ==pygame.K_KP_7 and id==3:#cambiar imagen de cofre
-                       Triggers.listTriggersActivated.append(chest)
-                    if event.key ==pygame.K_t and id==1:#cambiar imagen de cofre
-                       Triggers.listTriggersActivated.append(chest)
+                if event.type == pygame.KEYDOWN and   event.key==pygame.K_q and id==0:#cambiar imagen de cofre
+                    Triggers.listTriggersActivated.append(chest)
+                if  event.type == pygame.KEYDOWN and  event.key==pygame.K_RSHIFT and id==2:#cambiar imagen de cofre
+                    Triggers.listTriggersActivated.append(chest)
+                if event.type == pygame.KEYDOWN and   event.key ==pygame.K_KP_7 and id==3:#cambiar imagen de cofre
+                    Triggers.listTriggersActivated.append(chest)
+                if  event.type == pygame.KEYDOWN and  event.key ==pygame.K_t and id==1:#cambiar imagen de cofre
+                    Triggers.listTriggersActivated.append(chest)
                         
-                
-                if str(float(aux_chestAction[2]))+"-"+ str(float(aux_chestAction[3])) not in Triggers.listTriggersScreen: #no duplicados
-                    Triggers.listTriggersScreen.append(  str(float(aux_chestAction[2]))+"-"+ str(float(aux_chestAction[3])) ) 
+                if aux_chestAction[2]+"-"+ aux_chestAction[3] not in Triggers.listTriggersScreen: #no duplicados
+                    Triggers.listTriggersScreen.append(  aux_chestAction[2]+"-"+ aux_chestAction[3] ) 
                     
                 #ejecutar acciones para apertura de cofre
-            else :
-                print ("a") 
-                pass
-            
+       
         #action salida
         if str(position[0])+"-"+str(position[1]) == Triggers.ActionNextScene:#salida
             
             Triggers.messageExit=True
-        
+            
+            if len(Triggers.playersReaady)==0:
+                Triggers.numPlayersReady+=1
+                Triggers.playersReaady.append(str(position[0])+"-"+str(position[1])+"-"+str(id))
+            
+            if   str(position[0])+"-"+str(position[1])+"-"+str(id) not in Triggers.playersReaady:  
+                Triggers.numPlayersReady+=1
+                Triggers.playersReaady.append(str(position[0])+"-"+str(position[1])+"-"+str(id))
+            
             if str(position[0])+"-"+str(position[1]) not in Triggers.listTriggersScreen: #no duplicados
                #contador de jugadores en salida
                 Triggers.listTriggersScreen.append( str(position[0])+"-"+str(position[1]))     
                 #ejecutar acciondes para salida
                 
         else:
-            Triggers.numPlayersReady-=1
-                   
+            if len(Triggers.playersReaady)>0:
+                for player in Triggers.playersReaady:
+                    
+                    aux=  player.split('-')   
+                    saved_posx=aux[0]
+                    saved_posy=aux[1]
+                    saved_id=aux[2]
+                    
+                    if int(saved_id)==id:
+                        Triggers.numPlayersReady-=1
+                        Triggers.playersReaady.remove(saved_posx+"-"+saved_posy+"-"+saved_id)
+                
         #salir de action
            
-        if Triggers.aux_cont==Triggers.countPlayersNextScene and len(Triggers.listTriggersScreen)>0   and Triggers.messageOpen and Triggers.ActionNextScene  not in Triggers.listTriggersScreen:
+        if Triggers.aux_cont==Triggers.countPlayersNextScene and len(Triggers.listTriggersScreen)>0   and Triggers.messageOpen and Triggers.ActionNextScene  not in Triggers.listTriggersScreen and event.type != pygame.KEYDOWN:
             
             Triggers.listTriggersScreen.clear()
             aux_list=Triggers.twoTriggersActivated()
@@ -177,10 +196,10 @@ class Triggers():
                     aux_chestAction = str(chestAction).split('-')
                     trigger=aux_chestAction[0]+"-"+aux_chestAction[1]
                     chest=aux_chestAction[2]+"-"+aux_chestAction[3]
-                    if trigger  in aux_list:
+                    if trigger  in aux_list  and chest not in Triggers.listTriggersActivated:
                        Triggers.listTriggersScreen.append(chest)  
-                        
-        elif  Triggers.aux_cont==Triggers.countPlayersNextScene and len(Triggers.listTriggersScreen)>0   and  Triggers.messageOpen and Triggers.ActionNextScene  in Triggers.listTriggersScreen:
+                                      
+        elif  Triggers.aux_cont==Triggers.countPlayersNextScene and len(Triggers.listTriggersScreen)>0   and  Triggers.messageOpen and Triggers.ActionNextScene  in Triggers.listTriggersScreen and event.type != pygame.KEYDOWN:
             
             Triggers.listTriggersScreen.clear()
             
@@ -190,35 +209,64 @@ class Triggers():
                     aux_chestAction = str(chestAction).split('-')
                     trigger=aux_chestAction[0]+"-"+aux_chestAction[1]
                     chest=aux_chestAction[2]+"-"+aux_chestAction[3]
-                    if trigger  in aux_list:
+                    if trigger  in aux_list  and chest not in Triggers.listTriggersActivated:
                        Triggers.listTriggersScreen.append(chest)  
 
             if Triggers.ActionNextScene in Triggers.listPositions:
                 Triggers.listTriggersScreen.append(Triggers.ActionNextScene)  
         
-        elif  Triggers.aux_cont==Triggers.countPlayersNextScene and len(Triggers.listTriggersScreen)>0   and not  Triggers.messageOpen and Triggers.ActionNextScene  in Triggers.listTriggersScreen:
+        elif  Triggers.aux_cont==Triggers.countPlayersNextScene and len(Triggers.listTriggersScreen)>0   and not  Triggers.messageOpen and Triggers.ActionNextScene  in Triggers.listTriggersScreen and event.type != pygame.KEYDOWN:
             
             Triggers.listTriggersScreen.clear()
 
             if Triggers.ActionNextScene in Triggers.listPositions:
                 Triggers.listTriggersScreen.append(Triggers.ActionNextScene)
-
-
-        elif Triggers.aux_cont==Triggers.countPlayersNextScene and len(Triggers.listTriggersScreen)>0   and not Triggers.messageOpen and Triggers.ActionNextScene  not in Triggers.listTriggersScreen:
+                
+        #error cuando nadie se mueve siempre es false       
+    
+        elif Triggers.aux_cont==Triggers.countPlayersNextScene and len(Triggers.listTriggersScreen)>0   and not Triggers.messageOpen and Triggers.ActionNextScene  not in Triggers.listTriggersScreen\
+            and event.type != pygame.KEYDOWN:
             Triggers.listTriggersScreen.pop()
+              
             
-        elif Triggers.aux_cont==Triggers.countPlayersNextScene and len(Triggers.listTriggersScreen)>0   and not Triggers.messageExit and Triggers.ActionNextScene  in Triggers.listTriggersScreen:
-            Triggers.listTriggersScreen.pop()  
         elif len(Triggers.listTriggersActivated) >0:
             
             for delete in Triggers.listTriggersActivated:
                 if delete in Triggers.listTriggersScreen:
                     Triggers.listTriggersScreen.remove(delete)    
-                          
+        #falta cuando empieza y ya esta uno en una posicion 
+                         
         if Triggers.aux_cont== Triggers.countPlayersNextScene:
             Triggers.aux_cont=0
             Triggers.messageOpen=False
             Triggers.messageExit=False
+          
+          
+            # if Triggers.isMoved():
+            #     Triggers.memoryListPositions.clear()
+            #     Triggers.memoryListPositions=Triggers.listPositions.copy()    
             Triggers.listPositions.clear()
-                        
-       
+        # if Triggers.aux_cont==1 and len(Triggers.listTriggersScreen)==0:
+        #     Triggers.inPositionTrigger()
+                       
+    # def isMoved():
+    #     if len(Triggers.memoryListPositions)>0 and len(Triggers.listPositions)>0:
+    #         for i in range(0,len(Triggers.listPositions)):
+    #             if Triggers.listPositions[i] != Triggers.memoryListPositions[i]:
+    #                 return True
+                
+    #         return False
+    #     else: 
+    #         return False
+        
+    # def inPositionTrigger():
+    #     for memory in Triggers.memoryListPositions:
+    #         if memory in Triggers.listTriggers:
+    #             for positionChest in Triggers.chestTriggerList:
+    #                 positionChest=chest.split('-')
+    #                 trigger=positionChest[0]+"-"+positionChest[1]
+    #                 chest=positionChest[2]+"-"+positionChest[3]
+    #                 if trigger==memory:
+    #                     Triggers.listTriggersScreen(chest)
+    #                     break
+                    

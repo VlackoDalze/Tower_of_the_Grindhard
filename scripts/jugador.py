@@ -67,6 +67,7 @@ class Jugador(Personaje):
 
     def getId(self):
         return self.id
+    
     def move(self, event, assignedKeys):
         # *Area de controles
         movement_speed = super().getCellSize()
@@ -78,27 +79,27 @@ class Jugador(Personaje):
         aux_x =self.posicionX
             
         aux_y = self.posicionY
+        
+       
 
-        if event.type == pygame.KEYDOWN:
-
-            if event.key == listaKeys[assignedKeys][0]:
-                 aux_x  -=movement_speed
-                # self.posicionX -= movement_speed
-            if event.key == listaKeys[assignedKeys][1]:
-                 aux_x  += movement_speed
-                # self.posicionX += movement_speed
-            if event.key == listaKeys[assignedKeys][2]:
-               aux_y-=movement_speed
-                # self.posicionY -= movement_speed
-            if event.key == listaKeys[assignedKeys][3]:
-               aux_y+=movement_speed
-                # self.posicionY += movement_speed
-            if event.key == pygame.K_i:  # Inventario
-                self.toggleInventory()
-            if event.key == pygame.K_m:  # Mapa
-                self.toggleMap()
-            if event.key == pygame.K_ESCAPE:  # Opciones
-                self.toggleSetting()
+        if event.type == pygame.KEYDOWN and event.key == listaKeys[assignedKeys][0]:
+            aux_x  -=movement_speed  
+            # self.posicionX -= movement_speed
+        if  event.type == pygame.KEYDOWN and event.key == listaKeys[assignedKeys][1]:
+            aux_x  += movement_speed
+            # self.posicionX += movement_speed
+        if  event.type == pygame.KEYDOWN and event.key == listaKeys[assignedKeys][2]:
+            aux_y-=movement_speed
+            # self.posicionY -= movement_speed
+        if  event.type == pygame.KEYDOWN and event.key == listaKeys[assignedKeys][3]:
+            aux_y+=movement_speed
+            # self.posicionY += movement_speed      
+        if  event.type == pygame.KEYDOWN and event.key == pygame.K_i:  # Inventario
+            self.toggleInventory()
+        if  event.type == pygame.KEYDOWN and  event.key == pygame.K_m:  # Mapa
+            self.toggleMap()
+        if event.type == pygame.KEYDOWN and  event.key == pygame.K_ESCAPE:  # Opciones
+            self.toggleSetting()
 
         colisiones = drawCollider(super().getCellSize(),self.scene_level)
         
@@ -109,10 +110,12 @@ class Jugador(Personaje):
             self.rect.x = aux_x
             self.rect.y = aux_y
             
+            #if event.type == pygame.KEYUP :
             #comprobar triggers
+       
             Triggers.searchListTriggers([self.posicionX ,self.posicionY],self.scene_level,event,self.id)
 
-    # * Interfaz de usuario
+        # * Interfaz de usuario
 
     def toggleGUI(self):
         self._interface_active = self.toggleBoolean(self._interface_active)

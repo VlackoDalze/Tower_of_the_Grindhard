@@ -131,7 +131,8 @@ list_shadows = []
 players_list = []
 # posicion del circulo cursor
 memoryPositionCircle = 0
-
+#muero de iteracion
+iteration=0
 background_music = Music(setting.musics_url_list)
 
 # desde aquí empieza el programa
@@ -150,8 +151,9 @@ while True:
                 players_list, player_texture, screen, event,scene_level).setPlayers(memoryPositionCircle)
         else:  # vistas
             Triggers.setCountPlayers(len(players_list))
-            for i in range(len(players_list)):
-                players_list[i].move(event, i)
+            for i in range(0,len(players_list)):
+                # if event.type == pygame.KEYDOWN:
+                    players_list[i].move(event, i)
 
     if len(players_list) > 0:  # primero debes definir el numero de jugadores
         # RENDER GAME HERE
@@ -177,9 +179,8 @@ while True:
         # dibujo sombras
         Shadows.drawShadows(screen, players_list,scene_level)
 
-        #draw triggers
+        #draw triggers deben hacer antes de las vistas
         Triggers.drawListTriggersActive(screen)
-        
        
         # Dibujar vistas
         drawViews(players_list, screen)
@@ -190,11 +191,11 @@ while True:
 
         #ui_frag.drawListFragments()
 
-    # flip() la pantalla para poner su trabajo en la pantalla
-    pygame.display.flip()
-    data_time = clock.tick(MAX_FPS)  # limito el FPS a 60
-    # incremento el temporizador
+    pygame.display.flip() # actulizar solo los cambios
+    #  pygame.display.flip() la pantalla para poner su trabajo en la pantalla ->actualiza toda la pantalla, es lo mismo que update()
+    clock.tick(MAX_FPS)  # limito el FPS a 60
+    
+    iteration+=1
+     # incremento el temporizador
     player_update_time += 1
     furniture_animation_update_time += 1
-    
-    pygame.display.update()
