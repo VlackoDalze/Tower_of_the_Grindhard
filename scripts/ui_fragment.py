@@ -48,8 +48,8 @@ class Ui_fragment(pygame.sprite.Sprite):
 
     @staticmethod
     def clear_fragments(*fragment_group_list):
-        for fragment in fragment_group_list:
-            fragment.get_fragment_list().clear()
+        for fragments in fragment_group_list:
+            fragments.get_fragment_list().clear()
 
     # Pintar la superficie de la imagen con el color deseado
     @staticmethod
