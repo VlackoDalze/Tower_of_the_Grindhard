@@ -179,7 +179,7 @@ while True:
                 players_list, player_texture, screen, event,scene_level).setPlayers(memoryPositionCircle)
         else:  # vistas
             Triggers.setCountPlayers(len(players_list))
-            if Gui_fragment_group.isActive():#Cuando está activo este fragment, se desactiva los movimientos del jugador
+            if not(Gui_fragment_group.isActive()):#Cuando no está activo este fragment, se desactiva los movimientos del jugador
                 for i in range(0,len(players_list)):
                     # if event.type == pygame.KEYDOWN:
                         players_list[i].move(event, i)

@@ -42,9 +42,9 @@ class Ui_fragment(pygame.sprite.Sprite):
     def getScreen(self):
         return self.screen
 
-    # Comprueba si la lista está vacío en caso afirmativo devolverá False en caso contrario devolverá Verdadero, es decir, está activo
+    # Comprueba si la lista está vacío, en caso afirmativo devolverá True en caso contrario devolverá False, es decir, no está activo
     def isActive(self):
-        return not (self.fragment_list)
+        return self.fragment_list
 
     @staticmethod
     def clear_fragments(*fragment_group_list):
