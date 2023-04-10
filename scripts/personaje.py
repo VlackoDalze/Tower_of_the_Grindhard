@@ -9,10 +9,10 @@ class Personaje(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         self.CELL_SIZE = setting.CELL_SIZE
         self.player_texture = imagen
+        #con get.rect obtenermos los ejes X y Y 
         self.rect = self.player_texture.get_rect()
-        self.rect.center = ((posicionX * self.CELL_SIZE)+16,
-                            (posicionY * self.CELL_SIZE)+16)
-
+        #se le suma 16 para acomodar la imagen, esto no afecta a los ejes X y y
+        self.rect.center = ((posicionX * self.CELL_SIZE)+16,(posicionY * self.CELL_SIZE)+16)
         self.screen = screen
         self.nombre = nombre
         self.descripcion = descripcion
@@ -20,9 +20,11 @@ class Personaje(pygame.sprite.Sprite):
         self.estadisticasBase = estadisticasBase
         self.habilidadesActivas = habilidadesActivas
         self.habilidadesPasivas = habilidadesPasivas
-        # revisar las posiciones no me van usando rect
+        
+        # lo mismo que rect, pero descompuesto, tambien se puedo usar rect.x o rect.y pero preferi usar los parametros que por algo los ponemos
         self.posicionX = posicionX*self.CELL_SIZE
         self.posicionY = posicionY*self.CELL_SIZE
+        
     # metodos
     # get de posicion del jugador
 
@@ -31,13 +33,7 @@ class Personaje(pygame.sprite.Sprite):
 
     def getPositionY(self):
         return self.posicionY
-
-    def setPosX(self,x):
-        self.posicionX = x
-
-    def setPosY(self,y):
-        self.posicionY = y
-        
+    
     # recibe ataque es un array con dos valores el daño  y el tipo de daño
     def defender(self, recibeAtaque):
         dano = recibeAtaque[0]
@@ -52,9 +48,6 @@ class Personaje(pygame.sprite.Sprite):
             return (Estadisticas(self.estadisticasBase).getAtaqueFisico(), 0)
         else:  # 1 magico
             return (Estadisticas(self.estadisticasBase).getAtaqueMagico(), 1)
-
-    def draw(self):
-        self.screen.blit(self.player_texture, self.rect)
 
     def getCellSize(self):
         return self.CELL_SIZE
