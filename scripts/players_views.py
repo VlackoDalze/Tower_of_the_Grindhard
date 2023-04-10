@@ -245,12 +245,13 @@ class Views:
 
                 Views.marginView(self.screen, 4)    
            
-    def marginView(screen, numViews):   
+    def marginView(screen, numViews):
+        color_white=(255,255,255)   
         if numViews==2:
-            pygame.draw.line(screen,(0,0,0),(SCREEN_WIDTH/2,0),(SCREEN_WIDTH/2,SCREEN_HEIGHT),3)
+            pygame.draw.line(screen,color_white,(SCREEN_WIDTH/2,0),(SCREEN_WIDTH/2,SCREEN_HEIGHT),3)
         if numViews>2:
-            pygame.draw.line(screen,(0,0,0),(SCREEN_WIDTH/2,0),(SCREEN_WIDTH/2,SCREEN_HEIGHT),3)
-            pygame.draw.line(screen,(0,0,0),(0,SCREEN_HEIGHT/2),(SCREEN_WIDTH,SCREEN_HEIGHT/2),3)    
+            pygame.draw.line(screen,color_white,(SCREEN_WIDTH/2,0),(SCREEN_WIDTH/2,SCREEN_HEIGHT),3)
+            pygame.draw.line(screen,color_white,(0,SCREEN_HEIGHT/2),(SCREEN_WIDTH,SCREEN_HEIGHT/2),3)    
 
    
  

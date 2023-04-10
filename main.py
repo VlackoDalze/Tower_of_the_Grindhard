@@ -10,6 +10,7 @@ from scripts.music import Music
 from scripts.menu import Menu
 from scripts.shadows import Shadows
 from scripts.triggers import Triggers
+from scripts.shadowsv2 import Shadows2
 # Inicio el programa
 pygame.init()
 pygame.mixer.init()
@@ -142,6 +143,7 @@ def draw_list_torch(list_torch, current_sprite_anim):
     for torch in list_torch:
         if isinstance(torch, Torch):
             torch.drawTorch(current_sprite_anim)
+            
 
 
 # obtengo la lista de objetos del mapa que tengan animación y la guardo en la variable list_torch
@@ -205,8 +207,8 @@ while True:
             player.draw()
             
         # dibujo sombras
-        Shadows.drawShadows(screen, players_list,scene_level)
-
+        #Shadows.drawShadows(screen, players_list,scene_level)
+        Shadows2.drawShadows2(players_list,list_torch)
         #draw triggers deben hacer antes de las vistas
         Triggers.drawListTriggersActive(screen)
        
