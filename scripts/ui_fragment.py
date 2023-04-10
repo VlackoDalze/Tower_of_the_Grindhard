@@ -42,10 +42,14 @@ class Ui_fragment(pygame.sprite.Sprite):
     def getScreen(self):
         return self.screen
 
+    # Comprueba si la lista está vacío, en caso afirmativo devolverá True en caso contrario devolverá False, es decir, no está activo
+    def isActive(self):
+        return self.fragment_list
+
     @staticmethod
     def clear_fragments(*fragment_group_list):
-        for fragment in fragment_group_list:
-            fragment.get_fragment_list().clear()
+        for fragments in fragment_group_list:
+            fragments.get_fragment_list().clear()
 
     # Pintar la superficie de la imagen con el color deseado
     @staticmethod
