@@ -4,8 +4,8 @@ import scripts.setting as setting
 #from scripts.jugador import Jugador
 from scripts.collider_matrix_maker import get_collider_matrix, get_animated_decorations_matrix
 from scripts.torch import Torch
-from scripts.players_views import Views
-from scripts.ui_fragment import Ui_fragment, Complex_fragment, Panel_fragment, Text_area_fragment, Button_fragment
+from scripts.players_views import Views, viewsPositions
+from scripts.ui_fragment import *
 from scripts.music import Music
 from scripts.menu import Menu
 #from scripts.shadows import Shadows
@@ -82,6 +82,32 @@ button_fragment.setOnClick(testMethod)
 
 Gui_fragment_group.add_fragment(ui_frag, button_fragment_group)
 
+# * User interface
+
+inventory_bag_texture = pygame.image.load(
+    'assets/gui/inventory/inventory_bag_panel.png')
+inventory_btn_texture = pygame.image.load(
+    'assets/gui/inventory/inventory_button.png')
+inventory_equipment_panel_texture = pygame.image.load(
+    'assets/gui/inventory/inventory_equipment_panel.png')
+inventory_equipment_area_texture = pygame.image.load(
+    'assets/gui/inventory/equipment_area.png')
+inventory_slot = pygame.image.load(
+    "./assets/gui/inventory/inventory_slot.png")
+
+default_fragment = Ui_fragment(ui_frag.getScreen())
+inventory_fragment = Ui_fragment(ui_frag.getScreen())
+inventory_bag_fragment = Panel_fragment(ui_frag.getScreen(), inventory_bag_texture, (288, 16), inventory_bag_texture.get_size())
+inventory_text_fragment = Text_area_fragment(ui_frag.getScreen(), 'Inventario', 42, (CELL_SIZE*14.5,-16.0),(0,0))
+inventory_slot_fragment = Interactable_fragment(ui_frag.getScreen(), inventory_slot, (0,0))
+
+inventory_equipment_panel_fragment_group = Ui_fragment(screen)
+# inventory_equipment_fragment = Panel_fragment(ui_frag.getScreen(), inventory_equipment_panel_texture, ('10%','10%'),inventory_equipment_area_texture.get_size())
+
+slots_groups_fragment = Ui_fragment.fragments_matrix_group_maker(inventory_slot_fragment, (CELL_SIZE*9,CELL_SIZE*3), (5,5),0,10,10,0)
+
+inventory_fragment.add_fragment(inventory_bag_fragment,inventory_text_fragment,slots_groups_fragment)
+
 # collide_level1 = get_collider_matrix(scene_level)
 animated_decorations_matrix = get_animated_decorations_matrix(scene_level)
 
@@ -102,7 +128,6 @@ def drawCollider(map_collider_matriz):
 
     for row in map_collider_matriz:
         for column in row:
-
             if (column == '1'):  # Muro
                 pygame.draw.rect(screen, WHITE, (eje_x, eje_y, 32, 32))
             if (column == '2'):  # La puerta
@@ -111,7 +136,6 @@ def drawCollider(map_collider_matriz):
                 pygame.draw.rect(screen, (0, 126, 0), (eje_x, eje_y, 32, 32))
             if (column == '4'):  # Muebles
                 pygame.draw.rect(screen, (0, 126, 126), (eje_x, eje_y, 32, 32))
-
             eje_x = eje_x + CELL_SIZE  # aumenta x +32
 
         eje_y = eje_y + CELL_SIZE  # aumenta y+32
@@ -162,9 +186,11 @@ players_list = []
 enemy_list = []
 # posicion del circulo cursor
 memoryPositionCircle = 0
-#muero de iteracion
-iteration=0
 background_music = Music(setting.musics_url_list)
+
+equipment_area_btn_frag_array = []
+
+
 
 # desde aquí empieza el programa
 while True:
@@ -173,22 +199,60 @@ while True:
     for event in pygame.event.get():
         # salir
         if event.type == pygame.QUIT:
-            pygame.quit()   
+            pygame.quit()
             exit()
-
         button_fragment.setEventListener(event)
         # menu previo a las vistas
         if len(players_list) == 0:
             memoryPositionCircle = Menu(
-                players_list, player_texture, screen, event,scene_level).setPlayers(memoryPositionCircle)
+                players_list, player_texture, screen, event, scene_level).setPlayers(memoryPositionCircle)
+        for i in range(0, len(players_list)):    
+            if(len(equipment_area_btn_frag_array) < len(players_list)):
+                equipment_area_btn_frag_array.append(Button_fragment(screen, inventory_btn_texture, (0,0), (CELL_SIZE*3,CELL_SIZE)))
+            equipment_area_btn_frag_array[i].setEventListener(event)
+
         else:  # vistas
             Triggers.setCountPlayers(len(players_list))
-            if not(Gui_fragment_group.isActive()):#Cuando no está activo este fragment, se desactiva los movimientos del jugador
-                for i in range(0,len(players_list)):
-                    # if event.type == pygame.KEYDOWN:
-                        players_list[i].move(event, i)
+            # Cuando no está activo este fragment, se desactiva los movimientos del jugador
+            for i in range(0, len(players_list)):
+                # if event.type == pygame.KEYDOWN:
+                if not (Gui_fragment_group.isActive()):
+                    players_list[i].move(event, i)
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_i:  # Inventario
+                Ui_fragment.toggle_fragment(Gui_fragment_group, inventory_fragment)
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_m:  # Mapa
+                print('Mapa')
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:  # Opciones
+                Ui_fragment.clear_fragments(Gui_fragment_group)
 
+    #Cuando ya hay jugadores en la lista continua con los dibujados
     if len(players_list) > 0:  # primero debes definir el numero de jugadores
+        if len(inventory_equipment_panel_fragment_group.get_fragment_list()) == 0:
+            inventory_equipment_panel_fragment_group
+            for i in range(len(players_list)):
+                position_x = viewsPositions[i][0]
+                position_y = viewsPositions[i][1]
+                if ((i+1) % 2) == 0:
+                    position_x *= 1.425
+                position_x += 32
+                position_y += 16
+                inventory_equipment_panel_fragment = Panel_fragment(ui_frag.getScreen(), inventory_equipment_panel_texture, (str(position_x),str(position_y)))
+                inventory_equipment_area_fragment = Panel_fragment(ui_frag.getScreen(), inventory_equipment_area_texture, (str(position_x+16),str(position_y+CELL_SIZE*3)))
+                #TODO: hacer que el area de estadísticas se muestre cuando se presiona el botón correspondiente
+                equipment_buttons = Ui_fragment(ui_frag.getScreen())
+                def openEquipmentArea():
+                    print('Equipment')
+                def openStatisticsArea():
+                    print('Statistics')
+                equipment_area_btn_frag_array[i].setOnClick(openEquipmentArea)
+                equipment_area_btn_frag_array[i].set_position((position_x+16,position_y+16))
+                print(equipment_area_btn_frag_array[i].get_position())
+                text_button = Text_area_fragment(equipment_area_btn_frag_array[i].getScreen(), 'Equipamiento', 20, (equipment_area_btn_frag_array[i].get_position().x+14,equipment_area_btn_frag_array[i].get_position().y+8))
+                equipment_buttons.add_fragment(equipment_area_btn_frag_array[i],text_button)
+                inventory_equipment_panel_fragment_group.add_fragment(inventory_equipment_panel_fragment,inventory_equipment_area_fragment,equipment_buttons)
+            inventory_fragment.add_fragment(inventory_equipment_panel_fragment_group)
+
+
         # RENDER GAME HERE
         if furniture_animation_update_time >= MAX_FURNITURE_ANIMATION_FPS:
             current_sprite_anim += 1
@@ -224,20 +288,17 @@ while True:
         #triggers de enemigos
         Triggers.drawEnemyTriggersActive(screen,players_list,enemy_list)
 
+
         # Dibujar vistas
         drawViews(players_list, screen)
 
         # * Interfaz de usuario
-        for player in players_list:
-            player.drawGUI()
-
         Gui_fragment_group.drawListFragments()
 
-    pygame.display.flip() # actulizar solo los cambios
+    pygame.display.flip()  # actualizar los cambios
     #  pygame.display.flip() la pantalla para poner su trabajo en la pantalla ->actualiza toda la pantalla, es lo mismo que update()
     clock.tick(MAX_FPS)  # limito el FPS a 60
-    
-    iteration+=1
-     # incremento el temporizador
+
+    # incremento el temporizador
     player_update_time += 1
     furniture_animation_update_time += 1
