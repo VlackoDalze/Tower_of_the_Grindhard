@@ -1,16 +1,17 @@
 import pygame
 from sys import exit
 import scripts.setting as setting
-from scripts.jugador import Jugador
+#from scripts.jugador import Jugador
 from scripts.collider_matrix_maker import get_collider_matrix, get_animated_decorations_matrix
 from scripts.torch import Torch
 from scripts.players_views import Views
 from scripts.ui_fragment import Ui_fragment, Complex_fragment, Panel_fragment, Text_area_fragment, Button_fragment
 from scripts.music import Music
 from scripts.menu import Menu
-from scripts.shadows import Shadows
+#from scripts.shadows import Shadows
 from scripts.triggers import Triggers
 from scripts.shadowsv2 import Shadows2
+from scripts.enemigo import Enemy
 # Inicio el programa
 pygame.init()
 pygame.mixer.init()
@@ -207,6 +208,9 @@ while True:
         for player in players_list:
             player.draw()
             
+        #dibujo de enemigos
+       
+        Enemy(screen,'Esqueleto',None,1,None,None,None,20*CELL_SIZE,18*CELL_SIZE,scene_level).drawEnemy()
         # dibujo sombras
         #Shadows.drawShadows(screen, players_list,scene_level)
         Shadows2.drawShadows2(players_list,list_torch)

@@ -155,7 +155,7 @@ class Shadows2(object):
         Shadows2.drawDinamicShadows()
                   
     def drawDinamicShadows():
-        
+            
         for s in Shadows2.list_of_shadows:
             aux=s.split('-')
             Shadows2.shadow.set_alpha(250)
