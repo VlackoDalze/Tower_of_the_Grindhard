@@ -10,6 +10,7 @@ SCREEN_HEIGHT = setting.SCREEN_HEIGHT
 letter_style = "assets/font/Silver.ttf"
 image = 'assets/dungeon/chest_2_open.png'
 font='assets/dungeon/floor/sandstone_floor_0.png'
+icon="assets/misc/error.png"
 color=(255, 255, 255)     
 
 
@@ -59,39 +60,48 @@ class Triggers():
     def setCountPlayers(numPlayers):
         Triggers.countPlayersNextScene =numPlayers
        
+    def drawEnemyTriggersActive(screen,playerslist,enemylist):
+        
+        aux_lis_enemy_triggers=[]
+        
+        for player in playerslist:#jugador
+            for enemy in enemylist:#enemigo
+                if player.getPositionX()-CELL_SIZE== enemy.getPositionX() and player.getPositionY() == enemy.getPositionY()\
+                    or player.getPositionX()+CELL_SIZE== enemy.getPositionX() and player.getPositionY() == enemy.getPositionY()\
+                        or player.getPositionX()==  enemy.getPositionX() and player.getPositionY()-CELL_SIZE == enemy.getPositionY()\
+                            or player.getPositionX()==  enemy.getPositionX() and player.getPositionY()+CELL_SIZE == enemy.getPositionY():
+                                if str(enemy.getPositionX())+"-"+str(enemy.getPositionY()) not in aux_lis_enemy_triggers:
+                        
+                                    image=pygame.image.load(icon)   
+                                    image=pygame.transform.scale(image, (CELL_SIZE/2,CELL_SIZE/2))  
+                                    screen.blit(image,(enemy.getPositionX()+CELL_SIZE/4,enemy.getPositionY()-CELL_SIZE/2))  
+                                    aux_lis_enemy_triggers.append(str(enemy.getPositionX())+"-"+str(enemy.getPositionY()))
 
+            
     def drawListTriggersActive(screen:pygame.Surface):
         font_size = 20
         textoFont = pygame.font.Font(letter_style, font_size) 
-       
-        size_messageOpen=120
-        size_messageExit=90
-        centerx_text=size_messageOpen/3
-        centerx_text2=size_messageExit/3
+        letter_size=CELL_SIZE*2/11 #tamaño en px de una letra
+        size_messageOpen=6*letter_size #numero de letras de la palabra
+        size_messageExit=15*letter_size
         centery_text=CELL_SIZE/2
         
         for triggers  in  Triggers.listTriggersScreen  : 
             aux=triggers.split('-')
             
             if not (triggers == Triggers.ActionNextScene):
-                newMessage="Desea abrir el cofre?"
-                if float(aux[0])-centerx_text<0:
-                    centerx_text=CELL_SIZE
-                if float(aux[0])-centerx_text>=SCREEN_WIDTH-size_messageOpen:
-                    centerx_text=CELL_SIZE/2
-                position = (str(float(aux[0])-centerx_text),str(float(aux[1])-centery_text))
+                newMessage="Abrir?"
+                if float(aux[0])+size_messageOpen>=SCREEN_WIDTH-size_messageOpen:
+                    aux[0]=SCREEN_WIDTH-size_messageOpen
+                position = (str(float(aux[0])),str(float(aux[1])-centery_text))
                 ui_fragment.Text_area_fragment(screen, newMessage, font_size, position,(200,100)).draw()
 
             else:
                 newMessage="Esperando..."  + str( Triggers.numPlayersReady)+"/"+str( Triggers.countPlayersNextScene)
-                if float(aux[0])-centerx_text2<0:
-                    centerx_text2=CELL_SIZE
-                if float(aux[0])-centerx_text2>=SCREEN_WIDTH-size_messageExit:
-                    centerx_text2+=CELL_SIZE
-                position = (str(float(aux[0])-centerx_text2),str(float(aux[1])-centery_text))
+                if float(aux[0])+size_messageExit>=SCREEN_WIDTH-size_messageExit:
+                    aux[0]=SCREEN_WIDTH-size_messageExit
+                position = (str(float(aux[0])),str(float(aux[1])-centery_text))
                 ui_fragment.Text_area_fragment(screen, newMessage, font_size, position,(200,100)).draw()
-
-            centerx_text=size_messageOpen/3
 
         if  len(Triggers.listTriggersActivated)>0:
             for chest in Triggers.listTriggersActivated:

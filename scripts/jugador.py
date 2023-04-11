@@ -3,6 +3,7 @@ from scripts.setting import SILVER_MEDIUM_FONT
 import pygame
 from scripts.collider_matrix_maker import get_collider_matrix
 from scripts.triggers import Triggers
+from scripts.enemigo import collision_enemy
 WHITE = (255, 255, 255)
 
 
@@ -18,7 +19,10 @@ class Jugador(Personaje):
         self.raza = raza
 
         self.scene_level=scene_level
-        
+        self.rigth=False
+        self.left=False
+        self.up=False
+        self.down=False
         self.inventory = [
             [1, 1, 1, 1, 1, 1, 1],
             [1, 1, 1, 1, 1, 1, 1]
@@ -67,9 +71,22 @@ class Jugador(Personaje):
 
     def getId(self):
         return self.id
-
+    
     def getScreen(self):
         return self.screen
+
+    def getScene(self):
+        return self.scene_level
+    
+    def getDirectionMove(self):
+        if self.rigth:
+            return 'right'
+        elif self.left:
+            return 'left'
+        elif self.up:
+            return 'up'
+        else:
+            return 'down'
 
     def move(self, event, assignedKeys):
         # *Area de controles
@@ -85,15 +102,33 @@ class Jugador(Personaje):
 
         if event.type == pygame.KEYDOWN and event.key == listaKeys[assignedKeys][0]:
             aux_x  -=movement_speed  
+            self.left=True
+            self.rigth=False
+            self.up=False
+            self.down=False
             # self.posicionX -= movement_speed
         if  event.type == pygame.KEYDOWN and event.key == listaKeys[assignedKeys][1]:
             aux_x  += movement_speed
+            self.left=False
+            self.rigth=True
+            self.up=False
+            self.down=False
             # self.posicionX += movement_speed
         if  event.type == pygame.KEYDOWN and event.key == listaKeys[assignedKeys][2]:
             aux_y-=movement_speed
+            self.left=False
+            self.rigth=False
+            self.up=True
+            self.down=False
+            
             # self.posicionY -= movement_speed
         if  event.type == pygame.KEYDOWN and event.key == listaKeys[assignedKeys][3]:
             aux_y+=movement_speed
+            self.left=False
+            self.rigth=False
+            self.up=False
+            self.down=True
+            
             # self.posicionY += movement_speed      
         # if  event.type == pygame.KEYDOWN and event.key == pygame.K_i:  # Inventario
         #     self.toggleInventory()
@@ -103,8 +138,8 @@ class Jugador(Personaje):
         #     self.toggleSetting()
 
         colisiones = drawCollider(super().getCellSize(),self.scene_level)
-        
-        if str(aux_x)+"-"+str(aux_y) not in colisiones:
+
+        if str(aux_x)+"-"+str(aux_y) not in colisiones and str(aux_x)+"-"+str(aux_y) not in collision_enemy:
             self.posicionX = aux_x
             self.posicionY = aux_y
             self.rect.x = aux_x

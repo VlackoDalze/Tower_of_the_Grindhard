@@ -1,15 +1,17 @@
 import pygame
 from sys import exit
 import scripts.setting as setting
-from scripts.jugador import Jugador
+#from scripts.jugador import Jugador
 from scripts.collider_matrix_maker import get_collider_matrix, get_animated_decorations_matrix
 from scripts.torch import Torch
 from scripts.players_views import Views, viewsPositions
 from scripts.ui_fragment import *
 from scripts.music import Music
 from scripts.menu import Menu
-from scripts.shadows import Shadows
+#from scripts.shadows import Shadows
 from scripts.triggers import Triggers
+from scripts.shadowsv2 import Shadows2
+from scripts.enemigo import Enemy
 # Inicio el programa
 pygame.init()
 pygame.mixer.init()
@@ -166,6 +168,7 @@ def draw_list_torch(list_torch, current_sprite_anim):
     for torch in list_torch:
         if isinstance(torch, Torch):
             torch.drawTorch(current_sprite_anim)
+            
 
 
 # obtengo la lista de objetos del mapa que tengan animación y la guardo en la variable list_torch
@@ -180,6 +183,7 @@ furniture_animation_update_time = 0
 list_shadows = []
 # lista jugadores
 players_list = []
+enemy_list = []
 # posicion del circulo cursor
 memoryPositionCircle = 0
 background_music = Music(setting.musics_url_list)
@@ -268,12 +272,22 @@ while True:
         # Dibujo al jugador
         for player in players_list:
             player.draw()
-
+            
+        #dibujo de enemigos
+        #esto se puede mejorar luego para no ocupar tanto espacio en el main
+        enemy1=Enemy(screen,'Esqueleto',None,1,None,None,None,20*CELL_SIZE,18*CELL_SIZE,scene_level)
+        enemy1.drawEnemy()
+        if enemy1 not in enemy_list:
+            enemy_list.append(enemy1)
+            
         # dibujo sombras
-        Shadows.drawShadows(screen, players_list, scene_level)
-
-        # draw triggers deben hacer antes de las vistas
+        #Shadows.drawShadows(screen, players_list,scene_level)
+        Shadows2.drawShadows2(players_list,list_torch)
+        #draw triggers deben hacer antes de las vistas
         Triggers.drawListTriggersActive(screen)
+        #triggers de enemigos
+        Triggers.drawEnemyTriggersActive(screen,players_list,enemy_list)
+
 
         # Dibujar vistas
         drawViews(players_list, screen)

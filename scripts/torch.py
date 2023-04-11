@@ -18,7 +18,12 @@ class Torch(pygame.sprite.Sprite):
         # self.current_torch = 0
         self.pos_x = pos_x
         self.pos_y = pos_y
-
+        
+    def getX(self):
+        return self.pos_x* setting.CELL_SIZE
+    def getY(self):
+        return self.pos_y* setting.CELL_SIZE
+    
     def drawTorch(self, current_torch: int):
         self.screen.blit(self.torch_sprites[current_torch], (self.pos_x *
                                                              setting.CELL_SIZE, self.pos_y*setting.CELL_SIZE))
