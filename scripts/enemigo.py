@@ -14,6 +14,7 @@ font='assets/dungeon/floor/sandstone_floor_0.png'
 color=(255, 255, 255)    
 texture_enemy=[["Esqueleto1","assets/monster/undead/skeletons/skeleton_humanoid_small_old.png"],
                ["Esqueleto2","assets/monster/undead/skeletons/skeleton_humanoid_small_new.png"]]
+collision_enemy=[]
 
 class Enemy():
     
@@ -41,7 +42,14 @@ class Enemy():
         self.posicionY = posicionY
         self.scene_level = scene_level
         self.nivel=nivel
-        
+
+
+    def getPositionX(self):
+        return self.posicionX
+
+    def getPositionY(self ):
+        return self.posicionY   
+    
     def drawEnemy(self):
         
         enemy=pygame.Surface((CELL_SIZE,CELL_SIZE))
@@ -61,4 +69,13 @@ class Enemy():
             Enemy.iteration+=1
         else:
             Enemy.iteration=0
+
+        if str(self.posicionX) +"-"+ str(self.posicionY) not in collision_enemy:
+            collision_enemy.append(str(self.posicionX) +"-"+ str(self.posicionY))
+
+    
+         
+                
+        
+        
              
