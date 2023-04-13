@@ -51,18 +51,19 @@ class Views:
         positiony=Views.varListforViews[num_view][3]
         POSITIONX_PREV=Views.varListforViews[num_view][4]
         POSITIONY_PREV=Views.varListforViews[num_view][5]
-
-         #h 704, w 1056
+        centerx=CELL_SIZE*4.5
+        centery=CELL_SIZE*2
+        #h 704, w 1056
         # al crear al personaje se pasan dos parametros x=3 y y=19
         if(Views.DEFAULT_X_PLAYER==0 and Views.DEFAULT_Y_PLAYER==0):
             Views.DEFAULT_X_PLAYER=positionx/CELL_SIZE
             Views.DEFAULT_Y_PLAYER=positiony/CELL_SIZE
             
-        miny=Views.heightView-(CELL_SIZE*(SCREEN_HEIGHT/CELL_SIZE-Views.DEFAULT_Y_PLAYER)) #256 ->altura/2-((total celdas - celdas por defecto)*tamaño de celda)
-        maxy=CELL_SIZE*(Views.DEFAULT_Y_PLAYER-1) #576  ->tamaño de celda *(celdas por defecto -1) -> se le resta el tamaño de la imagen del jugador
+        miny=Views.heightView-(CELL_SIZE*(SCREEN_HEIGHT/CELL_SIZE-Views.DEFAULT_Y_PLAYER))-centery #256 ->altura/2-((total celdas - celdas por defecto)*tamaño de celda)
+        maxy=CELL_SIZE*(Views.DEFAULT_Y_PLAYER-1)-centery #576  ->tamaño de celda *(celdas por defecto -1) -> se le resta el tamaño de la imagen del jugador
         
-        minx=(Views.DEFAULT_X_PLAYER+1) *CELL_SIZE #128  ->(celdas por defecto +1)*tamaño de celda -> se le suma el tamaño de la imagen
-        maxx=Views.widthView + ((Views.DEFAULT_X_PLAYER*CELL_SIZE) -CELL_SIZE/2) #608  ->ancho/2+((celdas por defecto * tamaño de celda)-tamaño de celda/2) -> se resta 16 porque 1056/32=33 es impar
+        minx=(Views.DEFAULT_X_PLAYER+1) *CELL_SIZE+centerx #128  ->(celdas por defecto +1)*tamaño de celda -> se le suma el tamaño de la imagen
+        maxx=Views.widthView + ((Views.DEFAULT_X_PLAYER*CELL_SIZE) -CELL_SIZE/2) +centerx#608  ->ancho/2+((celdas por defecto * tamaño de celda)-tamaño de celda/2) -> se resta 16 porque 1056/32=33 es impar
 
         
         if positiony>=miny and positiony<=maxy:
@@ -84,7 +85,7 @@ class Views:
             basex=0
         elif positionx>maxx:
             basex=Views.widthView
-      
+
         POSITIONX_PREV=positionx
         POSITIONY_PREV=positiony
         Views.varListforViews[num_view][0]=basex
@@ -121,7 +122,9 @@ class Views:
                 self.screen.blit(view, viewsPositions[0])#es la vista
                 
             elif self.numPlayers==2: 
-                
+                aux_transform_x=SCREEN_WIDTH/2 
+                aux_transform_y=SCREEN_HEIGHT/2
+                aux_center_recorte=CELL_SIZE*4.5
                 view = pygame.Surface(self.sizePlayer)
                 view2 = pygame.Surface(self.sizePlayer)
                 
@@ -132,28 +135,30 @@ class Views:
                     
                 Views.varListforViews[0][2] = self.playerList[0].getPositionX()  
                 Views.varListforViews[0][3] = self.playerList[0].getPositionY() 
-                   
+
                 Views.varListforViews[1][2] = self.playerList[1].getPositionX()  
                 Views.varListforViews[1][3] = self.playerList[1].getPositionY()
                 
                 recorte= self.screen.subsurface( Views.movCamera(0))
                 recorte2= self.screen.subsurface( Views.movCamera(1))
                 
-                recorte= pygame.transform.scale(recorte, viewsSizes[1]) #redimiension
-                recorte2= pygame.transform.scale(recorte2, viewsSizes[1]) #redimiension
+                recorte= pygame.transform.scale(recorte, (aux_transform_x,aux_transform_y)) #redimiension
+                recorte2= pygame.transform.scale(recorte2, (aux_transform_x,aux_transform_y)) #redimiension
                     
-                view.blit(recorte, (0,0))#es el relleno de la vista
-                view2.blit(recorte2, (0,0))#es el relleno de la vista 
-                 
+                view.blit(recorte, (0,aux_center_recorte))#es el relleno de la vista
+                view2.blit(recorte2, (0,aux_center_recorte))#es el relleno de la vista 
+
                 self.screen.blit(view, viewsPositions[0])#es la vista  
-                self.screen.blit(view2, viewsPositions[1])#es la vista  
-               
+                self.screen.blit(view2, viewsPositions[1])#es la vista 
+
+                Views.marginView(self.screen, 2)
+                
             elif self.numPlayers==3:
                 
                 view = pygame.Surface(self.sizePlayer)
                 view2 = pygame.Surface(self.sizePlayer)
                 view3 = pygame.Surface(self.sizePlayer)
-                
+
                 if (Views.varListforViews[0][4]== 0 and Views.varListforViews[0][5]==0 ) :
                     Views.createXandYprev( self.playerList[0],0)
                 if (Views.varListforViews[1][4]== 0 and Views.varListforViews[1][5]==0 ) :
@@ -163,7 +168,7 @@ class Views:
                     
                 Views.varListforViews[0][2] = self.playerList[0].getPositionX()  
                 Views.varListforViews[0][3] = self.playerList[0].getPositionY()  
-                  
+
                 Views.varListforViews[1][2] = self.playerList[1].getPositionX()  
                 Views.varListforViews[1][3] = self.playerList[1].getPositionY()
                 
@@ -174,10 +179,10 @@ class Views:
                 recorte2= self.screen.subsurface(Views.movCamera(1))
                 recorte3= self.screen.subsurface(Views.movCamera(2))
                 
-                recorte= pygame.transform.scale(recorte, viewsSizes[2]) #redimiension
-                recorte2= pygame.transform.scale(recorte2, viewsSizes[2]) #redimiension
-                recorte3= pygame.transform.scale(recorte3, viewsSizes[2]) #redimiension
-               
+                recorte= pygame.transform.scale(recorte, viewsSizes[2]) #re-dimensiono
+                recorte2= pygame.transform.scale(recorte2, viewsSizes[2]) #re-dimensiono
+                recorte3= pygame.transform.scale(recorte3, viewsSizes[2]) #re-dimensiono
+
                 view.blit(recorte, (0,0))
                 view2.blit(recorte2, (0,0))
                 view3.blit(recorte3, (0,0))
@@ -187,6 +192,8 @@ class Views:
                 self.screen.blit(view2, viewsPositions[1])#es la vista
                 self.screen.blit(view3, viewsPositions[2])#es la vista
                 self.screen.blit(view4, viewsPositions[3])#ventana negra
+
+                Views.marginView(self.screen, 3)
                 
             elif self.numPlayers==4:
                 
@@ -235,6 +242,16 @@ class Views:
                 self.screen.blit(view2, viewsPositions[1])#es la vista
                 self.screen.blit(view3, viewsPositions[2])#es la vista
                 self.screen.blit(view4, viewsPositions[3])#ventana negra
-                    
+
+                Views.marginView(self.screen, 4)    
            
-           
+    def marginView(screen, numViews):
+        color_white=(255,255,255)   
+        if numViews==2:
+            pygame.draw.line(screen,color_white,(SCREEN_WIDTH/2,0),(SCREEN_WIDTH/2,SCREEN_HEIGHT),3)
+        if numViews>2:
+            pygame.draw.line(screen,color_white,(SCREEN_WIDTH/2,0),(SCREEN_WIDTH/2,SCREEN_HEIGHT),3)
+            pygame.draw.line(screen,color_white,(0,SCREEN_HEIGHT/2),(SCREEN_WIDTH,SCREEN_HEIGHT/2),3)    
+
+   
+ 

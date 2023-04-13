@@ -33,6 +33,9 @@ class Personaje(pygame.sprite.Sprite):
 
     def getPositionY(self):
         return self.posicionY
+
+    def getScreen(self):
+        return self.screen
     
     # recibe ataque es un array con dos valores el daño  y el tipo de daño
     def defender(self, recibeAtaque):
