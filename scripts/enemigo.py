@@ -33,28 +33,28 @@ class Enemy:
     def __init__(
         self,
         screen: pygame.Surface,
-        nombre: str,
-        descripcion: str,
-        nivel: int,
-        estadisticasBase: Statistics,
-        habilidadesActivas,
-        habilidadesPasivas,
-        posicionX: int,
-        posicionY: int,
+        name: str,
+        description: str,
+        level: int,
+        baseStatistics: Statistics,
+        activeAbilities,
+        passiveAbilities,
+        positionX: int,
+        positionY: int,
         scene_level,
     ):
         self.screen = screen
-        self.nombre = nombre
-        self.descripcion = descripcion
-        self.imagen = Enemy.searchEnemy(nombre)
-        self.estadisticasBase = estadisticasBase
-        self.habilidadesActivas = habilidadesActivas
-        self.habilidadesPasivas = habilidadesPasivas
-        self.posicionX = posicionX
-        self.habilidadesActivas = habilidadesActivas
-        self.posicionY = posicionY
+        self.name = name
+        self.description = description
+        self.image = Enemy.searchEnemy(name)
+        self.baseStatistics = baseStatistics
+        self.activeAbilities = activeAbilities
+        self.passiveAbilities = passiveAbilities
+        self.positionX = positionX
+        self.activeAbilities = activeAbilities
+        self.positionY = positionY
         self.scene_level = scene_level
-        self.nivel = nivel
+        self.level = level
 
     def getPositionX(self):
         return self.posicionX
