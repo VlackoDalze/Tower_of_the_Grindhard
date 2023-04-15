@@ -184,7 +184,7 @@ while True:
         # if len(inventory_equipment_panel_fragment_group.get_fragment_list()) == 0:
         #     inventory_equipment_panel_fragment_group
         #     for i in range(len(players_list)):
-        #         position_x = viewsPositions[i][0]
+        #         position_x = videwsPositions[i][0]
         #         position_y = viewsPositions[i][1]
         #         if ((i + 1) % 2) == 0:
         #             position_x *= 1.425

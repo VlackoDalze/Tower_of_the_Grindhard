@@ -36,9 +36,11 @@ class Gui_drawer(pygame.sprite.Sprite):
 
     # Inicializa los fragment necesarios
     def createGUI(self):
+        # *Mains
         self.master_gui_fragment = Ui_fragment(self.screen)  # Padre de todos
         self.default_gui_fragment = Ui_fragment(self.screen)
         self.inventory_fragment = Ui_fragment(self.screen)
+        self.inventory_slot_group_fragment = Ui_fragment(self.screen)
 
         self.inventory_bag_fragment = Panel_fragment(
             self.screen,
@@ -52,19 +54,30 @@ class Gui_drawer(pygame.sprite.Sprite):
             ("10%", "10%"),
             inventory_equipment_area_texture.get_size(),
         )
-        self.inventory_text_fragment = Text_area_fragment(
-            self.screen, "Inventario", 42, (CELL_SIZE * 14.5, -16.0), (0, 0)
+        self.inventory_text_fragment = Text_fragment(
+            self.screen, "Inventario", 42, (288, 16), (478, 64), WHITE
+        )
+        self.inventory_slot_fragment = Panel_fragment(
+            self.screen, inventory_slot, (0, 0)
         )
 
-        # self.inventory_slot_fragment = Interactable_fragment(
-        #     ui_frag.getScreen(), inventory_slot, ("0", "16")
-        # )
-
         self.master_gui_fragment.add_fragment(self.default_gui_fragment)
-
-        self.inventory_fragment.add_fragment(
-            self.inventory_bag_fragment, self.inventory_text_fragment
-        )  # Carga el inventory fragment
+        self.inventory_slot_group_fragment.add_fragment(
+            Ui_fragment.fragments_matrix_group_maker(
+                self.inventory_slot_fragment,
+                (
+                    self.inventory_bag_fragment.get_position().x + 24,
+                    self.inventory_bag_fragment.get_position().y + CELL_SIZE * 3,
+                ),
+                (11, 12),
+                (0, 0, 8, 8),
+            )
+        )
+        self.inventory_fragment.add_fragment(  # Carga el inventory fragment
+            self.inventory_bag_fragment,
+            self.inventory_text_fragment,
+            self.inventory_slot_group_fragment,
+        )
 
     def createGUI_array(self, size: int = 1):
         self.equipment_statistics_fragment_array = []
