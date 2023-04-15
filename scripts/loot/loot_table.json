@@ -1,0 +1,50 @@
+{
+    "CHEST": {
+        "NORMAL": {
+            "rolls":{
+                "min": 3,
+                "max": 10
+            },
+            "entries": [],
+            "rules": {
+                "weapons": {
+                    "amount": 5,
+                    "max_total_weight": 60
+                },
+                "armours": {
+                    "amount": 10,
+                    "max_total_weight": 60
+                },
+                "potions": {
+                    "amount": 3,
+                    "max_total_weight": 60
+                }
+            }  
+        }
+    },
+    "ENEMY": [
+        {
+            "ESKELETONS": {
+                "rolls":{
+                    "min": 1,
+                    "max": 6
+                },
+                "entries": [],
+                "rules": {
+                    "weapons": {
+                        "amount": 10,
+                        "max_total_weight": 60
+                    },
+                    "armours": {
+                        "amount": 3,
+                        "max_total_weight": 60
+                    },
+                    "potions": {
+                        "amount": 5,
+                        "max_total_weight": 60
+                    }
+                }  
+            }
+        }
+    ]
+}
