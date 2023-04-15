@@ -50,26 +50,26 @@ class Enemy:
         self.baseStatistics = baseStatistics
         self.activeAbilities = activeAbilities
         self.passiveAbilities = passiveAbilities
-        self.positionX = positionX
         self.activeAbilities = activeAbilities
+        self.positionX = positionX
         self.positionY = positionY
         self.scene_level = scene_level
         self.level = level
 
     def getPositionX(self):
-        return self.posicionX
+        return self.positionX
 
     def getPositionY(self):
-        return self.posicionY
+        return self.positionY
 
     def drawEnemy(self):
         enemy = pygame.Surface((CELL_SIZE, CELL_SIZE))
         fondo = pygame.image.load(font)
-        image = pygame.image.load(self.imagen[Enemy.index_animation])
+        image = pygame.image.load(self.image[Enemy.index_animation])
         # mix2=pygame.image.load(self.imagen[1])
         enemy.blit(fondo, (0, 0))
         enemy.blit(image, (0, 0))
-        self.screen.blit(enemy, (self.posicionX, self.posicionY))
+        self.screen.blit(enemy, (self.positionX, self.positionY))
 
         if Enemy.iteration >= 100:
             Enemy.index_animation = 1
@@ -81,5 +81,5 @@ class Enemy:
         else:
             Enemy.iteration = 0
 
-        if str(self.posicionX) + "-" + str(self.posicionY) not in collision_enemy:
-            collision_enemy.append(str(self.posicionX) + "-" + str(self.posicionY))
+        if str(self.positionX) + "-" + str(self.positionY) not in collision_enemy:
+            collision_enemy.append(str(self.positionX) + "-" + str(self.positionY))
