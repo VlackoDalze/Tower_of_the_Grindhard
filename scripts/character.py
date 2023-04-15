@@ -72,3 +72,10 @@ class Character(pygame.sprite.Sprite):
 
     def deactivatePassives(self):
         UniquePassive(self.passiveAbilities).deactivate()
+
+class Race:
+    # constructor
+    def __init__(self, name, statistics, passives):
+        self.name = name
+        self.statistics = statistics
+        self.passives = passives

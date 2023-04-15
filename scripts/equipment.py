@@ -16,7 +16,7 @@ class Weapon(Equipment):
         super().__init__(name, description)
         self.is_primary = is_primary
 
-class Armor(Equipment):
+class Armour(Equipment):
     def __init__(self, name, description, defense_type):
         super().__init__(name, description)
         self.defense_type = defense_type

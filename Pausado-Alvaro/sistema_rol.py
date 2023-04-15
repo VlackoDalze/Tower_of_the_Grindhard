@@ -1,4 +1,4 @@
-from razas.raza import Raza
+from scripts.character import Race
 class Sistema_Rol:
     # lista de jugadores
     jugadores = []
@@ -15,7 +15,7 @@ class Sistema_Rol:
         #turno de ??
         turno_segun_velocidad = miembros_totales[0]
         for miembro in miembros_totales:
-            if Raza(miembro).getVelocidad() > Raza(turno_segun_velocidad).getVelocidad():
+            if Race(miembro).getVelocidad() > Race(turno_segun_velocidad).getVelocidad():
                 turno_segun_velocidad = miembro
         #retorna el miembro segun la velocidad
         return turno_segun_velocidad
