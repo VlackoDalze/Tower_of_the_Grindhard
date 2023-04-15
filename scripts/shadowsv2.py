@@ -135,7 +135,7 @@ class Shadows2(object):
         
         if len(Shadows2.list_of_shadows)==0 and not Shadows2.onShadows:
             Shadows2.screen=players_list[0].getScreen()
-            Shadows2.scene=players_list[0].getScene()
+            Shadows2.scene=players_list[0].getSceneLevel()
             Shadows2.drawAllShadows(Shadows2.scene)
             Shadows2.onShadows=False
             
@@ -151,9 +151,9 @@ class Shadows2(object):
                 p_ejey=player.getPositionY() 
                 aux=str(p_ejex)+"-"+str(p_ejey)
                 Shadows2.iluminationArea(aux,True)
-  
+
         Shadows2.drawDinamicShadows()
-                  
+
     def drawDinamicShadows():
             
         for s in Shadows2.list_of_shadows:

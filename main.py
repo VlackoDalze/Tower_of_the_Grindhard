@@ -2,7 +2,6 @@ import pygame
 from sys import exit
 import scripts.setting as setting
 
-# from scripts.jugador import Jugador
 from scripts.collider_matrix_maker import (
     get_collider_matrix,
     get_animated_decorations_matrix,

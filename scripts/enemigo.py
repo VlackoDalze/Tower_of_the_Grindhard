@@ -1,8 +1,8 @@
 
 import pygame
-from scripts.estadisticas import Estadisticas
+from scripts.statistics import Statistics
 import scripts.setting as setting
-from scripts.habilidad_pasiva_unica import PasivaUnica
+from scripts.unique_passive import UniquePassive
 
 # Variables statics
 CELL_SIZE = setting.CELL_SIZE
@@ -28,7 +28,7 @@ class Enemy():
         return animation_enemy
     
     #constructor
-    def __init__(self, screen: pygame.Surface, nombre: str, descripcion: str,nivel:int, estadisticasBase: Estadisticas, habilidadesActivas, habilidadesPasivas, posicionX:int, posicionY:int,scene_level):
+    def __init__(self, screen: pygame.Surface, nombre: str, descripcion: str,nivel:int, estadisticasBase: Statistics, habilidadesActivas, habilidadesPasivas, posicionX:int, posicionY:int,scene_level):
 
         self.screen = screen
         self.nombre = nombre
