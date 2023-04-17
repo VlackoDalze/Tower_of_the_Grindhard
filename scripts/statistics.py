@@ -94,17 +94,20 @@ class Statistics:
         self.speed = speed
 
     def toString(self):
-        statsString = """Health: {}
-        Mana: {}
-        Physical attack: {}
-        Magical attack: {}
-        Physical defense: {}
-        Magical defense: {}
-        Precision: {}
-        Evasion: {}
-        Crit probability: {}
-        Crit multiplier: {}
-        Speed: {}""".format(
+        statsString = (
+        "\n"
+        "Health: {}\n"
+        "Mana: {}\n"
+        "Physical attack: {}\n"
+        "Magical attack: {}\n"
+        "Physical defense: {}\n"
+        "Magical defense: {}\n"
+        "Precision: {}\n"
+        "Evasion: {}\n"
+        "Crit probability: {}\n"
+        "Crit multiplier: {}\n"
+        "Speed: {}"
+    ).format(
             self.getHealth(),
             self.getMana(),
             self.getPhysicalAttack(),
@@ -117,3 +120,4 @@ class Statistics:
             self.getCritMultiplier(),
             self.getSpeed(),
         )
+        return statsString

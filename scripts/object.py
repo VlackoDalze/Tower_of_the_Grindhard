@@ -8,6 +8,23 @@ class Object(pygame.sprite.Sprite):
         self.name = name
         self.description = description
 
+    def getImage(self):
+        return self.image
+
+    def setImage(self, image):
+        self.image = image
+
+    def getName(self):
+        return self.name
+
+    def setName(self, name):
+        self.name = name
+
+    def getDescription(self):
+        return self.description
+
+    def setDescription(self, description):
+        self.description = description
 
 class Equipment(Object):
     def __init__(self, image, name, description, statistics: Statistics):

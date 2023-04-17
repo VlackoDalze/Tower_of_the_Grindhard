@@ -12,7 +12,7 @@ WHITE = (255, 255, 255)
 # Equipments for testing
 primary_weapon = PrimaryWeapon(texture_pack.normal_primary_weapon_warrior_texture,"Sword", "A sharp, deadly blade", Statistics())
 secondary_weapon = SecondaryWeapon(texture_pack.normal_secondary_weapon_warrior_texture,"Bow", "A ranged weapon for skilled marksmen", Statistics())
-armor = Armor(texture_pack.normal_armor_texture,"Chain-mail", "Protective armor made of interlocking metal rings", Statistics())
+armor = Armor(texture_pack.normal_armor_texture,"Chain-mail", "Protective armor made of interlocking metal rings", Statistics(200))
 glove = Glove(texture_pack.normal_glove_texture,"Leather Belt", "A sturdy belt to hold your pants up", Statistics())
 pants = Pants(texture_pack.normal_pants_texture,"Leather Pants", "Basic leather pants for protection", Statistics())
 helmet = Helmet(texture_pack.normal_headgear_texture,"Iron Helmet", "A heavy helmet to protect your head", Statistics())
