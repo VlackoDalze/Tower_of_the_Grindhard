@@ -1,7 +1,7 @@
 import pygame
 import scripts.setting as setting
 from scripts.player import Player
-from scripts.ui_fragment import Ui_fragment
+from scripts.ui_fragment import *
 
 # Variables statics
 CELL_SIZE = setting.CELL_SIZE
@@ -10,7 +10,7 @@ SCREEN_HEIGHT = setting.SCREEN_HEIGHT
 
 # intro de juego
 intro_setPlayers = [
-    "Bienvendo a ",
+    "Bienvenido a ",
     "Tower of the Grindhard",
     "desea empezar esta aventura",
     "sólo o acompañado?",
@@ -23,6 +23,10 @@ intro_setPlayers = [
 letter_style = "assets/font/Silver.ttf"
 # *Pointer texture
 pointer_texture = pygame.image.load("./assets/gui/pointer.png")
+background_image = pygame.image.load(
+    "./assets/gui/app_image/tower_of_the_grindhard_background_fhd.png"
+)
+button_texture = pygame.image.load("./assets/gui/inventory/inventory_button.png")
 # Definir el color que deseas multiplicar
 pointer_color = (245, 230, 100)
 
@@ -58,7 +62,9 @@ class Menu(object):
 
     def setPlayers(self, memoryPositionCircle):
         # fondo del menu necesario para se reinicie las textura de sobras
-        self.screen.fill((0, 0, 0))
+        Panel_fragment(
+            self.screen, background_image, (0, 0), (SCREEN_WIDTH, SCREEN_HEIGHT)
+        ).draw()
 
         letter_size = 15  # ancho de cada letra en px
         # centrar texto linea horizontal esta relacionado al tamaño de la letra importada
@@ -67,7 +73,7 @@ class Menu(object):
         height_center = SCREEN_HEIGHT / 4
         # tamaño de linea centrada en px
         line_size = (len(intro_setPlayers[0]) + len(intro_setPlayers[1])) * letter_size
-        # guarda la posicion del circulo o puntero de seleccion
+        # guarda la posicion del circulo o puntero de selección
         circle_y = memoryPositionCircle
         # letra importada desde font
         textoFont = pygame.font.Font(letter_style, 50)
@@ -75,7 +81,7 @@ class Menu(object):
         center_menu = 3
 
         text1 = textoFont.render(intro_setPlayers[0], 1, (255, 255, 255))
-        text2 = textoFont.render(intro_setPlayers[1], 1, (255, 0, 0))
+        text2 = textoFont.render(intro_setPlayers[1], 1, (255, 239, 16))
         text3 = textoFont.render(intro_setPlayers[2], 1, (255, 255, 255))
         text4 = textoFont.render(intro_setPlayers[3], 1, (255, 255, 255))
         text5 = textoFont.render(intro_setPlayers[4], 1, (255, 255, 255))
@@ -103,35 +109,74 @@ class Menu(object):
             ),
         )
 
-        self.screen.blit(
-            text5,
-            (
-                width_center + CELL_SIZE * 1.5 * center_menu,
-                height_center + CELL_SIZE * 5,
-            ),
-        )
-        self.screen.blit(
-            text6,
-            (
-                width_center + CELL_SIZE * 1.5 * center_menu,
-                height_center + CELL_SIZE * 6,
-            ),
-        )
-        self.screen.blit(
-            text7,
-            (
-                width_center + CELL_SIZE * 1.5 * center_menu,
-                height_center + CELL_SIZE * 7,
-            ),
-        )
-        self.screen.blit(
-            text8,
-            (
-                width_center + CELL_SIZE * 1.5 * center_menu,
-                height_center + CELL_SIZE * 8,
-            ),
-        )
+        # self.screen.blit(
+        #     text5,
+        #     (
+        #         width_center + CELL_SIZE * 1.5 * center_menu,
+        #         height_center + CELL_SIZE * 5,
+        #     ),
+        # )
+        # self.screen.blit(
+        #     text6,
+        #     (
+        #         width_center + CELL_SIZE * 1.5 * center_menu,
+        #         height_center + CELL_SIZE * 6,
+        #     ),
+        # )
+        # self.screen.blit(
+        #     text7,
+        #     (
+        #         width_center + CELL_SIZE * 1.5 * center_menu,
+        #         height_center + CELL_SIZE * 7,
+        #     ),
+        # )
+        # self.screen.blit(
+        #     text8,
+        #     (
+        #         width_center + CELL_SIZE * 1.5 * center_menu,
+        #         height_center + CELL_SIZE * 8,
+        #     ),
+        # )
+        button_group_fragment = Ui_fragment(self.screen)
+        button_player_array = []
+        text_player_array = []
 
+        def setPlayers1():
+            self.playersInGame(1)
+
+        def setPlayers2():
+            self.playersInGame(2)
+
+        def setPlayers3():
+            self.playersInGame(3)
+
+        def setPlayers4():
+            self.playersInGame(4)
+
+        setPlayers_array = [setPlayers1, setPlayers2, setPlayers3, setPlayers4]
+        for i in range(4):
+            position = Vector2(
+                width_center + CELL_SIZE * 1.5 * center_menu,
+                height_center + CELL_SIZE * (i + 5),
+            )
+            if i > 0:
+                position.y += 5 * i
+            area = (CELL_SIZE * 5, CELL_SIZE)
+            button_player_array.append(
+                Button_fragment(self.screen, button_texture, position, area)
+            )
+            text_player_array.append(
+                Text_fragment(self.screen, "Jugador " + str(i + 1), 15, position, area)
+            )
+
+        for i in range(len(button_player_array)):
+            button_player_array[i].setEventListener(self.event)
+            button_player_array[i].setOnClick(setPlayers_array[i])
+            button_group_fragment.add_fragment(
+                button_player_array[i], text_player_array[i]
+            )
+
+        button_group_fragment.drawListFragments()
         aux_circle_y = circle_y  # auxiliar para limites del eje y
 
         if self.event.type == pygame.KEYDOWN:

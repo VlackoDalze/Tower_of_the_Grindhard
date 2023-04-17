@@ -150,9 +150,6 @@ class Interactable_fragment(Complex_fragment):
         super().__init__(screen, ui_image, position)
         self.index = 0
 
-    def getPosition(self):
-        return self.position
-
     def draw(self):
         x, y = self.position.x, self.position.y
         self.screen.blit(self.ui_image, (x, y))
@@ -215,6 +212,9 @@ class Button_fragment(Complex_fragment):
     def setOnClick(self, onClick):
         self.onClick = onClick
 
+    def getArea(self):
+        return self.area
+
 
 class Text_fragment(Ui_fragment):
     def __init__(
@@ -234,17 +234,17 @@ class Text_fragment(Ui_fragment):
         self.area = Vector2(area[0], area[1])
         self.color = color
         self.show_text_area = show_text_area
-        #Establecemos la fuente del texto
+        # Establecemos la fuente del texto
         self.font = pygame.font.Font(SILVER_MEDIUM_FONT, self.size)
 
     def draw(self):
         text_surface = self.font.render(self.text, True, self.color)
         text_width, text_height = text_surface.get_size()
-        center_position_x = (self.position.x + (self.area.x/2)) - (text_width / 2)
-        center_position_y = (self.position.y + (self.area.y/2)) - (text_height / 3)
-        position_center = Vector2(center_position_x,center_position_y)
+        center_position_x = (self.position.x + (self.area.x / 2)) - (text_width / 2)
+        center_position_y = (self.position.y + (self.area.y / 2)) - (text_height / 3)
+        position_center = Vector2(center_position_x, center_position_y)
         self.screen.blit(text_surface, position_center)
-        #Show text area
+        # Show text area
         if self.show_text_area:
             self.draw_text_area()
 
@@ -269,11 +269,11 @@ class Text_fragment(Ui_fragment):
 
     def draw_text_area(self):
         pygame.draw.rect(
-                self.screen,
-                WHITE,
-                (self.position.x, self.position.y, self.area.x, self.area.y),
-                RECT_WIDTH,
-            )
+            self.screen,
+            WHITE,
+            (self.position.x, self.position.y, self.area.x, self.area.y),
+            RECT_WIDTH,
+        )
 
 
 class Text_area_fragment(Text_fragment):
@@ -286,14 +286,15 @@ class Text_area_fragment(Text_fragment):
         area: typing.Union[Vector2, typing.Tuple[int, int]] = (100, 100),
         global_color: typing.Union[Vector3, typing.Tuple[int, int, int]] = WHITE,
         show_text_area: bool = False,
-        margin=(0, 0, 0, 0)
+        margin=(0, 0, 0, 0),
     ):
-        super().__init__(screen, text, size, position, area, global_color,show_text_area)
+        super().__init__(
+            screen, text, size, position, area, global_color, show_text_area
+        )
         self.margin_left = margin[0]
         self.margin_top = margin[1]
         self.margin_right = margin[2]
         self.margin_bottom = margin[3]
-
 
     def draw(self):
         x, y = self.position.x, self.position.y

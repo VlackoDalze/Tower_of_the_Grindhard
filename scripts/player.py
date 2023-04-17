@@ -4,7 +4,19 @@ import pygame
 from scripts.collider_matrix_maker import get_collider_matrix
 from scripts.triggers import Triggers
 from scripts.enemigo import collision_enemy
+from scripts.equipment import *
+from scripts.statistics import Statistics
 WHITE = (255, 255, 255)
+
+# Equipments for testing
+primary_weapon = PrimaryWeapon("Sword", "A sharp, deadly blade", Statistics())
+secondary_weapon = SecondaryWeapon("Bow", "A ranged weapon for skilled marksmen", Statistics())
+armor = Armor("Chain-mail", "Protective armor made of interlocking metal rings", Statistics())
+belt = Belt("Leather Belt", "A sturdy belt to hold your pants up", Statistics())
+pants = Pants("Leather Pants", "Basic leather pants for protection", Statistics())
+helmet = Helmet("Iron Helmet", "A heavy helmet to protect your head", Statistics())
+shoes = Shoes("Leather Boots", "Sturdy boots for rough terrain", Statistics())
+cape = Cape("Cloak", "A dark cloak for stealthy movement", Statistics())
 
 
 class Player(Character):
@@ -21,32 +33,27 @@ class Player(Character):
         self.left = False
         self.up = False
         self.down = False
-        self.inventory = [
-            [1, 1, 1, 1, 1, 1, 1],
-            [1, 1, 1, 1, 1, 1, 1]
-        ]
-        self._pause = False
-        self._interfaceActive = True
-        self._inventoryActive = False
-        self._mapActive = False
-        self._settingActive = False
+        self.equipments={
+            PrimaryWeapon: primary_weapon,
+            SecondaryWeapon: secondary_weapon,
+            Armor: armor,
+            Belt: belt,
+            Pants: pants,
+            Helmet: helmet,
+            Shoes: shoes,
+            Cape: cape
+        }
 
     # Methods
 
-    def toggleBoolean(self, booleanValue:bool):
-        if booleanValue == False:
-            return True
-        else:
-            return False
-
-    def equip(self, item):
+    def equip(self, equipment:Equipment):
         self.equipment.append(item)
 
-    def addToInventory(self, item):
-        self.inventory.append(item)
+    def getEquipments(self):
+        return self.equipment
 
-    def removeFromInventory(self, item):
-        self.inventory.remove(item)
+    def setEquipments(self,equipment:Equipment):
+        self.equipment = equipment
 
     def getId(self):
         return self.id

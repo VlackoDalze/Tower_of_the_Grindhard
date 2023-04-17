@@ -39,6 +39,9 @@ clock = pygame.time.Clock()
 
 # Titulo de la pantalla
 pygame.display.set_caption("Tower of the Grindhard")
+pygame.display.set_icon(
+    pygame.image.load("assets/gui/app_image/tower_of_the_grindhard_icon.png")
+)
 
 # * Variables
 data_time = 0  # Se usa para los movimiento de físicas
@@ -65,7 +68,6 @@ def drawViews(players, screen):
 def drawCollider(map_collider_matriz):
     eje_x = 0  # eje x
     eje_y = 0  # eje y
-
     for row in map_collider_matriz:
         for column in row:
             if column == "1":  # Muro
@@ -142,24 +144,14 @@ while True:
             pygame.quit()
             exit()
         gui_drawer.setEventListener(event)
-        # button_fragment.setEventListener(event)
         # menu previo a las vistas
         if len(players_list) == 0:
             memoryPositionCircle = Menu(
                 players_list, player_texture, screen, event, scene_level
             ).setPlayers(memoryPositionCircle)
-
-        # for i in range(0, len(players_list)):
-        #     if len(equipment_area_btn_frag_array) < len(players_list):
-        #         equipment_area_btn_frag_array.append(
-        #             Button_fragment(
-        #                 screen,
-        #                 inventory_btn_texture,
-        #                 (0, 0),
-        #                 (CELL_SIZE * 3, CELL_SIZE),
-        #             )
-        #         )
-        #     equipment_area_btn_frag_array[i].setEventListener(event)
+            numPlayers = len(players_list)
+            if numPlayers > 0:
+                gui_drawer.createGUI_array(numPlayers)
 
         else:  # vistas
             Triggers.setCountPlayers(len(players_list))
@@ -180,58 +172,6 @@ while True:
 
     # Cuando ya hay jugadores en la lista continua con los dibujados
     if len(players_list) > 0:  # primero debes definir el numero de jugadores
-        # if len(inventory_equipment_panel_fragment_group.get_fragment_list()) == 0:
-        #     inventory_equipment_panel_fragment_group
-        #     for i in range(len(players_list)):
-        #         position_x = videwsPositions[i][0]
-        #         position_y = viewsPositions[i][1]
-        #         if ((i + 1) % 2) == 0:
-        #             position_x *= 1.425
-        #         position_x += 32
-        #         position_y += 16
-        #         inventory_equipment_panel_fragment = Panel_fragment(
-        #             ui_frag.getScreen(),
-        #             inventory_equipment_panel_texture,
-        #             (str(position_x), str(position_y)),
-        #         )
-        #         inventory_equipment_area_fragment = Panel_fragment(
-        #             ui_frag.getScreen(),
-        #             inventory_equipment_area_texture,
-        #             (str(position_x + 16), str(position_y + CELL_SIZE * 3)),
-        #         )
-        #         # TODO: hacer que el area de estadísticas se muestre cuando se presiona el botón correspondiente
-        #         equipment_buttons = Ui_fragment(ui_frag.getScreen())
-
-        #         def openEquipmentArea():
-        #             print("Equipment")
-
-        #         def openStatisticsArea():
-        #             print("Statistics")
-
-        #         equipment_area_btn_frag_array[i].setOnClick(openEquipmentArea)
-        #         equipment_area_btn_frag_array[i].set_position(
-        #             (position_x + 16, position_y + 16)
-        #         )
-        #         print(equipment_area_btn_frag_array[i].get_position())
-        #         text_button = Text_area_fragment(
-        #             equipment_area_btn_frag_array[i].getScreen(),
-        #             "Equipamiento",
-        #             20,
-        #             (
-        #                 equipment_area_btn_frag_array[i].get_position().x + 14,
-        #                 equipment_area_btn_frag_array[i].get_position().y + 8,
-        #             ),
-        #         )
-        #         equipment_buttons.add_fragment(
-        #             equipment_area_btn_frag_array[i], text_button
-        #         )
-        #         inventory_equipment_panel_fragment_group.add_fragment(
-        #             inventory_equipment_panel_fragment,
-        #             inventory_equipment_area_fragment,
-        #             equipment_buttons,
-        #         )
-        #     inventory_fragment.add_fragment(inventory_equipment_panel_fragment_group)
-
         # RENDER GAME HERE
         if furniture_animation_update_time >= MAX_FURNITURE_ANIMATION_FPS:
             current_sprite_anim += 1
@@ -239,7 +179,7 @@ while True:
                 current_sprite_anim = 0
             furniture_animation_update_time = 0
 
-        # dibujo el mapa
+        # dibujo el mapa según el nombre de la escena(nivel de piso)
         drawMap(scene_level)
 
         # dibujo las colisiones en el mapa a partir de una matriz (Solo para pruebas)
@@ -253,7 +193,7 @@ while True:
             player.draw()
 
         # dibujo de enemigos
-        # esto se puede mejorar luego para no ocupar tanto espacio en el main
+        # TODO: Mejorar luego para no ocupar tanto espacio en el main
         enemy1 = Enemy(
             screen,
             "Esqueleto",
@@ -271,7 +211,6 @@ while True:
             enemy_list.append(enemy1)
 
         # dibujo sombras
-        # Shadows.drawShadows(screen, players_list,scene_level)
         Shadows2.drawShadows2(players_list, list_torch)
         # draw triggers deben hacer antes de las vistas
         Triggers.drawListTriggersActive(screen)
@@ -281,7 +220,7 @@ while True:
         # Dibujar vistas
         drawViews(players_list, screen)
 
-        # * Interfaz de usuario
+        # Interfaz de usuario
         gui_drawer.draw_GUI()
 
     pygame.display.flip()  # actualizar los cambios

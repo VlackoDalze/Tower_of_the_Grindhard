@@ -1,6 +1,19 @@
 class Statistics:
     # constructor
-    def __init__(self, health, mana, physicalAttack, magicalAttack, physicalDefense, magicalDefense, precision, evasion, critProbability, critMultiplier, speed):
+    def __init__(
+        self,
+        health: float = 0.0,
+        mana: float = 0.0,
+        physicalAttack: float = 0.0,
+        magicalAttack: float = 0.0,
+        physicalDefense: float = 0.0,
+        magicalDefense: float = 0.0,
+        precision: float = 0.0,
+        evasion: float = 0.0,
+        critProbability: float = 0.0,
+        critMultiplier: float = 0.0,
+        speed: float = 0.0,
+    ):
         self.health = health
         self.mana = mana
         self.physicalAttack = physicalAttack
@@ -12,7 +25,7 @@ class Statistics:
         self.critProbability = critProbability
         self.critMultiplier = critMultiplier
         self.speed = speed
-        
+
     # getters and setters
     def getHealth(self):
         return self.health
@@ -79,3 +92,28 @@ class Statistics:
 
     def setSpeed(self, speed):
         self.speed = speed
+
+    def toString(self):
+        statsString = """Health: {}
+        Mana: {}
+        Physical attack: {}
+        Magical attack: {}
+        Physical defense: {}
+        Magical defense: {}
+        Precision: {}
+        Evasion: {}
+        Crit probability: {}
+        Crit multiplier: {}
+        Speed: {}""".format(
+            self.getHealth(),
+            self.getMana(),
+            self.getPhysicalAttack(),
+            self.getMagicalAttack(),
+            self.getPhysicalDefense(),
+            self.getMagicalDefense(),
+            self.getPrecision(),
+            self.getEvasion(),
+            self.getCritProbability(),
+            self.getCritMultiplier(),
+            self.getSpeed(),
+        )

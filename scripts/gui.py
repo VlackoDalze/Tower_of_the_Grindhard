@@ -30,6 +30,7 @@ def get_combat_zone():
 class Gui_drawer(pygame.sprite.Sprite):
     def __init__(self, screen: pygame.Surface):
         self.screen = screen
+        self.otherGuiIsActive = False
 
     def setEventListener(self, event: pygame.event):
         self.event = event
@@ -79,60 +80,79 @@ class Gui_drawer(pygame.sprite.Sprite):
             self.inventory_slot_group_fragment,
         )
 
+    # TODO: Hacer que los objetos se muestren el slots correspondiente
+    # TODO: Crear la ventana para de descripcion del Objeto
+    # TODO: Crear la ventana de estadísticas
+    # TODO: Mejorar el código de createGUI_arrays
     def createGUI_array(self, size: int = 1):
-        self.equipment_statistics_fragment_array = []
+        equipment_area_btn_frag_array = []
+        for i in range(0, size):
+            if len(equipment_area_btn_frag_array) < size:
+                equipment_area_btn_frag_array.append(
+                    Button_fragment(
+                        self.screen,
+                        inventory_button_texture,
+                        (0, 0),
+                        (CELL_SIZE * 3, CELL_SIZE),
+                    )
+                )
+            equipment_area_btn_frag_array[i].setEventListener(self.event)
+        equipment_statistics_fragment_array = []
         for i in range(size):
-            self.equipment_statistics_fragment_array.append(Ui_fragment(self.screen))
-        # inventory_equipment_panel_fragment_group
-        # for i in range(0,size):
-        #     position_x = viewsPositions[i][0]
-        #     position_y = viewsPositions[i][1]
-        #     if ((i + 1) % 2) == 0:
-        #         position_x *= 1.425
-        #     position_x += 32
-        #     position_y += 16
-        #     inventory_equipment_panel_fragment = Panel_fragment(
-        #         ui_frag.getScreen(),
-        #         inventory_equipment_panel_texture,
-        #         (str(position_x), str(position_y)),
-        #     )
-        #     inventory_equipment_area_fragment = Panel_fragment(
-        #         ui_frag.getScreen(),
-        #         inventory_equipment_area_texture,
-        #         (str(position_x + 16), str(position_y + CELL_SIZE * 3)),
-        #     )
-        #     # TODO: hacer que el area de estadísticas se muestre cuando se presiona el botón correspondiente
-        #     equipment_buttons = Ui_fragment(ui_frag.getScreen())
-        #     def openEquipmentArea():
-        #         print("Equipment")
-        #     def openStatisticsArea():
-        #         print("Statistics")
-        #     equipment_area_btn_frag_array[i].setOnClick(openEquipmentArea)
-        #     equipment_area_btn_frag_array[i].set_position(
-        #         (position_x + 16, position_y + 16)
-        #     )
-        #     print(equipment_area_btn_frag_array[i].get_position())
-        #     text_button = Text_area_fragment(
-        #         equipment_area_btn_frag_array[i].getScreen(),
-        #         "Equipamiento",
-        #         20,
-        #         (
-        #             equipment_area_btn_frag_array[i].get_position().x + 14,
-        #             equipment_area_btn_frag_array[i].get_position().y + 8,
-        #         ),
-        #     )
-        #     equipment_buttons.add_fragment(
-        #         equipment_area_btn_frag_array[i], text_button
-        #     )
-        #     inventory_equipment_panel_fragment_group.add_fragment(
-        #         inventory_equipment_panel_fragment,
-        #         inventory_equipment_area_fragment,
-        #         equipment_buttons,
-        #     )
-        # inventory_fragment.add_fragment(inventory_equipment_panel_fragment_group)
+            equipment_statistics_fragment_array.append(Ui_fragment(self.screen))
+        inventory_equipment_panel_fragment_group = Ui_fragment(self.screen)
+        for i in range(0, size):
+            position_x = viewsPositions[i][0]
+            position_y = viewsPositions[i][1]
+            if ((i + 1) % 2) == 0:
+                position_x *= 1.425
+            position_x += 32
+            position_y += 16
+            inventory_equipment_panel_fragment = Panel_fragment(
+                self.screen,
+                inventory_equipment_panel_texture,
+                (str(position_x), str(position_y)),
+            )
+            inventory_equipment_area_fragment = Panel_fragment(
+                self.screen,
+                inventory_equipment_area_texture,
+                (str(position_x + 16), str(position_y + CELL_SIZE * 3)),
+            )
+            # TODO: hacer que el area de estadísticas se muestre cuando se presiona el botón correspondiente
+            equipment_buttons = Ui_fragment(self.screen)
 
-        for equipment_statistics_fragment in self.equipment_statistics_fragment_array:
-            self.inventory_fragment.add_fragment(equipment_statistics_fragment)
+            def openEquipmentArea():
+                print("Equipment")
+
+            def openStatisticsArea():
+                print("Statistics")
+
+            equipment_area_btn_frag_array[i].setOnClick(openEquipmentArea)
+            equipment_area_btn_frag_array[i].set_position(
+                (position_x + 16, position_y + 16)
+            )
+            text_button = Text_fragment(
+                equipment_area_btn_frag_array[i].getScreen(),
+                "Equipamiento",
+                20,
+                (
+                    equipment_area_btn_frag_array[i].get_position().x,
+                    equipment_area_btn_frag_array[i].get_position().y,
+                ),
+                (equipment_area_btn_frag_array[i].getArea().x, equipment_area_btn_frag_array[i].getArea().y)
+            )
+            equipment_buttons.add_fragment(
+                equipment_area_btn_frag_array[i], text_button
+            )
+            inventory_equipment_panel_fragment_group.add_fragment(
+                inventory_equipment_panel_fragment,
+                inventory_equipment_area_fragment,
+                equipment_buttons,
+            )
+        self.inventory_fragment.add_fragment(inventory_equipment_panel_fragment_group)
+
+        # for equipment_statistics_fragment in equipment_statistics_fragment_array:
+        #     self.inventory_fragment.add_fragment(equipment_statistics_fragment)
 
     def draw_GUI(self):
         self.event
@@ -144,3 +164,7 @@ class Gui_drawer(pygame.sprite.Sprite):
 
     def showInventory(self):
         Ui_fragment.toggle_fragment(self.default_gui_fragment, self.inventory_fragment)
+        self.otherGuiIsActive = True
+
+    def isActiveInventory(self):
+        return self.otherGuiIsActive
