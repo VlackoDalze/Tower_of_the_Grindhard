@@ -4,19 +4,20 @@ import pygame
 from scripts.collider_matrix_maker import get_collider_matrix
 from scripts.triggers import Triggers
 from scripts.enemigo import collision_enemy
-from scripts.equipment import *
+from scripts.object import *
 from scripts.statistics import Statistics
+import scripts.texture_pack as texture_pack
 WHITE = (255, 255, 255)
 
 # Equipments for testing
-primary_weapon = PrimaryWeapon("Sword", "A sharp, deadly blade", Statistics())
-secondary_weapon = SecondaryWeapon("Bow", "A ranged weapon for skilled marksmen", Statistics())
-armor = Armor("Chain-mail", "Protective armor made of interlocking metal rings", Statistics())
-belt = Belt("Leather Belt", "A sturdy belt to hold your pants up", Statistics())
-pants = Pants("Leather Pants", "Basic leather pants for protection", Statistics())
-helmet = Helmet("Iron Helmet", "A heavy helmet to protect your head", Statistics())
-shoes = Shoes("Leather Boots", "Sturdy boots for rough terrain", Statistics())
-cape = Cape("Cloak", "A dark cloak for stealthy movement", Statistics())
+primary_weapon = PrimaryWeapon(texture_pack.normal_primary_weapon_warrior_texture,"Sword", "A sharp, deadly blade", Statistics())
+secondary_weapon = SecondaryWeapon(texture_pack.normal_secondary_weapon_warrior_texture,"Bow", "A ranged weapon for skilled marksmen", Statistics())
+armor = Armor(texture_pack.normal_armor_texture,"Chain-mail", "Protective armor made of interlocking metal rings", Statistics())
+glove = Glove(texture_pack.normal_glove_texture,"Leather Belt", "A sturdy belt to hold your pants up", Statistics())
+pants = Pants(texture_pack.normal_pants_texture,"Leather Pants", "Basic leather pants for protection", Statistics())
+helmet = Helmet(texture_pack.normal_headgear_texture,"Iron Helmet", "A heavy helmet to protect your head", Statistics())
+shoes = Shoes(texture_pack.normal_boot_texture,"Leather Boots", "Sturdy boots for rough terrain", Statistics())
+cape = Cape(texture_pack.normal_cape_texture,"Cloak", "A dark cloak for stealthy movement", Statistics())
 
 
 class Player(Character):
@@ -37,7 +38,7 @@ class Player(Character):
             PrimaryWeapon: primary_weapon,
             SecondaryWeapon: secondary_weapon,
             Armor: armor,
-            Belt: belt,
+            Glove: glove,
             Pants: pants,
             Helmet: helmet,
             Shoes: shoes,
