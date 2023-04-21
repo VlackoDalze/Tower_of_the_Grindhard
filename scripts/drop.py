@@ -1,5 +1,3 @@
-import pygame
-from scripts.setting import CELL_SIZE
 import json
 from typing import List, Dict, Annotated
 from random import randint, random, randrange, shuffle, choice
