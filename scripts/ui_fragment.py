@@ -27,7 +27,11 @@ class Ui_fragment(pygame.sprite.Sprite):
             if isinstance(fragment, Complex_fragment) or isinstance(
                 fragment, Text_fragment
             ):
-                fragment.draw()
+                if fragment.get_fragment_list():
+                    fragment.draw()
+                    fragment.drawListFragments()
+                else:
+                    fragment.draw()
             else:
                 fragment.drawListFragments()
 
@@ -37,19 +41,26 @@ class Ui_fragment(pygame.sprite.Sprite):
 
     def close_fragment(self, *fragment_list):
         for fragment in fragment_list:
-            self.fragment_list.remove(fragment)
+            if not self.fragment_list:
+                self.fragment_list.remove(fragment)
 
-    def get_fragment_list(self):
+    def containFragment(self, fragments) -> bool:
+        for fragment in self.fragment_list:
+            if fragment == fragments:
+                return True
+        return False
+
+    def get_fragment_list(self) -> []:
         return self.fragment_list
 
-    def getScreen(self):
+    def getScreen(self) -> pygame.Surface:
         return self.screen
 
     def setScreen(self, screen):
         self.screen = screen
 
     # Comprueba si la lista está vacío, en caso afirmativo devolverá True en caso contrario devolverá False, es decir, no está activo
-    def isActive(self):
+    def isActive(self) -> bool:
         return self.fragment_list
 
     @staticmethod
@@ -94,10 +105,10 @@ class Ui_fragment(pygame.sprite.Sprite):
 
     @staticmethod
     def toggle_fragment(group_fragment, fragment):
-        if not (group_fragment.isActive()):
+        if not (group_fragment.containFragment(fragment)):
             group_fragment.add_fragment(fragment)
-        elif fragment in group_fragment.get_fragment_list():
-            group_fragment.close_fragment(fragment)
+        elif group_fragment.containFragment(fragment):
+            Ui_fragment.clear_fragments(group_fragment)
 
 
 class Complex_fragment(Ui_fragment):
@@ -140,22 +151,22 @@ class Complex_fragment(Ui_fragment):
 
 
 #!Cancelado, no veo el como hacerlo y que no tiene tanta importancia como para dedicarle tanto tiempo
-class Interactable_fragment(Complex_fragment):
-    def __init__(
-        self,
-        screen: pygame.Surface,
-        ui_image: pygame.Surface,
-        position: typing.Union[Vector2, typing.Tuple[str, str]],
-    ):
-        super().__init__(screen, ui_image, position)
-        self.index = 0
+# class Interactable_fragment(Complex_fragment):
+#     def __init__(
+#         self,
+#         screen: pygame.Surface,
+#         ui_image: pygame.Surface,
+#         position: typing.Union[Vector2, typing.Tuple[str, str]],
+#     ):
+#         super().__init__(screen, ui_image, position)
+#         self.index = 0
 
-    def draw(self):
-        x, y = self.position.x, self.position.y
-        self.screen.blit(self.ui_image, (x, y))
-        width, height = self.ui_image.get_size()
-        rect = (x, y, width, height)
-        pygame.draw.rect(self.screen, WHITE, rect, 2)
+#     def draw(self):
+#         x, y = self.position.x, self.position.y
+#         self.screen.blit(self.ui_image, (x, y))
+#         width, height = self.ui_image.get_size()
+#         rect = (x, y, width, height)
+#         pygame.draw.rect(self.screen, WHITE, rect, 2)
 
 
 class Panel_fragment(Complex_fragment):

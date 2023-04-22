@@ -8,19 +8,19 @@ class Object(pygame.sprite.Sprite):
         self.name = name
         self.description = description
 
-    def getImage(self):
+    def getImage(self) -> pygame.Surface:
         return self.image
 
     def setImage(self, image):
         self.image = image
 
-    def getName(self):
+    def getName(self) -> str:
         return self.name
 
     def setName(self, name):
         self.name = name
 
-    def getDescription(self):
+    def getDescription(self) -> str:
         return self.description
 
     def setDescription(self, description):

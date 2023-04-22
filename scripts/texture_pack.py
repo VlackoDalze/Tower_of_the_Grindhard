@@ -1,5 +1,11 @@
 import pygame
 
+#*
+
+human_texture = pygame.image.load(
+    "assets/player/base/elf_male.png"
+)
+
 # *equipment
 # armor
 normal_armor_texture = pygame.image.load(
@@ -19,6 +25,9 @@ normal_ring_texture = pygame.image.load("./assets/item/ring/agate.png")
 # weapons
 normal_primary_weapon_warrior_texture = pygame.image.load(
     "./assets/item/weapon/ancient_sword.png"
+)
+rare_primary_weapon_warrior_texture = pygame.image.load(
+    "./assets/item/weapon/claymore.png"
 )
 normal_secondary_weapon_warrior_texture = pygame.image.load(
     "./assets/item/armor/shields/buckler_1_new.png"

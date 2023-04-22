@@ -14,17 +14,17 @@ class Statistics:
         critMultiplier: float = 0.0,
         speed: float = 0.0,
     ):
-        self.health = health
-        self.mana = mana
-        self.physicalAttack = physicalAttack
-        self.magicalAttack = magicalAttack
-        self.physicalDefense = physicalDefense
-        self.magicalDefense = magicalDefense
-        self.precision = precision
-        self.evasion = evasion
-        self.critProbability = critProbability
-        self.critMultiplier = critMultiplier
-        self.speed = speed
+        self.health: float = health
+        self.mana: float = mana
+        self.physicalAttack: float = physicalAttack
+        self.magicalAttack: float = magicalAttack
+        self.physicalDefense: float = physicalDefense
+        self.magicalDefense: float = magicalDefense
+        self.precision: float = precision
+        self.evasion: float = evasion
+        self.critProbability: float = critProbability
+        self.critMultiplier: float = critMultiplier
+        self.speed: float = speed
 
     # getters and setters
     def getHealth(self):
@@ -95,19 +95,19 @@ class Statistics:
 
     def toString(self):
         statsString = (
-        "\n"
-        "Health: {}\n"
-        "Mana: {}\n"
-        "Physical attack: {}\n"
-        "Magical attack: {}\n"
-        "Physical defense: {}\n"
-        "Magical defense: {}\n"
-        "Precision: {}\n"
-        "Evasion: {}\n"
-        "Crit probability: {}\n"
-        "Crit multiplier: {}\n"
-        "Speed: {}"
-    ).format(
+            "\n"
+            "Health: {}\n"
+            "Mana: {}\n"
+            "Physical attack: {}\n"
+            "Magical attack: {}\n"
+            "Physical defense: {}\n"
+            "Magical defense: {}\n"
+            "Precision: {}\n"
+            "Evasion: {}\n"
+            "Crit probability: {}\n"
+            "Crit multiplier: {}\n"
+            "Speed: {}"
+        ).format(
             self.getHealth(),
             self.getMana(),
             self.getPhysicalAttack(),

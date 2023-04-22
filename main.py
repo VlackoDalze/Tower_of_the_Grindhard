@@ -18,6 +18,10 @@ from scripts.shadowsv2 import Shadows2
 from scripts.enemigo import Enemy
 from scripts.gui import Gui_drawer
 
+from scripts.object import PrimaryWeapon
+import scripts.texture_pack as texture_pack
+from scripts.statistics import Statistics
+
 # Inicio el programa
 pygame.init()
 pygame.mixer.init()
@@ -134,6 +138,14 @@ equipment_area_btn_frag_array = []
 gui_drawer = Gui_drawer(screen)
 gui_drawer.createGUI()
 
+
+legendary_sword = PrimaryWeapon(
+    texture_pack.rare_primary_weapon_warrior_texture,
+    "Legend Sword",
+    "A sharp, deadly blade",
+    Statistics(300,900,156,489,156,489,156),
+)
+
 # desde aquí empieza el programa
 while True:
     background_music.play_random_background_music()
@@ -143,7 +155,11 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             exit()
+        #*EventListeners
         gui_drawer.setEventListener(event)
+        if len(players_list) > 0:
+            gui_drawer.setEventToArrayBtn(event)
+
         # menu previo a las vistas
         if len(players_list) == 0:
             memoryPositionCircle = Menu(
@@ -165,6 +181,7 @@ while True:
                 gui_drawer.showInventory()
             if event.type == pygame.KEYDOWN and event.key == pygame.K_m:  # Mapa
                 gui_drawer.hello()
+                players_list[0].equip(legendary_sword)
             if (
                 event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE
             ):  # Opciones
@@ -187,6 +204,10 @@ while True:
 
         # dibujo las antorchas en el mapa a partir de una matriz
         draw_list_torch(list_torch, current_sprite_anim)
+
+        #Actualizar la interfaz de usuario
+        if gui_drawer.isActiveInventory():
+            gui_drawer.updateEquipmentPanel(players_list)
 
         # Dibujo al jugador
         for player in players_list:
