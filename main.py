@@ -15,7 +15,7 @@ from scripts.menu import Menu
 # from scripts.shadows import Shadows
 from scripts.triggers import Triggers
 from scripts.shadowsv2 import Shadows2
-from scripts.enemigo import Enemy
+from scripts.enemy import Enemy
 from scripts.gui import Gui_drawer
 
 from scripts.object import PrimaryWeapon

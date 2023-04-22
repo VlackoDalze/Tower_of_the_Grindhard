@@ -3,7 +3,7 @@ from scripts.setting import SILVER_MEDIUM_FONT
 import pygame
 from scripts.collider_matrix_maker import get_collider_matrix
 from scripts.triggers import Triggers
-from scripts.enemigo import collision_enemy
+from scripts.enemy import collision_enemy
 from scripts.object import *
 from scripts.statistics import Statistics
 import scripts.texture_pack as texture_pack
