@@ -182,6 +182,9 @@ class Panel_fragment(Complex_fragment):
         if (self.area.x != 0) and (self.area.y != 0):
             self.ui_image = pygame.transform.scale(self.ui_image, self.area)
 
+    def getArea(self):
+        return self.area
+
     def draw(self):
         x, y = self.position.x, self.position.y
         self.screen.blit(self.ui_image, (x, y))

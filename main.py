@@ -21,6 +21,7 @@ from scripts.gui import Gui_drawer
 from scripts.object import PrimaryWeapon
 import scripts.texture_pack as texture_pack
 from scripts.statistics import Statistics
+from scripts.player import Player
 
 # Inicio el programa
 pygame.init()
@@ -159,6 +160,7 @@ while True:
         gui_drawer.setEventListener(event)
         if len(players_list) > 0:
             gui_drawer.setEventToArrayBtn(event)
+        
 
         # menu previo a las vistas
         if len(players_list) == 0:
@@ -173,19 +175,25 @@ while True:
             Triggers.setCountPlayers(len(players_list))
             # Cuando no está activo este fragment, se desactiva los movimientos del jugador
             for i in range(0, len(players_list)):
-                # if event.type == pygame.KEYDOWN:
-                players_list[i].move(event, i)
-                # if not (Gui_fragment_group.isActive()):
+                if not gui_drawer.isActiveInventory():
+                    players_list[i].move(event, i)
+                elif gui_drawer.isActiveInventory():
+                    if event.type == pygame.KEYDOWN and event.key == pygame.K_d:
+                        Player.nextInventoryIndex()
+                    if event.type == pygame.KEYDOWN and event.key == pygame.K_a:
+                        Player.prevInventoryIndex()
 
             if event.type == pygame.KEYDOWN and event.key == pygame.K_i:  # Inventario
                 gui_drawer.showInventory()
             if event.type == pygame.KEYDOWN and event.key == pygame.K_m:  # Mapa
                 gui_drawer.hello()
                 players_list[0].equip(legendary_sword)
+                Player.removeFromInventory(legendary_sword)
             if (
                 event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE
             ):  # Opciones
                 gui_drawer.hello()
+                Player.addToInventory(legendary_sword)
 
     # Cuando ya hay jugadores en la lista continua con los dibujados
     if len(players_list) > 0:  # primero debes definir el numero de jugadores
@@ -208,6 +216,9 @@ while True:
         #Actualizar la interfaz de usuario
         if gui_drawer.isActiveInventory():
             gui_drawer.updateEquipmentPanel(players_list)
+            if furniture_animation_update_time >= 9:
+                gui_drawer.updateInventoryContents(Player.getInventory())
+            gui_drawer.setInventorySlotEventListener(event)
 
         # Dibujo al jugador
         for player in players_list:

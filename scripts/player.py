@@ -63,6 +63,8 @@ cape = Cape(
 
 class Player(Character):
     newID = 0
+    inventory = [[primary_weapon]]
+    inventoryIndex =  0
 
     def __init__(
         self,
@@ -111,9 +113,59 @@ class Player(Character):
             Shoes: shoes,
             Cape: cape,
         }
-        equipmentKeys = self.getEquipmentsKeys()
 
     # Methods
+
+    @staticmethod
+    def nextInventoryIndex():
+        if Player.inventoryIndex < len(Player.inventory)-1:
+            Player.inventoryIndex += 1
+
+    @staticmethod
+    def prevInventoryIndex():
+        if Player.inventoryIndex > 0:
+            Player.inventoryIndex -= 1
+
+    @staticmethod
+    def addToInventory(object):
+        """
+        Agrega un objeto al inventario de un jugador en una lista interna y limita la cantidad de elementos a un máximo de 16.
+        Si no hay ninguna lista interna en el inventario, agrega una nueva lista interna con el objeto deseado.
+        Si se alcanza el límite máximo de elementos en una lista interna existente, agrega una nueva lista interna y agrega el objeto allí.
+
+        Args:
+            object: El objeto que se desea agregar al inventario.
+
+        Returns:
+            bool: True si el objeto se agregó correctamente, False si no se pudo agregar el objeto.
+        """
+        max_capacity = 16
+
+        # Verificar si hay una lista interna en el inventario que no haya alcanzado el límite máximo de elementos
+        for inventory in Player.inventory:
+            current_amount = len(inventory)
+            if current_amount < max_capacity:
+                # Si la lista no ha alcanzado el límite máximo, agregar el objeto a la lista
+                inventory.append(object)
+                print("Agregado")
+                return True
+
+        # Si no se encontró una lista interna que no haya alcanzado el límite máximo, agregar una nueva lista interna y agregar el objeto allí
+        new_inventory = [object]
+        Player.inventory.append(new_inventory)
+        return True
+
+    @staticmethod
+    def removeFromInventory(object) -> Object:
+        for inventory in Player.inventory:
+            if object in inventory:
+                inventory.remove(object)
+                break  # Salir del bucle después de encontrar y eliminar el elemento
+        return object
+
+    @staticmethod
+    def getInventory() -> []:
+        return Player.inventory
 
     # TODO: modificar algunos aspecto del equipado (return)
     def equip(self, equipment: Equipment):

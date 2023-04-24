@@ -1,5 +1,11 @@
 import pygame
 from scripts.statistics import Statistics
+from scripts.ui_fragment import *
+from scripts.setting import SCREEN_WIDTH, SCREEN_HEIGHT
+from scripts.texture_pack import inventory_slot
+
+
+TEXT_SIZE = 23
 
 
 class Object(pygame.sprite.Sprite):
@@ -7,6 +13,12 @@ class Object(pygame.sprite.Sprite):
         self.image = image
         self.name = name
         self.description = description
+        self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+
+        self.panelFragment = Panel_fragment(
+            self.screen, inventory_slot, (0, 0), (CELL_SIZE * 6, CELL_SIZE * 6)
+        )
+        # self.panelFragment.add_fragment()
 
     def getImage(self) -> pygame.Surface:
         return self.image
@@ -25,6 +37,14 @@ class Object(pygame.sprite.Sprite):
 
     def setDescription(self, description):
         self.description = description
+
+    def showPanelFragments(self, masterFragments, position):
+        if masterFragments.containFragment(self.panelFragment):
+            masterFragments.get_fragment_list().remove(self.panelFragment)
+        else:
+            self.panelFragment.set_position(position)
+            masterFragments.add_fragment(self.panelFragment)
+
 
 class Equipment(Object):
     def __init__(self, image, name, description, statistics: Statistics):
@@ -70,9 +90,15 @@ class Helmet(Equipment):
 
 class Shoes(Equipment):
     def __init__(self, image, name, description, statistics):
-        super().__init__(image,name, description, statistics)
+        super().__init__(image, name, description, statistics)
 
 
 class Cape(Equipment):
     def __init__(self, image, name, description, statistics):
-        super().__init__(image,name, description, statistics)
+        super().__init__(image, name, description, statistics)
+
+
+class Edible(Object):  # comestible
+    def __init__(self, image, name, description, statistics):
+        super().__init__(image, name, description)
+        self.statistics = statistics
