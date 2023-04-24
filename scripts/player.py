@@ -115,7 +115,9 @@ class Player(Character):
         }
 
     # Methods
-
+    def setRace(self, race):
+        self.race = race
+    
     @staticmethod
     def nextInventoryIndex():
         if Player.inventoryIndex < len(Player.inventory)-1:
@@ -315,7 +317,7 @@ class Player(Character):
 
     def draw(self):
         self.screen.blit(
-            pygame.transform.flip(self.player_texture, self.flip, False), self.rect
+            pygame.transform.flip(self.image, self.flip, False), self.rect
         )
 
 

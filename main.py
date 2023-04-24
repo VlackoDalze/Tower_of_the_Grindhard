@@ -22,7 +22,7 @@ from scripts.object import PrimaryWeapon
 import scripts.texture_pack as texture_pack
 from scripts.statistics import Statistics
 from scripts.player import Player
-
+from scripts.interfaceSelectRace import SelectRaces
 # Inicio el programa
 pygame.init()
 pygame.mixer.init()
@@ -139,6 +139,7 @@ equipment_area_btn_frag_array = []
 gui_drawer = Gui_drawer(screen)
 gui_drawer.createGUI()
 
+select_ok=False
 
 legendary_sword = PrimaryWeapon(
     texture_pack.rare_primary_weapon_warrior_texture,
@@ -164,13 +165,19 @@ while True:
 
         # menu previo a las vistas
         if len(players_list) == 0:
+            
             memoryPositionCircle = Menu(
                 players_list, player_texture, screen, event, scene_level
             ).setPlayers(memoryPositionCircle)
+            
             numPlayers = len(players_list)
+            
             if numPlayers > 0:
                 gui_drawer.createGUI_array(numPlayers)
-
+        #menu de seleccion de raza y roles   
+        elif not select_ok:
+            select_ok=SelectRaces.startSelection(players_list,screen,event)
+                
         else:  # vistas
             Triggers.setCountPlayers(len(players_list))
             # Cuando no está activo este fragment, se desactiva los movimientos del jugador
@@ -196,7 +203,7 @@ while True:
                 Player.addToInventory(legendary_sword)
 
     # Cuando ya hay jugadores en la lista continua con los dibujados
-    if len(players_list) > 0:  # primero debes definir el numero de jugadores
+    if len(players_list) > 0 and select_ok:  # primero debes definir el numero de jugadores
         # RENDER GAME HERE
         if furniture_animation_update_time >= MAX_FURNITURE_ANIMATION_FPS:
             current_sprite_anim += 1

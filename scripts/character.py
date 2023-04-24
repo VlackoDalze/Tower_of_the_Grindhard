@@ -48,6 +48,9 @@ class Character(pygame.sprite.Sprite):
     def getScreen(self):
         return self.screen
 
+    def setImage(self, image):
+        self.image = image
+        
     # receive attack, it is an array with two values: the damage and the type of damage
     def defend(self, receiveAttack):
         damage = receiveAttack[0]
