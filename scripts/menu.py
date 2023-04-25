@@ -170,7 +170,6 @@ class Menu(object):
             )
 
         for i in range(len(button_player_array)):
-            button_player_array[i].setEventListener(self.event)
             button_player_array[i].setOnClick(setPlayers_array[i])
             button_group_fragment.add_fragment(
                 button_player_array[i], text_player_array[i]

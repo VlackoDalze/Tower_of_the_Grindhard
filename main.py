@@ -159,9 +159,7 @@ while True:
             pygame.quit()
             exit()
         #*EventListeners
-        gui_drawer.setEventListener(event)
-        if len(players_list) > 0:
-            gui_drawer.setEventToArrayBtn(event)
+        Button_fragment.appendGlobalEventListener(event)
 
         # menu previo a las vistas
         if len(players_list) == 0:
@@ -174,8 +172,8 @@ while True:
             
             if numPlayers > 0:
                 gui_drawer.createGUI_array(numPlayers)
-                
-        #menu de seleccion de raza y roles   
+
+        #menu de selección de raza y roles   
         elif not select_ok:
             select_ok=SelectRaces.startSelection(players_list,screen,event)
 
@@ -229,8 +227,7 @@ while True:
         if gui_drawer.isActiveInventory():
             gui_drawer.updateEquipmentPanel(players_list)
             if furniture_animation_update_time >= 9:
-                gui_drawer.updateInventoryContents(Player.getInventory())
-            gui_drawer.setInventorySlotEventListener(event)
+                gui_drawer.createInventoryContents(Player.getInventory())
 
         # Dibujo al jugador
         for player in players_list:
@@ -274,3 +271,4 @@ while True:
     # incremento el temporizador
     player_update_time += 1
     furniture_animation_update_time += 1
+    Button_fragment.clearGlobalEventListener()
