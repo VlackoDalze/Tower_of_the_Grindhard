@@ -161,7 +161,6 @@ while True:
         gui_drawer.setEventListener(event)
         if len(players_list) > 0:
             gui_drawer.setEventToArrayBtn(event)
-        
 
         # menu previo a las vistas
         if len(players_list) == 0:
