@@ -173,7 +173,7 @@ while True:
             
             if numPlayers > 0:
                 gui_drawer.createGUI_array(numPlayers)
-        #menu de seleccion de raza y roles   
+        #menu de selección de raza y roles   
         elif not select_ok:
             select_ok=SelectRaces.startSelection(players_list,screen,event)
                 
