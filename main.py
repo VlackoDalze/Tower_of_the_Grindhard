@@ -140,7 +140,8 @@ equipment_area_btn_frag_array = []
 gui_drawer = Gui_drawer(screen)
 gui_drawer.createGUI()
 
-select_ok = False
+select_ok=False
+startBattle=False
 
 legendary_sword = PrimaryWeapon(
     texture_pack.rare_primary_weapon_warrior_texture,
@@ -186,16 +187,21 @@ while True:
 
             if numPlayers > 0:
                 gui_drawer.createGUI_array(numPlayers)
-        # menu de selección de raza y roles
-        elif not select_ok:
-            select_ok = SelectRaces.startSelection(players_list, screen, event)
 
+        #menu de selección de raza y roles   
+        elif not select_ok:
+            select_ok=SelectRaces.startSelection(players_list,screen,event)
+
+        #accion de batalla  o combate
+        elif Triggers.inBattle:
+               Triggers.modeBattle(players_list,screen,event)    
         else:  # vistas
             Triggers.setCountPlayers(len(players_list))
             # Cuando no está activo este fragment, se desactiva los movimientos del jugador
             for i in range(0, len(players_list)):
                 if not gui_drawer.isActiveInventory():
                     players_list[i].move(event, i)
+                    
                 elif gui_drawer.isActiveInventory():
                     if event.type == pygame.KEYDOWN and event.key == pygame.K_d:
                         Player.nextInventoryIndex()
@@ -215,9 +221,7 @@ while True:
                 Player.addToInventory(legendary_sword)
 
     # Cuando ya hay jugadores en la lista continua con los dibujados
-    if (
-        len(players_list) > 0 and select_ok
-    ):  # primero debes definir el numero de jugadores
+    if len(players_list) > 0 and select_ok and not Triggers.inBattle:  # primero debes definir el numero de jugadores
         # RENDER GAME HERE
         if furniture_animation_update_time >= MAX_FURNITURE_ANIMATION_FPS:
             current_sprite_anim += 1
@@ -256,7 +260,7 @@ while True:
             None,
             20 * CELL_SIZE,
             18 * CELL_SIZE,
-            scene_level,
+            scene_level
         )
         enemy1.drawEnemy()
         if enemy1 not in enemy_list:

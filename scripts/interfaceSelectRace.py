@@ -3,9 +3,7 @@ import scripts.setting as setting
 from scripts.player import Player
 from scripts.ui_fragment import *
 
-# *Pointer texture
 button_texture = pygame.image.load("./assets/gui/inventory/inventory_button.png")
-
 letter_style = "assets/font/Silver.ttf"
 # Variables statics
 CELL_SIZE = setting.CELL_SIZE
