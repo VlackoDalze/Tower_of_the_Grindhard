@@ -79,6 +79,7 @@ class Player(Character):
         posY,
         race,
         sceneLevel,
+        
     ):
         super().__init__(
             screen,
@@ -98,6 +99,9 @@ class Player(Character):
         self.direction = 1
         self.id = Player.newID
         Player.newID += 1
+        
+        self.affectedEnemy = None
+        
         self.right = False
         self.left = False
         self.up = False
@@ -115,6 +119,13 @@ class Player(Character):
         }
 
     # Methods
+     
+    def getAffectedEnemy(self):
+        return self.affectedEnemy
+
+    def setAffectedEnemy(self,enemy):
+        self.affectedEnemy=enemy
+        
     def setRace(self, race):
         self.race = race
     
@@ -314,6 +325,10 @@ class Player(Character):
             Triggers.searchListTriggers(
                 [self.posX, self.posY], self.sceneLevel, event, self.id
             )
+            if(self.getAffectedEnemy()!=None and event.type == pygame.KEYDOWN and event.key == listaKeys[assignedKeys][4]):
+                Triggers.startBattle()
+            
+            
 
     def draw(self):
         self.screen.blit(

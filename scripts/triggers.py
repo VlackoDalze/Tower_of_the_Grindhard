@@ -11,6 +11,8 @@ letter_style = "assets/font/Silver.ttf"
 image = 'assets/dungeon/chest_2_open.png'
 font='assets/dungeon/floor/sandstone_floor_0.png'
 icon="assets/misc/error.png"
+
+
 color=(255, 255, 255)     
 
 
@@ -23,7 +25,7 @@ class Triggers():
     numPlayersReady=0
     ActionNextScene=""
     listTriggersScreen=[]
-    
+    inBattle=False
     def createListTriggers(scene_level) :
         
         map_collider_matriz = get_collider_matrix(scene_level)
@@ -70,14 +72,102 @@ class Triggers():
                     or player.getPositionX()+CELL_SIZE== enemy.getPositionX() and player.getPositionY() == enemy.getPositionY()\
                         or player.getPositionX()==  enemy.getPositionX() and player.getPositionY()-CELL_SIZE == enemy.getPositionY()\
                             or player.getPositionX()==  enemy.getPositionX() and player.getPositionY()+CELL_SIZE == enemy.getPositionY():
+
                                 if str(enemy.getPositionX())+"-"+str(enemy.getPositionY()) not in aux_lis_enemy_triggers:
                         
                                     image=pygame.image.load(icon)   
                                     image=pygame.transform.scale(image, (CELL_SIZE/2,CELL_SIZE/2))  
                                     screen.blit(image,(enemy.getPositionX()+CELL_SIZE/4,enemy.getPositionY()-CELL_SIZE/2))  
                                     aux_lis_enemy_triggers.append(str(enemy.getPositionX())+"-"+str(enemy.getPositionY()))
+                                    player.setAffectedEnemy(enemy)
+                else:
+                   
+                    if player.getAffectedEnemy()!=None:
+                        player.setAffectedEnemy(None)
 
+    def startBattle():
+        Triggers.inBattle= True       
+
+    def endBattle(): 
+        Triggers.inBattle= False 
+
+    def modeBattle(players_list,screen,event): 
+        screen.fill((255,255,255)) #clean
+        border=5
+        letter_size=15
+        size_button=13*letter_size
+        height_button=45
+       
+        button_texture = pygame.image.load("./assets/gui/inventory/inventory_button.png")
+        area_battle = pygame.Surface((SCREEN_WIDTH-border*2,SCREEN_HEIGHT/3*2-border*2))
+        area_btns_width=SCREEN_WIDTH/3-border*2
+        area_btns_height=SCREEN_HEIGHT/3-border*2
+        area_btns= pygame.Surface((area_btns_width,area_btns_height))
+        area_info= pygame.Surface((SCREEN_WIDTH/3*2-border*2,area_btns_height))
+        
+        font = pygame.font.Font(letter_style, 50)
+        texts=['Habilidades','Consumibles','Otros']
+        text = font.render('Habilidades', True, (0, 0, 0))
+        text2 = font.render('Consumibles', True, (0, 0, 0))
+        text3 = font.render('Otros', True, (0, 0, 0))
+        
+        
+        btn_skills = pygame.Surface((size_button,height_button))
+        btn_consumables = pygame.Surface((size_button,height_button))
+        btn_others = pygame.Surface((size_button,height_button))
+        button_texture=pygame.transform.scale(button_texture,(size_button,height_button)) #redimiension
+        btn_skills.blit(button_texture,(0,0))
+        btn_skills.blit(text,((size_button-len(texts[0])*letter_size)/2,0) )
+
+        btn_consumables.blit(button_texture,(0,0))
+        btn_consumables.blit(text2,((size_button-len(texts[1])*letter_size)/2,0) )
+
+        btn_others.blit(button_texture,(0,0))
+        btn_others.blit(text3,((size_button-len(texts[2])*letter_size)/2,0) )
+
+        area_btns.blit(btn_skills,(area_btns.get_width()/2-size_button/2, area_btns.get_height()/2-height_button*1.5-border))
+        area_btns.blit(btn_consumables,(area_btns.get_width()/2-size_button/2,  area_btns.get_height()/2-height_button*0.5))
+        area_btns.blit(btn_others,(area_btns.get_width()/2-size_button/2, area_btns.get_height()/2+height_button*0.5+border))
+
+        screen.blit(area_battle,(0+border,0+border))
+        screen.blit(area_btns,(0+border,SCREEN_HEIGHT/3*2+border))
+        screen.blit(area_info,(SCREEN_WIDTH/3+border,SCREEN_HEIGHT/3*2+border))
+        
+        range_buttons =[pygame.Rect(0+border+area_btns.get_width()/2-size_button/2, SCREEN_HEIGHT/3*2+border+area_btns.get_height()/2-height_button*1.5-border,size_button,height_button),
+                      pygame.Rect(0+border+area_btns.get_width()/2-size_button/2, SCREEN_HEIGHT/3*2+border+area_btns.get_height()/2-height_button*0.5,size_button,height_button),
+                      pygame.Rect(0+border+area_btns.get_width()/2-size_button/2, SCREEN_HEIGHT/3*2+border+area_btns.get_height()/2+height_button*0.5+border,size_button,height_button)]
+        
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            mouse_presses = pygame.mouse.get_pressed()
             
+            if mouse_presses[0]:
+                pos_mouse = pygame.mouse.get_pos()
+                if range_buttons[0].collidepoint(pos_mouse):
+                    print("habilidad")
+                if range_buttons[1].collidepoint(pos_mouse):
+                    print("consumible")
+                if range_buttons[2].collidepoint(pos_mouse):
+                    print("otros")
+
+        # if event.type == pygame.KEYDOWN and   event.key==pygame.K_RETURN :
+        #     players_list[SelectRaces.pos_select].setImage(pygame.image.load(races[SelectRaces.index_selector][1]))
+        #     players_list[SelectRaces.pos_select].setRace(races[SelectRaces.index_selector][0])
+        #     SelectRaces.players_selectedRaces[SelectRaces.pos_select]=True
+        #     SelectRaces.index_selector=0
+        #     SelectRaces.pos_select+=1
+        #     if False not in SelectRaces.players_selectedRaces:
+        #         return True 
+            
+        positions_players=[(SCREEN_WIDTH/14,SCREEN_HEIGHT/14),(),(),()]       
+        position_enemies=[(SCREEN_WIDTH/2+SCREEN_WIDTH/14,SCREEN_HEIGHT/14),(),(),()]  
+        image_player= pygame.transform.scale(players_list[0].getImage(), (SCREEN_WIDTH/3,SCREEN_HEIGHT/2)) #redimiension
+        image_enemy= pygame.transform.scale(players_list[0].getAffectedEnemy().getImageDefault(), (SCREEN_WIDTH/3,SCREEN_HEIGHT/2)) #redimiension
+        
+        screen.blit(image_player,positions_players[0])
+        screen.blit(image_enemy,position_enemies[0])
+   
+        pass
+              
     def drawListTriggersActive(screen:pygame.Surface):
         font_size = 20
         textoFont = pygame.font.Font(letter_style, font_size) 
@@ -159,7 +249,7 @@ class Triggers():
                     Triggers.listTriggersActivated.append(chest)
                 if  event.type == pygame.KEYDOWN and  event.key ==pygame.K_t and id==1:#cambiar imagen de cofre
                     Triggers.listTriggersActivated.append(chest)
-                        
+                
                 if aux_chestAction[2]+"-"+ aux_chestAction[3] not in Triggers.listTriggersScreen: #no duplicados
                     Triggers.listTriggersScreen.append(  aux_chestAction[2]+"-"+ aux_chestAction[3] ) 
                     

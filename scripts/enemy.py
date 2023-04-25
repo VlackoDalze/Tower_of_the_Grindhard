@@ -42,6 +42,7 @@ class Enemy:
         positionX: int,
         positionY: int,
         scene_level,
+        
     ):
         self.screen = screen
         self.name = name
@@ -55,13 +56,17 @@ class Enemy:
         self.positionY = positionY
         self.scene_level = scene_level
         self.level = level
+       
 
     def getPositionX(self):
         return self.positionX
-
+       
     def getPositionY(self):
         return self.positionY
-
+    
+    def getImageDefault(self):
+        return  pygame.image.load(self.image[0])
+    
     def drawEnemy(self):
         enemy = pygame.Surface((CELL_SIZE, CELL_SIZE))
         fondo = pygame.image.load(font)
