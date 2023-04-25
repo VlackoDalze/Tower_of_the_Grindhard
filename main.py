@@ -215,7 +215,7 @@ while True:
 
         # dibujo las colisiones en el mapa a partir de una matriz (Solo para pruebas)
         # drawCollider(collide_level1)
-
+    
         # dibujo las antorchas en el mapa a partir de una matriz
         draw_list_torch(list_torch, current_sprite_anim)
 
