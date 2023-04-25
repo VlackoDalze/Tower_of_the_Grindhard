@@ -27,13 +27,6 @@ class Gui_drawer:
         self.otherGuiIsActive = False
         self.pressed = False
 
-    def setEventListener(self, event: pygame.event):
-        self.event = event
-
-    def setEventToArrayBtn(self, event: pygame.event):
-        for btn_frag in self.equipment_area_btn_frag_array:
-            btn_frag.setEventListener(event)
-
     # Inicializa los fragment necesarios
     def createGUI(self):
         self.equipment_area_fragment_array = []
@@ -59,7 +52,6 @@ class Gui_drawer:
                         (CELL_SIZE * 3, CELL_SIZE),
                     )
                 )
-            self.equipment_area_btn_frag_array[i].setEventListener(self.event)
 
         inventory_equipment_panel_fragment_group = Ui_fragment(self.screen)
         for i in range(0, size):
@@ -183,7 +175,7 @@ class Gui_drawer:
 
         self.indexTextFragment = Text_fragment(
             self.screen,
-            str(Player.inventoryIndex+1) + "/" + str(len(Player.inventory)),
+            str(Player.inventoryIndex + 1) + "/" + str(len(Player.inventory)),
             24,
             (
                 inventory_bag_fragment.get_position().x,
@@ -208,7 +200,7 @@ class Gui_drawer:
 
         inventory_bag_fragment.add_fragment(self.inventory_slot_group_fragment)
         self.inventory_fragment.add_fragment(  # Carga el inventory fragment
-            inventory_bag_fragment, inventory_text_fragment,self.indexTextFragment
+            inventory_bag_fragment, inventory_text_fragment, self.indexTextFragment
         )
 
     def updateEquipmentPanel(self, playerList):
@@ -255,25 +247,13 @@ class Gui_drawer:
                 position,
                 object.getImage().get_size(),
             )
-            self.indexTextFragment.setText(str(Player.inventoryIndex+1) + "/" + str(len(Player.inventory)))
+            self.indexTextFragment.setText(
+                str(Player.inventoryIndex + 1) + "/" + str(len(Player.inventory))
+            )
             self.slotObjectsGroupFragment.add_fragment(slotObjectFragment)
         self.inventory_slot_group_fragment.add_fragment(self.slotObjectsGroupFragment)
 
-    def updateInventoryContents(self, objects: []):
-        if self.event.type == pygame.MOUSEBUTTONDOWN and (self.pressed == False):
-            self.createInventoryContents(objects)
-            self.pressed = True
-        if self.event.type == pygame.MOUSEBUTTONUP:
-            self.pressed = False
-        if self.pressed == False:  # Dibuja el inventario
-            self.createInventoryContents(objects)
-
-    def setInventorySlotEventListener(self, event):
-        for frag in self.slotObjectsGroupFragment.get_fragment_list():
-            frag.setEventListener(event)
-
     def draw_GUI(self):
-        self.event
         # *Draw GUI
         self.master_gui_fragment.drawListFragments()
 

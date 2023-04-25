@@ -191,6 +191,7 @@ class Panel_fragment(Complex_fragment):
 
 
 class Button_fragment(Complex_fragment):
+    event_list = []
     def __init__(
         self,
         screen: pygame.Surface,
@@ -209,25 +210,31 @@ class Button_fragment(Complex_fragment):
         button_width, button_height = self.area.x, self.area.y
         self.ui_image = pygame.transform.scale(self.ui_image, self.area)
         self.screen.blit(self.ui_image, (x, y))
-        if self.event.type == pygame.MOUSEBUTTONDOWN and (self._pressed == False):
-            mouse_pos = pygame.mouse.get_pos()
-            if (
-                x < mouse_pos[0] < x + button_width
-                and y < mouse_pos[1] < y + button_height
-            ):
-                self._pressed = True
-                self.onClick()
-        if self.event.type == pygame.MOUSEBUTTONUP:
-            self._pressed = False
-
-    def setEventListener(self, event):
-        self.event = event
+        for event in Button_fragment.event_list:
+            if event.type == pygame.MOUSEBUTTONDOWN and (self._pressed == False):
+                mouse_pos = pygame.mouse.get_pos()
+                if (
+                    x < mouse_pos[0] < x + button_width
+                    and y < mouse_pos[1] < y + button_height
+                ):
+                    self._pressed = True
+                    self.onClick()
+            if event.type == pygame.MOUSEBUTTONUP:
+                self._pressed = False
 
     def setOnClick(self, onClick):
         self.onClick = onClick
 
     def getArea(self):
         return self.area
+
+    @staticmethod
+    def appendGlobalEventListener(event):
+        Button_fragment.event_list.append(event)
+
+    @staticmethod
+    def clearGlobalEventListener():
+        Button_fragment.event_list.clear()
 
 
 class Text_fragment(Ui_fragment):
