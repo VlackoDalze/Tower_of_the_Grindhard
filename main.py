@@ -193,7 +193,7 @@ while True:
         elif not select_ok:
             select_ok = SelectRaces.startSelection(players_list, screen, event)
 
-        # accion de batalla  o combate
+        # acción de batalla  o combate
         elif Triggers.inBattle:
             Triggers.modeBattle(players_list, screen, event)
         else:  # vistas
