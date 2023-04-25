@@ -23,6 +23,7 @@ import scripts.texture_pack as texture_pack
 from scripts.statistics import Statistics
 from scripts.player import Player
 from scripts.interfaceSelectRace import SelectRaces
+
 # Inicio el programa
 pygame.init()
 pygame.mixer.init()
@@ -139,13 +140,28 @@ equipment_area_btn_frag_array = []
 gui_drawer = Gui_drawer(screen)
 gui_drawer.createGUI()
 
-select_ok=False
+select_ok = False
 
 legendary_sword = PrimaryWeapon(
     texture_pack.rare_primary_weapon_warrior_texture,
     "Legend Sword",
     "A sharp, deadly blade",
-    Statistics(300,900,156,489,156,489,156),
+    Statistics(300, 900, 156, 489, 156, 489, 156),
+)
+
+
+#!Solo para test
+def testMethod():
+    print("Hola")
+
+buttonTestContainer = Ui_fragment(screen)
+testButton = Button_fragment(
+    screen, texture_pack.inventory_button_texture, ("32", "32"), (100, 50)
+)
+testButton.setOnClick(testMethod)
+buttonTestContainer.add_fragment(testButton)
+buttonTestContainer.add_fragment(
+    Text_fragment(screen, "aceptar", 32, ("32", "32"), (100, 50))
 )
 
 # desde aquí empieza el programa
@@ -157,24 +173,23 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             exit()
-        #*EventListeners
+        # *EventListeners
         Button_fragment.appendGlobalEventListener(event)
 
         # menu previo a las vistas
         if len(players_list) == 0:
-            
             memoryPositionCircle = Menu(
                 players_list, player_texture, screen, event, scene_level
             ).setPlayers(memoryPositionCircle)
-            
+
             numPlayers = len(players_list)
-            
+
             if numPlayers > 0:
                 gui_drawer.createGUI_array(numPlayers)
-        #menu de selección de raza y roles   
+        # menu de selección de raza y roles
         elif not select_ok:
-            select_ok=SelectRaces.startSelection(players_list,screen,event)
-                
+            select_ok = SelectRaces.startSelection(players_list, screen, event)
+
         else:  # vistas
             Triggers.setCountPlayers(len(players_list))
             # Cuando no está activo este fragment, se desactiva los movimientos del jugador
@@ -200,7 +215,9 @@ while True:
                 Player.addToInventory(legendary_sword)
 
     # Cuando ya hay jugadores en la lista continua con los dibujados
-    if len(players_list) > 0 and select_ok:  # primero debes definir el numero de jugadores
+    if (
+        len(players_list) > 0 and select_ok
+    ):  # primero debes definir el numero de jugadores
         # RENDER GAME HERE
         if furniture_animation_update_time >= MAX_FURNITURE_ANIMATION_FPS:
             current_sprite_anim += 1
@@ -213,11 +230,11 @@ while True:
 
         # dibujo las colisiones en el mapa a partir de una matriz (Solo para pruebas)
         # drawCollider(collide_level1)
-    
+
         # dibujo las antorchas en el mapa a partir de una matriz
         draw_list_torch(list_torch, current_sprite_anim)
 
-        #Actualizar la interfaz de usuario
+        # Actualizar la interfaz de usuario
         if gui_drawer.isActiveInventory():
             gui_drawer.updateEquipmentPanel(players_list)
             if furniture_animation_update_time >= 9:
@@ -257,6 +274,9 @@ while True:
 
         # Interfaz de usuario
         gui_drawer.draw_GUI()
+
+        #!Solo para test
+        buttonTestContainer.drawListFragments()
 
     pygame.display.flip()  # actualizar los cambios
     #  pygame.display.flip() la pantalla para poner su trabajo en la pantalla ->actualiza toda la pantalla, es lo mismo que update()

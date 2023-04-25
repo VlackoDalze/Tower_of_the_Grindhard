@@ -247,10 +247,14 @@ class Gui_drawer:
                 position,
                 object.getImage().get_size(),
             )
+            #!Arreglar que cada botón tenga su propio método que no esté por referencia
+            def openObjectPanel():
+                object.showPanelFragments(self.inventory_slot_group_fragment, (position.x+CELL_SIZE,position.y))
+            slotObjectFragment.setOnClick(openObjectPanel)
+            self.slotObjectsGroupFragment.add_fragment(slotObjectFragment)
             self.indexTextFragment.setText(
                 str(Player.inventoryIndex + 1) + "/" + str(len(Player.inventory))
-            )
-            self.slotObjectsGroupFragment.add_fragment(slotObjectFragment)
+            )            
         self.inventory_slot_group_fragment.add_fragment(self.slotObjectsGroupFragment)
 
     def draw_GUI(self):
