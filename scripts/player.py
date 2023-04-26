@@ -95,6 +95,9 @@ class Player(Character):
         self.race = race
         self.sceneLevel = sceneLevel
         self.stats: Statistic = Statistics()
+        
+        self.extraStats= Statistics(0,0,0,0,0,0,0,0,0,0,0) #aqui añadir las stats del equipo
+        
         self.flip = False
         self.direction = 1
         self.id = Player.newID
@@ -128,7 +131,23 @@ class Player(Character):
         
     def setRace(self, race):
         self.race = race
+        
+    def getExtraStats(self):
+        return self.extraStats
+        
+    def getTotalStat(self,name): 
+        return self.extraStats.getStat(name)+ self.baseStats.getStat(name)
     
+    def getTotalAllStatsInObject(self):
+        nameStats=['health','mana','physicalAttack','magicalAttack',
+        'physicalDefense','magicalDefense','precision','evasion','critProbability',
+        'critMultiplier','speed']
+        newStats=[]
+        for name in nameStats:
+            newStats.append(self.getTotalStat(name))
+        return Statistics(newStats[0],newStats[1],newStats[2],newStats[3],newStats[4],
+                         newStats[5],newStats[6],newStats[7],newStats[8],newStats[9],
+                         newStats[10])
     @staticmethod
     def nextInventoryIndex():
         if Player.inventoryIndex < len(Player.inventory)-1:
@@ -195,17 +214,17 @@ class Player(Character):
         return self.equipments.keys()
 
     def recalculateStats(self):
-        health: float = 0.0
-        mana: float = 0.0
-        physicalAttack: float = 0.0
-        magicalAttack: float = 0.0
-        physicalDefense: float = 0.0
-        magicalDefense: float = 0.0
-        precision: float = 0.0
-        evasion: float = 0.0
-        critProbability: float = 0.0
-        critMultiplier: float = 0.0
-        speed: float = 0.0
+        health
+        mana
+        physicalAttack
+        magicalAttack
+        physicalDefense
+        magicalDefense
+        precision
+        evasion
+        critProbability
+        critMultiplier
+        speed
         for equipment_key in self.getEquipmentsKeys():
             health += self.equipments[equipment_key].getStatistic().getHealth()
             mana += self.equipments[equipment_key].getStatistic().getMana()

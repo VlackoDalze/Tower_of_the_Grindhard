@@ -11,7 +11,8 @@ letter_style = "assets/font/Silver.ttf"
 image = 'assets/dungeon/chest_2_open.png'
 font='assets/dungeon/floor/sandstone_floor_0.png'
 icon="assets/misc/error.png"
-
+positions_players=[[(SCREEN_WIDTH/8,SCREEN_HEIGHT/6)],[(),()],(),()]       
+position_enemies=[[(SCREEN_WIDTH/2+SCREEN_WIDTH/6,SCREEN_HEIGHT/6)],(),(),()]  
 
 color=(255, 255, 255)     
 
@@ -26,6 +27,9 @@ class Triggers():
     ActionNextScene=""
     listTriggersScreen=[]
     inBattle=False
+    copyStats=[[],[],[],[]] #0 players , 1 enemies , 2 noduples players , 3 noduples enemy
+    aux_positions_players=None
+    aux_positions_enemies=None
     def createListTriggers(scene_level) :
         
         map_collider_matriz = get_collider_matrix(scene_level)
@@ -97,19 +101,27 @@ class Triggers():
         letter_size=15
         size_button=13*letter_size
         height_button=45
+
+        for player in players_list:
+            if player.getAffectedEnemy()!=None and player.getAffectedEnemy() not in Triggers.copyStats[3]:
+                Triggers.copyStats[3].append(player.getAffectedEnemy())
+                Triggers.copyStats[1].append(player.getAffectedEnemy().getStats())
+
        
         button_texture = pygame.image.load("./assets/gui/inventory/inventory_button.png")
         area_battle = pygame.Surface((SCREEN_WIDTH-border*2,SCREEN_HEIGHT/3*2-border*2))
         area_btns_width=SCREEN_WIDTH/3-border*2
         area_btns_height=SCREEN_HEIGHT/3-border*2
         area_btns= pygame.Surface((area_btns_width,area_btns_height))
-        area_info= pygame.Surface((SCREEN_WIDTH/3*2-border*2,area_btns_height))
+        area_info=  pygame.Surface((area_btns_width,area_btns_height))
+        area_resulButton= pygame.Surface((area_btns_width,area_btns_height))
         
         font = pygame.font.Font(letter_style, 50)
-        texts=['Habilidades','Consumibles','Otros']
-        text = font.render('Habilidades', True, (0, 0, 0))
-        text2 = font.render('Consumibles', True, (0, 0, 0))
-        text3 = font.render('Otros', True, (0, 0, 0))
+        texts=['Habilidades','Consumibles','Otros','Vida','Mana','Ataque físico','Ataque mágico','Defensa física',
+               'Defensa mágica','Precisión','Evasión','Probabilidad de crítico','Multiplicador de crítico','Velocidad']
+        text = font.render(texts[0], True, (255, 255, 255))
+        text2 = font.render(texts[1], True, (255, 255, 255))
+        text3 = font.render(texts[2], True, (255, 255, 255))
         
         
         btn_skills = pygame.Surface((size_button,height_button))
@@ -131,7 +143,8 @@ class Triggers():
 
         screen.blit(area_battle,(0+border,0+border))
         screen.blit(area_btns,(0+border,SCREEN_HEIGHT/3*2+border))
-        screen.blit(area_info,(SCREEN_WIDTH/3+border,SCREEN_HEIGHT/3*2+border))
+        screen.blit(area_resulButton,(SCREEN_WIDTH/3+border,SCREEN_HEIGHT/3*2+border))
+        
         
         range_buttons =[pygame.Rect(0+border+area_btns.get_width()/2-size_button/2, SCREEN_HEIGHT/3*2+border+area_btns.get_height()/2-height_button*1.5-border,size_button,height_button),
                       pygame.Rect(0+border+area_btns.get_width()/2-size_button/2, SCREEN_HEIGHT/3*2+border+area_btns.get_height()/2-height_button*0.5,size_button,height_button),
@@ -157,15 +170,106 @@ class Triggers():
         #     SelectRaces.pos_select+=1
         #     if False not in SelectRaces.players_selectedRaces:
         #         return True 
-            
-        positions_players=[(SCREEN_WIDTH/14,SCREEN_HEIGHT/14),(),(),()]       
-        position_enemies=[(SCREEN_WIDTH/2+SCREEN_WIDTH/14,SCREEN_HEIGHT/14),(),(),()]  
-        image_player= pygame.transform.scale(players_list[0].getImage(), (SCREEN_WIDTH/3,SCREEN_HEIGHT/2)) #redimiension
-        image_enemy= pygame.transform.scale(players_list[0].getAffectedEnemy().getImageDefault(), (SCREEN_WIDTH/3,SCREEN_HEIGHT/2)) #redimiension
         
-        screen.blit(image_player,positions_players[0])
-        screen.blit(image_enemy,position_enemies[0])
-   
+        
+        if Triggers.aux_positions_players==None:
+            if len(players_list)==1:
+                Triggers.aux_positions_players=positions_players[0]
+                Triggers.aux_positions_enemies=position_enemies[0]
+            elif len(players_list)==2: #añadir el resto de posiciones
+                Triggers.aux_positions_players=positions_players[1]
+                Triggers.aux_positions_enemies=position_enemies[1]
+            elif len(players_list)==3:
+                Triggers.aux_positions_players=positions_players[2]
+                Triggers.aux_positions_enemies=position_enemies[2]
+            else:
+                Triggers.aux_positions_players=positions_players[3]
+                Triggers.aux_positions_enemies=position_enemies[3]
+            
+        for i in range(0,len(players_list)):
+            image_player= pygame.transform.scale(players_list[i].getImage(), (SCREEN_WIDTH/4,SCREEN_HEIGHT/2.5)) #redimiension
+            image_enemy= pygame.transform.scale(players_list[i].getAffectedEnemy().getImageDefault(), (SCREEN_WIDTH/4,SCREEN_HEIGHT/2.5)) #redimiension
+
+            font2 = pygame.font.Font(letter_style, 30)
+            
+            text4 = font2.render(texts[3], True, (255, 255, 255))
+            text5 = font2.render(texts[4], True, (255, 255, 255))
+            text6 = font2.render(texts[5], True, (255, 255, 255))
+            text7 = font2.render(texts[6], True, (255, 255, 255))
+            text8 = font2.render(texts[7], True, (255, 255, 255))
+            text9 = font2.render(texts[8], True, (255, 255, 255))
+            text10 = font2.render(texts[9], True, (255, 255, 255))
+            text11 = font2.render(texts[10], True, (255, 255, 255))
+            text12= font2.render(texts[11], True, (255, 255, 255))
+            text13= font2.render(texts[12], True, (255, 255, 255))
+            text14= font2.render(texts[13], True, (255, 255, 255))
+
+            if players_list[i] not in Triggers.copyStats[2]:
+                Triggers.copyStats[0].append(players_list[i].getTotalAllStatsInObject())
+                Triggers.copyStats[2].append(players_list[i])
+                
+            text15= font2.render(str(Triggers.copyStats[0][i].getHealth())+"/"+str(players_list[i].getTotalStat('health')), True, (255, 255, 255))
+            text16= font2.render(str(Triggers.copyStats[0][i].getMana())+"/"+str(players_list[i].getTotalStat('mana')), True, (255, 255, 255))
+            text17= font2.render(str(Triggers.copyStats[0][i].getPhysicalAttack())+"/"+str(players_list[i].getTotalStat('physicalAttack')), True, (255, 255, 255))
+            text18 = font2.render(str(Triggers.copyStats[0][i].getMagicalAttack())+"/"+str(players_list[i].getTotalStat('magicalAttack')), True, (255, 255, 255))
+            text19= font2.render(str(Triggers.copyStats[0][i].getPhysicalDefense())+"/"+str(players_list[i].getTotalStat('physicalDefense')), True, (255, 255, 255))
+            text20 = font2.render(str(Triggers.copyStats[0][i].getMagicalDefense())+"/"+str(players_list[i].getTotalStat('magicalDefense')), True, (255, 255, 255))
+            text21 = font2.render(str(Triggers.copyStats[0][i].getPrecision())+"/"+str(players_list[i].getTotalStat('precision')), True, (255, 255, 255))
+            text22= font2.render(str(Triggers.copyStats[0][i].getEvasion())+"/"+str(players_list[i].getTotalStat('evasion')), True, (255, 255, 255))
+            text23 = font2.render(str(Triggers.copyStats[0][i].getCritProbability())+"/"+str(players_list[i].getTotalStat('critProbability')), True, (255, 255, 255))
+            text24 = font2.render(str(Triggers.copyStats[0][i].getCritMultiplier())+"/"+str(players_list[i].getTotalStat('critMultiplier')), True, (255, 255, 255))
+            text25 = font2.render(str(Triggers.copyStats[0][i].getSpeed())+"/"+str(players_list[i].getTotalStat('speed')), True, (255, 255, 255))
+            
+            area_info.blit(text4,(10,0))     
+            area_info.blit(text5,(10,20))
+            area_info.blit(text6,(10,40))
+            area_info.blit(text7,(10,60))     
+            area_info.blit(text8,(10,80))
+            area_info.blit(text9,(10,100))
+            area_info.blit(text10,(10,120))     
+            area_info.blit(text11,(10,140))
+            area_info.blit(text12,(10,160))
+            area_info.blit(text13,(10,180))     
+            area_info.blit(text14,(10,200))
+            
+            area_info.blit(text15,(area_info.get_width()/3*2+10,0))
+            area_info.blit(text16,(area_info.get_width()/3*2+10,20))
+            area_info.blit(text17,(area_info.get_width()/3*2+10,40))
+            area_info.blit(text18,(area_info.get_width()/3*2+10,60))
+            area_info.blit(text19,(area_info.get_width()/3*2+10,80))
+            area_info.blit(text20,(area_info.get_width()/3*2+10,100)) 
+            area_info.blit(text21,(area_info.get_width()/3*2+10,120))
+            area_info.blit(text22,(area_info.get_width()/3*2+10,140))
+            area_info.blit(text23,(area_info.get_width()/3*2+10,160)) 
+            area_info.blit(text24,(area_info.get_width()/3*2+10,180)) 
+            area_info.blit(text25,(area_info.get_width()/3*2+10,200))
+
+            #barras de vida
+            
+            pygame.draw.line(screen,(0,128,0),(Triggers.aux_positions_players[i][0]+50,Triggers.aux_positions_players[i][1]-20),(Triggers.aux_positions_players[i][0]+SCREEN_WIDTH/4-50,Triggers.aux_positions_players[i][1]-20),10)
+            pygame.draw.line(screen,(0,0,255),(Triggers.aux_positions_players[i][0]+50,Triggers.aux_positions_players[i][1]-5),(Triggers.aux_positions_players[i][0]+SCREEN_WIDTH/4-50,Triggers.aux_positions_players[i][1]-5),10)
+
+            pygame.draw.line(screen,(0,128,0),(Triggers.aux_positions_enemies[i][0]+50,Triggers.aux_positions_enemies[i][1]-20),(Triggers.aux_positions_enemies[i][0]+SCREEN_WIDTH/4-50,Triggers.aux_positions_enemies[i][1]-20),10)
+            pygame.draw.line(screen,(0,0,255),(Triggers.aux_positions_enemies[i][0]+50,Triggers.aux_positions_enemies[i][1]-5),(Triggers.aux_positions_enemies[i][0]+SCREEN_WIDTH/4-50,Triggers.aux_positions_enemies[i][1]-5),10)
+
+            font3 = pygame.font.Font(letter_style, 20)
+
+            text26= font3.render(str(Triggers.copyStats[0][i].getHealth())+"/"+str(players_list[i].getTotalStat('health')), True, (255, 255, 255))
+            text27= font3.render(str(Triggers.copyStats[0][i].getMana())+"/"+str(players_list[i].getTotalStat('mana')), True, (255, 255, 255))
+
+            text28= font3.render(str(Triggers.copyStats[1][0].getHealth())+"/"+str(Triggers.copyStats[3][0].getStats().getHealth()), True, (255, 255, 255))
+            text29= font3.render(str(Triggers.copyStats[1][0].getMana())+"/"+str(Triggers.copyStats[3][0].getStats().getMana()), True, (255, 255, 255))
+
+            screen.blit(text26,(Triggers.aux_positions_players[i][0]+SCREEN_WIDTH/4-40,Triggers.aux_positions_players[i][1]-27.5)) 
+            screen.blit(text27,(Triggers.aux_positions_players[i][0]+SCREEN_WIDTH/4-40,Triggers.aux_positions_players[i][1]-12.5))   
+
+            screen.blit(text28,(Triggers.aux_positions_enemies[i][0]+SCREEN_WIDTH/4-40,Triggers.aux_positions_enemies[i][1]-27.5)) 
+            screen.blit(text29,(Triggers.aux_positions_enemies[i][0]+SCREEN_WIDTH/4-40,Triggers.aux_positions_enemies[i][1]-12.5))   
+
+            screen.blit(area_info,(SCREEN_WIDTH/3*2+border,SCREEN_HEIGHT/3*2+border))
+            screen.blit(image_player, Triggers.aux_positions_players[i])
+            screen.blit(image_enemy, Triggers.aux_positions_enemies[i])
+
         pass
               
     def drawListTriggersActive(screen:pygame.Surface):

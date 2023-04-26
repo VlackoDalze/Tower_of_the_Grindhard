@@ -36,7 +36,7 @@ class Enemy:
         name: str,
         description: str,
         level: int,
-        baseStatistics: Statistics,
+        baseStats: Statistics,
         activeAbilities,
         passiveAbilities,
         positionX: int,
@@ -48,8 +48,11 @@ class Enemy:
         self.name = name
         self.description = description
         self.image = Enemy.searchEnemy(name)
-        self.baseStatistics = baseStatistics
-        self.activeAbilities = activeAbilities
+        self.baseStats = baseStats
+        self.activeAbilities = []
+        if activeAbilities!=None:
+            for ability in activeAbilities:
+                self.activeAbilities.append(ability)
         self.passiveAbilities = passiveAbilities
         self.activeAbilities = activeAbilities
         self.positionX = positionX
@@ -57,7 +60,15 @@ class Enemy:
         self.scene_level = scene_level
         self.level = level
        
+    def getActiveAbilities(self):
+        return self.activeAbilities
+    
+    def addActiveAbilitie(self, activeAbilitie):
+        self.activeAbilities.append(activeAbilitie)
 
+    def getStats(self):
+        return self.baseStats
+    
     def getPositionX(self):
         return self.positionX
        

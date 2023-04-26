@@ -2,7 +2,8 @@ import pygame
 import scripts.setting as setting
 from scripts.player import Player
 from scripts.ui_fragment import *
-
+from scripts.skills import Skills
+from scripts.statistics import Statistics
 # Variables statics
 CELL_SIZE = setting.CELL_SIZE
 SCREEN_WIDTH = setting.SCREEN_WIDTH
@@ -44,18 +45,19 @@ class Menu(object):
         self.scene_level = scene_level
 
     def playersInGame(self, num_players):
+        
         for i in range(num_players):
             player = Player(
                 self.screen,
-                "player" + str(i + 1),
-                "none",
+                "Sin nombre",
+                "Sin descripción",
                 self.player_texture,
-                None,
-                None,
+                Statistics(100,10,0,0,0,0,0,0,0,0,9),
+                [Skills('Arañazo',None,10,'Físico')], #aa
                 None,
                 3,
                 19,
-                "Humano",
+                "Sin raza",
                 self.scene_level,
             )
             self.players_list.append(player)

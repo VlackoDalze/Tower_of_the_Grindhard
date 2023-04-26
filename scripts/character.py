@@ -29,7 +29,10 @@ class Character(pygame.sprite.Sprite):
         self.description = description
         self.image = image
         self.baseStats = baseStats
-        self.activeAbilities = activeAbilities
+        self.activeAbilities = []
+        if activeAbilities!=None:
+            for ability in activeAbilities:
+                self.activeAbilities.append(ability)
         self.passiveAbilities = passiveAbilities
 
         # same as rect, but decomposed, we could also use rect.x or rect.y but I preferred to use the parameters that we set for something
@@ -38,7 +41,9 @@ class Character(pygame.sprite.Sprite):
 
     # methods
     # get player position
-
+    def getBaseStats(self):
+        return self.baseStats
+    
     def getPositionX(self):
         return self.posX
 
@@ -51,8 +56,18 @@ class Character(pygame.sprite.Sprite):
     def setImage(self, image):
         self.image = image
 
+    def getActiveAbilities(self):
+        return self.activeAbilities
+    
+    def addActiveAbilitie(self, activeAbilitie):
+        self.activeAbilities.append(activeAbilitie)
+
+    # def removeActiveAbilitie(self, activeAbilitie):
+    #    pass
+        
     def getImage(self):
         return self.image
+    
     # receive attack, it is an array with two values: the damage and the type of damage
     def defend(self, receiveAttack):
         damage = receiveAttack[0]

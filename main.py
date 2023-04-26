@@ -23,7 +23,7 @@ import scripts.texture_pack as texture_pack
 from scripts.statistics import Statistics
 from scripts.player import Player
 from scripts.interfaceSelectRace import SelectRaces
-
+from scripts.skills import Skills
 # Inicio el programa
 pygame.init()
 pygame.mixer.init()
@@ -256,10 +256,10 @@ while True:
         enemy1 = Enemy(
             screen,
             "Esqueleto",
-            None,
+            "Un día me morí",
             1,
-            None,
-            None,
+            Statistics(200,20,0,0,0,0,0,0,0,0,10),
+            [Skills('Arañazo',None,10,'Físico')],
             None,
             20 * CELL_SIZE,
             18 * CELL_SIZE,

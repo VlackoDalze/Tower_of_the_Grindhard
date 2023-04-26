@@ -27,6 +27,32 @@ class Statistics:
         self.speed: float = speed
 
     # getters and setters
+    def getStat(self, name):
+        
+        if name == 'health':
+            return self.health 
+        if name == 'mana':
+            return self.mana 
+        if name == 'physicalAttack':
+            return self.physicalAttack 
+        if name == 'magicalAttack':
+            return self.magicalAttack 
+        if name == 'physicalDefense':
+            return self.physicalDefense 
+        if name == 'magicalDefense':
+            return self.magicalDefense 
+        if name == 'precision':
+            return self.precision 
+        if name == 'evasion':
+            return self.evasion 
+        if name == 'critProbability':
+            return self.critProbability
+        if name == 'critMultiplier':
+            return self.critMultiplier
+        if name == 'speed':
+            return self.speed 
+        
+        
     def getHealth(self):
         return self.health
 
