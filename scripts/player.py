@@ -64,7 +64,7 @@ cape = Cape(
 class Player(Character):
     newID = 0
     inventory = [[primary_weapon]]
-    inventoryIndex =  0
+    inventoryIndex = 0
 
     def __init__(
         self,
@@ -79,7 +79,6 @@ class Player(Character):
         posY,
         race,
         sceneLevel,
-        
     ):
         super().__init__(
             screen,
@@ -94,17 +93,15 @@ class Player(Character):
         )
         self.race = race
         self.sceneLevel = sceneLevel
-        self.stats: Statistic = Statistics()
-        
-        self.extraStats= Statistics(0,0,0,0,0,0,0,0,0,0,0) #aqui añadir las stats del equipo
-        
+        self.stats: Statistics = Statistics()  # aquí añadir las stats del equipo
+
         self.flip = False
         self.direction = 1
         self.id = Player.newID
         Player.newID += 1
-        
+
         self.affectedEnemy = None
-        
+
         self.right = False
         self.left = False
         self.up = False
@@ -122,35 +119,56 @@ class Player(Character):
         }
 
     # Methods
-     
+
     def getAffectedEnemy(self):
         return self.affectedEnemy
 
-    def setAffectedEnemy(self,enemy):
-        self.affectedEnemy=enemy
-        
+    def setAffectedEnemy(self, enemy):
+        self.affectedEnemy = enemy
+
     def setRace(self, race):
         self.race = race
-        
+
     def getExtraStats(self):
-        return self.extraStats
-        
-    def getTotalStat(self,name): 
-        return self.extraStats.getStat(name)+ self.baseStats.getStat(name)
-    
+        return self.stats
+
+    def getTotalStat(self, name):
+        return self.stats.getStat(name) + self.baseStats.getStat(name)
+
     def getTotalAllStatsInObject(self):
-        nameStats=['health','mana','physicalAttack','magicalAttack',
-        'physicalDefense','magicalDefense','precision','evasion','critProbability',
-        'critMultiplier','speed']
-        newStats=[]
+        nameStats = [
+            "health",
+            "mana",
+            "physicalAttack",
+            "magicalAttack",
+            "physicalDefense",
+            "magicalDefense",
+            "precision",
+            "evasion",
+            "critProbability",
+            "critMultiplier",
+            "speed",
+        ]
+        newStats = []
         for name in nameStats:
             newStats.append(self.getTotalStat(name))
-        return Statistics(newStats[0],newStats[1],newStats[2],newStats[3],newStats[4],
-                         newStats[5],newStats[6],newStats[7],newStats[8],newStats[9],
-                         newStats[10])
+        return Statistics(
+            newStats[0],
+            newStats[1],
+            newStats[2],
+            newStats[3],
+            newStats[4],
+            newStats[5],
+            newStats[6],
+            newStats[7],
+            newStats[8],
+            newStats[9],
+            newStats[10],
+        )
+
     @staticmethod
     def nextInventoryIndex():
-        if Player.inventoryIndex < len(Player.inventory)-1:
+        if Player.inventoryIndex < len(Player.inventory) - 1:
             Player.inventoryIndex += 1
 
     @staticmethod
@@ -201,7 +219,7 @@ class Player(Character):
 
     # TODO: modificar algunos aspecto del equipado (return)
     def equip(self, equipment: Equipment):
-        equipmentReturn:Equipment = self.equipments[type(equipment)]
+        equipmentReturn: Equipment = self.equipments[type(equipment)]
         self.equipments[type(equipment)] = equipment
 
     def getEquipments(self):
@@ -214,17 +232,17 @@ class Player(Character):
         return self.equipments.keys()
 
     def recalculateStats(self):
-        health
-        mana
-        physicalAttack
-        magicalAttack
-        physicalDefense
-        magicalDefense
-        precision
-        evasion
-        critProbability
-        critMultiplier
-        speed
+        health: float = 0.0
+        mana: float = 0.0
+        physicalAttack: float = 0.0
+        magicalAttack: float = 0.0
+        physicalDefense: float = 0.0
+        magicalDefense: float = 0.0
+        precision: float = 0.0
+        evasion: float = 0.0
+        critProbability: float = 0.0
+        critMultiplier: float = 0.0
+        speed: float = 0.0
         for equipment_key in self.getEquipmentsKeys():
             health += self.equipments[equipment_key].getStatistic().getHealth()
             mana += self.equipments[equipment_key].getStatistic().getMana()
@@ -344,15 +362,15 @@ class Player(Character):
             Triggers.searchListTriggers(
                 [self.posX, self.posY], self.sceneLevel, event, self.id
             )
-            if(self.getAffectedEnemy()!=None and event.type == pygame.KEYDOWN and event.key == listaKeys[assignedKeys][4]):
+            if (
+                self.getAffectedEnemy() != None
+                and event.type == pygame.KEYDOWN
+                and event.key == listaKeys[assignedKeys][4]
+            ):
                 Triggers.startBattle()
-            
-            
 
     def draw(self):
-        self.screen.blit(
-            pygame.transform.flip(self.image, self.flip, False), self.rect
-        )
+        self.screen.blit(pygame.transform.flip(self.image, self.flip, False), self.rect)
 
 
 def drawCollider(sizeCell, sceneLevel):
