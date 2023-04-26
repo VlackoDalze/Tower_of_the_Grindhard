@@ -22,8 +22,7 @@ inventory_slot = pygame.image.load("./assets/gui/inventory/inventory_slot.png")
 
 
 class Gui_drawer:
-    def __init__(self, screen: pygame.Surface):
-        self.screen = screen
+    def __init__(self):
         self.otherGuiIsActive = False
         self.pressed = False
 
@@ -31,8 +30,8 @@ class Gui_drawer:
     def createGUI(self):
         self.equipment_area_fragment_array = []
         # *Mains
-        self.master_gui_fragment = Ui_fragment(self.screen)  # Padre de todos
-        self.default_gui_fragment = Ui_fragment(self.screen)
+        self.master_gui_fragment = Ui_fragment()  # Padre de todos
+        self.default_gui_fragment = Ui_fragment()
         self.master_gui_fragment.addFragment(self.default_gui_fragment)
         self.createInventoryGUI()
 
@@ -46,14 +45,13 @@ class Gui_drawer:
             if len(self.equipment_area_btn_frag_array) < size:
                 self.equipment_area_btn_frag_array.append(
                     Button_fragment(
-                        self.screen,
                         inventory_button_texture,
                         (0, 0),
                         (CELL_SIZE * 3, CELL_SIZE),
                     )
                 )
 
-        inventory_equipment_panel_fragment_group = Ui_fragment(self.screen)
+        inventory_equipment_panel_fragment_group = Ui_fragment()
         for i in range(0, size):
             position_x = viewsPositions[i][0]
             position_y = viewsPositions[i][1]
@@ -62,17 +60,15 @@ class Gui_drawer:
             position_x += 32
             position_y += 16
             inventory_equipment_panel_fragment = Panel_fragment(
-                self.screen,
                 inventory_equipment_panel_texture,
                 (str(position_x), str(position_y)),
             )
             inventory_equipment_area_fragment = Panel_fragment(
-                self.screen,
                 inventory_equipment_area_texture,
                 (str(position_x + 16), str(position_y + CELL_SIZE * 3)),
             )
             # TODO: hacer que el area de estadísticas se muestre cuando se presiona el botón correspondiente
-            equipment_buttons = Ui_fragment(self.screen)
+            equipment_buttons = Ui_fragment()
 
             def openEquipmentArea1():
                 print("Equipment1")
@@ -118,7 +114,6 @@ class Gui_drawer:
                 (position_x + 16, position_y + 16)
             )
             text_button = Text_fragment(
-                self.equipment_area_btn_frag_array[i].getScreen(),
                 "Equipamiento",
                 20,
                 (
@@ -143,29 +138,27 @@ class Gui_drawer:
 
         equipment_statistics_fragment_array = []
         for i in range(size):
-            equipment_statistics_fragment_array.append(Ui_fragment(self.screen))
+            equipment_statistics_fragment_array.append(Ui_fragment())
         # for equipment_statistics_fragment in equipment_statistics_fragment_array:
         #     self.inventory_fragment.addFragment(equipment_statistics_fragment)
 
     def createInventoryGUI(self):
-        self.inventory_fragment = Ui_fragment(self.screen)
-        self.equipment_area_fragment = Ui_fragment(self.screen)
-        self.slotObjectsGroupFragment = Ui_fragment(self.screen)
+        self.inventory_fragment = Ui_fragment()
+        self.equipment_area_fragment = Ui_fragment()
+        self.slotObjectsGroupFragment = Ui_fragment()
         self._pressed = True
 
-        self.inventory_slot_group_fragment = Ui_fragment(self.screen)
+        self.inventory_slot_group_fragment = Ui_fragment()
 
         inventory_bag_fragment = Panel_fragment(
-            self.screen, inventory_bag_texture, ("36%", "20%"), (216, 312)
+            inventory_bag_texture, ("36%", "20%"), (216, 312)
         )
         inventory_equipment_fragment = Panel_fragment(
-            self.screen,
             inventory_equipment_panel_texture,
             ("10%", "10%"),
             inventory_equipment_area_texture.get_size(),
         )
         inventory_text_fragment = Text_fragment(
-            self.screen,
             "Inventario",
             32,
             inventory_bag_fragment.getPosition(),
@@ -174,7 +167,6 @@ class Gui_drawer:
         )
 
         self.indexTextFragment = Text_fragment(
-            self.screen,
             str(Player.inventoryIndex + 1) + "/" + str(len(Player.inventory)),
             24,
             (
@@ -185,7 +177,7 @@ class Gui_drawer:
             WHITE,
         )
 
-        inventory_slot_fragment = Panel_fragment(self.screen, inventory_slot, (0, 0))
+        inventory_slot_fragment = Panel_fragment(inventory_slot, (0, 0))
 
         # Creo los slots para el inventario
         self.inventory_slot_group_fragment = Ui_fragment.fragmentsMatrixGroupMaker(
@@ -231,7 +223,7 @@ class Gui_drawer:
                     position_y += CELL_SIZE * 3
                 position = (position_x, position_y)
                 equipmentImage = equipmentsList[key].getImage()
-                imgFrag = Panel_fragment(self.screen, equipmentImage, position)
+                imgFrag = Panel_fragment(equipmentImage, position)
                 self.equipment_area_fragment.addFragment(imgFrag)
         self.inventory_fragment.addFragment(self.equipment_area_fragment)
 
@@ -242,19 +234,23 @@ class Gui_drawer:
                 index
             ].getPosition()
             slotObjectFragment = Button_fragment(
-                self.screen,
                 object.getImage(),
                 position,
                 object.getImage().get_size(),
             )
+
             #!Arreglar que cada botón tenga su propio método que no esté por referencia
             def openObjectPanel():
-                object.showPanelFragments(self.inventory_slot_group_fragment, (position.x+CELL_SIZE,position.y))
+                object.showPanelFragments(
+                    self.inventory_slot_group_fragment,
+                    (position.x + CELL_SIZE, position.y),
+                )
+
             slotObjectFragment.setOnClick(openObjectPanel)
             self.slotObjectsGroupFragment.addFragment(slotObjectFragment)
             self.indexTextFragment.setText(
                 str(Player.inventoryIndex + 1) + "/" + str(len(Player.inventory))
-            )            
+            )
         self.inventory_slot_group_fragment.addFragment(self.slotObjectsGroupFragment)
 
     def draw_GUI(self):

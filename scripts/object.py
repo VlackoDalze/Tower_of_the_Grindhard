@@ -16,7 +16,7 @@ class Object(pygame.sprite.Sprite):
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
         self.panelFragment = Panel_fragment(
-            self.screen, inventory_slot, (0, 0), (CELL_SIZE * 6, CELL_SIZE * 6)
+            inventory_slot, (0, 0), (CELL_SIZE * 6, CELL_SIZE * 6)
         )
         # self.panelFragment.addFragment()
 

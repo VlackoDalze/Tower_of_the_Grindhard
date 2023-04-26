@@ -3,6 +3,7 @@ import pygame
 import typing
 import re
 from copy import copy
+from scripts.setting import SCREEN_WIDTH, SCREEN_HEIGHT
 
 from pygame.math import Vector2, Vector3
 from scripts.setting import SILVER_MEDIUM_FONT, CELL_SIZE
@@ -16,9 +17,10 @@ def defaultMethod():
 
 
 class Ui_fragment(pygame.sprite.Sprite):
-    def __init__(self, screen: pygame.Surface):
+    screen = None
+
+    def __init__(self):
         pygame.sprite.Sprite.__init__(self)
-        self.screen = screen
         self.percentage = False
         self.fragment_list = []
 
@@ -53,15 +55,13 @@ class Ui_fragment(pygame.sprite.Sprite):
     def getFragmentList(self) -> []:
         return self.fragment_list
 
-    def getScreen(self) -> pygame.Surface:
-        return self.screen
-
-    def setScreen(self, screen):
-        self.screen = screen
-
     # Comprueba si la lista está vacío, en caso afirmativo devolverá True en caso contrario devolverá False, es decir, no está activo
     def isActive(self) -> bool:
         return self.fragment_list
+
+    @staticmethod
+    def setGlobalScreen(screen):
+        Ui_fragment.screen = screen
 
     @staticmethod
     def fragmentsMatrixGroupMaker(
@@ -72,7 +72,7 @@ class Ui_fragment(pygame.sprite.Sprite):
         apply_initial_margin_X=False,
         apply_initial_margin_Y=False,
     ):
-        fragment_group = Ui_fragment(fragment.getScreen())
+        fragment_group = Ui_fragment()
         position_x = position[0]  # eje x
         position_y = position[1]  # eje y
 
@@ -112,17 +112,17 @@ class Ui_fragment(pygame.sprite.Sprite):
 
 
 class Complex_fragment(Ui_fragment):
-    def __init__(self, screen: pygame.Surface, ui_image: pygame.Surface, position):
-        super().__init__(screen)
+    def __init__(self, ui_image: pygame.Surface, position):
+        super().__init__()
         self.ui_image = ui_image
         self.position = Vector2(0, 0)
         self.setPosition(position)
 
     def draw(self):
         if isinstance(self.position, tuple):
-            self.screen.blit(self.ui_image, self.position)
+            Ui_fragment.screen.blit(self.ui_image, self.position)
         else:
-            self.screen.blit(self.ui_image, self.position.xy)
+            Ui_fragment.screen.blit(self.ui_image, self.position.xy)
 
     def getImageSize(self):
         return self.ui_image.get_size()
@@ -139,9 +139,9 @@ class Complex_fragment(Ui_fragment):
             if ("%" in position[0]) and ("%" in position[1]):
                 self.position = Vector2(
                     (float(position[0].removesuffix("%")) / 100)
-                    * self.screen.get_width(),
+                    * Ui_fragment.screen.get_width(),
                     (float(position[1].removesuffix("%")) / 100)
-                    * self.screen.get_height(),
+                    * Ui_fragment.screen.get_height(),
                 )
             else:
                 self.position = Vector2(float(position[0]), float(position[1]))
@@ -154,7 +154,7 @@ class Complex_fragment(Ui_fragment):
 # class Interactable_fragment(Complex_fragment):
 #     def __init__(
 #         self,
-#         screen: pygame.Surface,
+#
 #         ui_image: pygame.Surface,
 #         position: typing.Union[Vector2, typing.Tuple[str, str]],
 #     ):
@@ -163,21 +163,20 @@ class Complex_fragment(Ui_fragment):
 
 #     def draw(self):
 #         x, y = self.position.x, self.position.y
-#         self.screen.blit(self.ui_image, (x, y))
+#         Ui_fragment.screen.blit(self.ui_image, (x, y))
 #         width, height = self.ui_image.get_size()
 #         rect = (x, y, width, height)
-#         pygame.draw.rect(self.screen, WHITE, rect, 2)
+#         pygame.draw.rect(Ui_fragment.screen, WHITE, rect, 2)
 
 
 class Panel_fragment(Complex_fragment):
     def __init__(
         self,
-        screen: pygame.Surface,
         ui_image: pygame.Surface,
         position: typing.Union[Vector2, typing.Tuple[str, str]],
         area: typing.Union[Vector2, typing.Tuple[int, int]] = (0, 0),
     ):
-        super().__init__(screen, ui_image, position)
+        super().__init__(ui_image, position)
         self.area = Vector2(area[0], area[1])
         if (self.area.x != 0) and (self.area.y != 0):
             self.ui_image = pygame.transform.scale(self.ui_image, self.area)
@@ -187,20 +186,20 @@ class Panel_fragment(Complex_fragment):
 
     def draw(self):
         x, y = self.position.x, self.position.y
-        self.screen.blit(self.ui_image, (x, y))
+        Ui_fragment.screen.blit(self.ui_image, (x, y))
 
 
 class Button_fragment(Complex_fragment):
     eventList = []
+
     def __init__(
         self,
-        screen: pygame.Surface,
         ui_image: pygame.Surface,
         position: typing.Union[Vector2, typing.Tuple[str, str]],
         area: typing.Union[Vector2, typing.Tuple[int, int]],
         onClick=defaultMethod,
     ):
-        super().__init__(screen, ui_image, position)
+        super().__init__(ui_image, position)
         self.area = Vector2(area[0], area[1])
         self._pressed = False
         self.onClick = onClick
@@ -209,7 +208,7 @@ class Button_fragment(Complex_fragment):
         x, y = self.position.x, self.position.y
         button_width, button_height = self.area.x, self.area.y
         self.ui_image = pygame.transform.scale(self.ui_image, self.area)
-        self.screen.blit(self.ui_image, (x, y))
+        Ui_fragment.screen.blit(self.ui_image, (x, y))
         for event in Button_fragment.eventList:
             if event.type == pygame.MOUSEBUTTONDOWN and (self._pressed == False):
                 mouse_pos = pygame.mouse.get_pos()
@@ -240,7 +239,6 @@ class Button_fragment(Complex_fragment):
 class Text_fragment(Ui_fragment):
     def __init__(
         self,
-        screen: pygame.Surface,
         text: str,
         textSize: int,
         position: typing.Union[Vector2, typing.Tuple[str, str]],
@@ -248,7 +246,7 @@ class Text_fragment(Ui_fragment):
         color: typing.Union[Vector3, typing.Tuple[int, int, int]] = WHITE,
         show_text_area: bool = False,
     ):
-        super().__init__(screen)
+        super().__init__()
         self.text = text
         self.textSize = textSize
         self.setPosition(position)
@@ -264,7 +262,7 @@ class Text_fragment(Ui_fragment):
         center_position_x = (self.position.x + (self.area.x / 2)) - (text_width / 2)
         center_position_y = (self.position.y + (self.area.y / 2)) - (text_height / 3)
         position_center = Vector2(center_position_x, center_position_y)
-        self.screen.blit(text_surface, position_center)
+        Ui_fragment.screen.blit(text_surface, position_center)
         # Show text area
         if self.show_text_area:
             self.drawTextArea()
@@ -281,16 +279,16 @@ class Text_fragment(Ui_fragment):
             if ("%" in position[0]) and ("%" in position[1]):
                 self.position = Vector2(
                     (float(position[0].removesuffix("%")) / 100)
-                    * self.screen.get_width(),
+                    * Ui_fragment.screen.get_width(),
                     (float(position[1].removesuffix("%")) / 100)
-                    * self.screen.get_height(),
+                    * Ui_fragment.screen.get_height(),
                 )
             else:
                 self.position = Vector2(float(position[0]), float(position[1]))
 
     def drawTextArea(self):
         pygame.draw.rect(
-            self.screen,
+            Ui_fragment.screen,
             WHITE,
             (self.position.x, self.position.y, self.area.x, self.area.y),
             RECT_WIDTH,
@@ -300,7 +298,6 @@ class Text_fragment(Ui_fragment):
 class Text_area_fragment(Text_fragment):
     def __init__(
         self,
-        screen: pygame.Surface,
         text: str,
         textSize: int,
         position: typing.Union[Vector2, typing.Tuple[str, str]],
@@ -309,9 +306,7 @@ class Text_area_fragment(Text_fragment):
         show_text_area: bool = False,
         margin=(0, 0, 0, 0),
     ):
-        super().__init__(
-            screen, text, textSize, position, area, global_color, show_text_area
-        )
+        super().__init__(text, textSize, position, area, global_color, show_text_area)
         self.margin_left = margin[0]
         self.margin_top = margin[1]
         self.margin_right = margin[2]
@@ -362,7 +357,7 @@ class Text_area_fragment(Text_fragment):
                 if (x + word_width) >= max_width - self.margin_right:
                     x = initial_x + self.margin_left  # Reinicia x.
                     y += word_height  # Comienza una nueva fila.
-                self.screen.blit(word_surface, (x, y))
+                Ui_fragment.screen.blit(word_surface, (x, y))
                 x += word_width + space
             x = initial_x  # Reinicia x.
             y += word_height  # Comienza una nueva fila.

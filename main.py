@@ -41,6 +41,7 @@ WHITE = (255, 255, 255)
 
 # definiendo el tamaño de la pantalla
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+Ui_fragment.setGlobalScreen(screen)
 clock = pygame.time.Clock()
 
 # Titulo de la pantalla
@@ -137,11 +138,14 @@ background_music = Music(setting.musics_url_list)
 
 equipment_area_btn_frag_array = []
 
-gui_drawer = Gui_drawer(screen)
+gui_drawer = Gui_drawer()
 gui_drawer.createGUI()
 
 select_ok = False
 startBattle = False
+
+
+#!Solo para test
 
 legendary_sword = PrimaryWeapon(
     texture_pack.rare_primary_weapon_warrior_texture,
@@ -151,20 +155,17 @@ legendary_sword = PrimaryWeapon(
 )
 
 
-#!Solo para test
 def testMethod():
     print("Hola")
 
 
-buttonTestContainer = Ui_fragment(screen)
+buttonTestContainer = Ui_fragment()
 testButton = Button_fragment(
-    screen, texture_pack.inventory_button_texture, ("32", "32"), (100, 50)
+    texture_pack.inventory_button_texture, ("32", "32"), (100, 50)
 )
 testButton.setOnClick(testMethod)
 buttonTestContainer.addFragment(testButton)
-buttonTestContainer.addFragment(
-    Text_fragment(screen, "aceptar", 32, ("32", "32"), (100, 50))
-)
+buttonTestContainer.addFragment(Text_fragment("aceptar", 32, ("32", "32"), (100, 50)))
 
 # desde aquí empieza el programa
 while True:
