@@ -64,9 +64,7 @@ class Menu(object):
 
     def setPlayers(self, memoryPositionCircle):
         # fondo del menu necesario para se reinicie las textura de sobras
-        Panel_fragment(
-            self.screen, background_image, (0, 0), (SCREEN_WIDTH, SCREEN_HEIGHT)
-        ).draw()
+        Panel_fragment(background_image, (0, 0), (SCREEN_WIDTH, SCREEN_HEIGHT)).draw()
 
         letter_size = 15  # ancho de cada letra en px
         # centrar texto linea horizontal esta relacionado al tamaño de la letra importada
@@ -139,7 +137,7 @@ class Menu(object):
         #         height_center + CELL_SIZE * 8,
         #     ),
         # )
-        button_group_fragment = Ui_fragment(self.screen)
+        button_group_fragment = Ui_fragment()
         button_player_array = []
         text_player_array = []
 
@@ -164,11 +162,9 @@ class Menu(object):
             if i > 0:
                 position.y += 5 * i
             area = (CELL_SIZE * 5, CELL_SIZE)
-            button_player_array.append(
-                Button_fragment(self.screen, button_texture, position, area)
-            )
+            button_player_array.append(Button_fragment(button_texture, position, area))
             text_player_array.append(
-                Text_fragment(self.screen, "Jugador " + str(i + 1), 15, position, area)
+                Text_fragment("Jugador " + str(i + 1), 15, position, area)
             )
 
         for i in range(len(button_player_array)):
