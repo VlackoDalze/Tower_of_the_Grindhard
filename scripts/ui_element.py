@@ -16,63 +16,63 @@ def defaultMethod():
     print("Empty method")
 
 
-class Ui_fragment(pygame.sprite.Sprite):
+class UiElement(pygame.sprite.Sprite):
     screen = None
 
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
         self.percentage = False
-        self.fragment_list = []
+        self.element_list = []
 
-    def drawListFragments(self):
-        for fragment in self.fragment_list:
-            if isinstance(fragment, Complex_fragment) or isinstance(
-                fragment, Text_fragment
+    def drawListElements(self):
+        for element in self.element_list:
+            if isinstance(element, Complex_element) or isinstance(
+                element, TextElement
             ):
-                if fragment.getFragmentList():
-                    fragment.draw()
-                    fragment.drawListFragments()
+                if element.getElementList():
+                    element.draw()
+                    element.drawListElements()
                 else:
-                    fragment.draw()
+                    element.draw()
             else:
-                fragment.drawListFragments()
+                element.drawListElements()
 
-    def addFragment(self, *fragment_list):
-        for fragment in fragment_list:
-            self.fragment_list.append(fragment)
+    def addElement(self, *element_list):
+        for element in element_list:
+            self.element_list.append(element)
 
-    def close_fragment(self, *fragment_list):
-        for fragment in fragment_list:
-            if not self.fragment_list:
-                self.fragment_list.remove(fragment)
+    def closeElement(self, *element_list):
+        for element in element_list:
+            if not self.element_list:
+                self.element_list.remove(element)
 
-    def containFragment(self, fragments) -> bool:
-        for fragment in self.fragment_list:
-            if fragment == fragments:
+    def containElement(self, Elements) -> bool:
+        for element in self.element_list:
+            if element == Elements:
                 return True
         return False
 
-    def getFragmentList(self) -> []:
-        return self.fragment_list
+    def getElementList(self) -> []:
+        return self.element_list
 
     # Comprueba si la lista está vacío, en caso afirmativo devolverá True en caso contrario devolverá False, es decir, no está activo
     def isActive(self) -> bool:
-        return self.fragment_list
+        return self.element_list
 
     @staticmethod
     def setGlobalScreen(screen):
-        Ui_fragment.screen = screen
+        UiElement.screen = screen
 
     @staticmethod
-    def fragmentsMatrixGroupMaker(
-        fragment,
+    def ElementsMatrixGroupMaker(
+        element,
         position: typing.Union[Vector2, typing.Tuple[float, float]],
         amount: typing.Union[Vector2, typing.Tuple[int, int]],
         margin: typing.Tuple[float, float, float, float] = (0, 0, 0, 0),
         apply_initial_margin_X=False,
         apply_initial_margin_Y=False,
     ):
-        fragment_group = Ui_fragment()
+        element_group = UiElement()
         position_x = position[0]  # eje x
         position_y = position[1]  # eje y
 
@@ -82,18 +82,18 @@ class Ui_fragment(pygame.sprite.Sprite):
             for column in range(amount[0]):
                 if column > 0 or apply_initial_margin_X:
                     position_x = position_x + margin[3]
-                copy_fragment = copy(fragment)
-                copy_fragment.setPosition((position_x, position_y))
-                fragment_group.addFragment(copy_fragment)
+                copy_element = copy(element)
+                copy_element.setPosition((position_x, position_y))
+                element_group.addElement(copy_element)
                 position_x = position_x + CELL_SIZE + margin[0]  # aumenta x +32
             position_y = position_y + CELL_SIZE + margin[2]  # aumenta y+32
             position_x = position[0]  # resets x
-        return fragment_group
+        return element_group
 
     @staticmethod
-    def clearFragments(*fragment_group_list):
-        for fragments in fragment_group_list:
-            fragments.getFragmentList().clear()
+    def clearElements(*element_group_list):
+        for Elements in element_group_list:
+            Elements.getElementList().clear()
 
     # Pintar la superficie de la imagen con el color deseado
     @staticmethod
@@ -104,14 +104,14 @@ class Ui_fragment(pygame.sprite.Sprite):
         return texture.fill(color, special_flags=pygame.BLEND_MULT)
 
     @staticmethod
-    def toggleFragment(group_fragment, fragment):
-        if not (group_fragment.containFragment(fragment)):
-            group_fragment.addFragment(fragment)
-        elif group_fragment.containFragment(fragment):
-            Ui_fragment.clearFragments(group_fragment)
+    def toggleElement(group_element, element):
+        if not (group_element.containElement(element)):
+            group_element.addElement(element)
+        elif group_element.containElement(element):
+            UiElement.clearElements(group_element)
 
 
-class Complex_fragment(Ui_fragment):
+class Complex_element(UiElement):
     def __init__(self, ui_image: pygame.Surface, position):
         super().__init__()
         self.ui_image = ui_image
@@ -120,9 +120,9 @@ class Complex_fragment(Ui_fragment):
 
     def draw(self):
         if isinstance(self.position, tuple):
-            Ui_fragment.screen.blit(self.ui_image, self.position)
+            UiElement.screen.blit(self.ui_image, self.position)
         else:
-            Ui_fragment.screen.blit(self.ui_image, self.position.xy)
+            UiElement.screen.blit(self.ui_image, self.position.xy)
 
     def getImageSize(self):
         return self.ui_image.get_size()
@@ -139,9 +139,9 @@ class Complex_fragment(Ui_fragment):
             if ("%" in position[0]) and ("%" in position[1]):
                 self.position = Vector2(
                     (float(position[0].removesuffix("%")) / 100)
-                    * Ui_fragment.screen.get_width(),
+                    * UiElement.screen.get_width(),
                     (float(position[1].removesuffix("%")) / 100)
-                    * Ui_fragment.screen.get_height(),
+                    * UiElement.screen.get_height(),
                 )
             else:
                 self.position = Vector2(float(position[0]), float(position[1]))
@@ -151,7 +151,7 @@ class Complex_fragment(Ui_fragment):
 
 
 #!Cancelado, no veo el como hacerlo y que no tiene tanta importancia como para dedicarle tanto tiempo
-# class Interactable_fragment(Complex_fragment):
+# class Interactable_element(Complex_element):
 #     def __init__(
 #         self,
 #
@@ -163,13 +163,13 @@ class Complex_fragment(Ui_fragment):
 
 #     def draw(self):
 #         x, y = self.position.x, self.position.y
-#         Ui_fragment.screen.blit(self.ui_image, (x, y))
+#         UiElement.screen.blit(self.ui_image, (x, y))
 #         width, height = self.ui_image.get_size()
 #         rect = (x, y, width, height)
-#         pygame.draw.rect(Ui_fragment.screen, WHITE, rect, 2)
+#         pygame.draw.rect(UiElement.screen, WHITE, rect, 2)
 
 
-class Panel_fragment(Complex_fragment):
+class Panel_element(Complex_element):
     def __init__(
         self,
         ui_image: pygame.Surface,
@@ -186,10 +186,10 @@ class Panel_fragment(Complex_fragment):
 
     def draw(self):
         x, y = self.position.x, self.position.y
-        Ui_fragment.screen.blit(self.ui_image, (x, y))
+        UiElement.screen.blit(self.ui_image, (x, y))
 
 
-class Button_fragment(Complex_fragment):
+class Button_element(Complex_element):
     eventList = []
 
     def __init__(
@@ -208,8 +208,8 @@ class Button_fragment(Complex_fragment):
         x, y = self.position.x, self.position.y
         button_width, button_height = self.area.x, self.area.y
         self.ui_image = pygame.transform.scale(self.ui_image, self.area)
-        Ui_fragment.screen.blit(self.ui_image, (x, y))
-        for event in Button_fragment.eventList:
+        UiElement.screen.blit(self.ui_image, (x, y))
+        for event in Button_element.eventList:
             if event.type == pygame.MOUSEBUTTONDOWN and (self._pressed == False):
                 mouse_pos = pygame.mouse.get_pos()
                 if (
@@ -229,14 +229,14 @@ class Button_fragment(Complex_fragment):
 
     @staticmethod
     def appendGlobalEventListener(event):
-        Button_fragment.eventList.append(event)
+        Button_element.eventList.append(event)
 
     @staticmethod
     def clearGlobalEventListener():
-        Button_fragment.eventList.clear()
+        Button_element.eventList.clear()
 
 
-class Text_fragment(Ui_fragment):
+class TextElement(UiElement):
     def __init__(
         self,
         text: str,
@@ -262,7 +262,7 @@ class Text_fragment(Ui_fragment):
         center_position_x = (self.position.x + (self.area.x / 2)) - (text_width / 2)
         center_position_y = (self.position.y + (self.area.y / 2)) - (text_height / 3)
         position_center = Vector2(center_position_x, center_position_y)
-        Ui_fragment.screen.blit(text_surface, position_center)
+        UiElement.screen.blit(text_surface, position_center)
         # Show text area
         if self.show_text_area:
             self.drawTextArea()
@@ -279,23 +279,23 @@ class Text_fragment(Ui_fragment):
             if ("%" in position[0]) and ("%" in position[1]):
                 self.position = Vector2(
                     (float(position[0].removesuffix("%")) / 100)
-                    * Ui_fragment.screen.get_width(),
+                    * UiElement.screen.get_width(),
                     (float(position[1].removesuffix("%")) / 100)
-                    * Ui_fragment.screen.get_height(),
+                    * UiElement.screen.get_height(),
                 )
             else:
                 self.position = Vector2(float(position[0]), float(position[1]))
 
     def drawTextArea(self):
         pygame.draw.rect(
-            Ui_fragment.screen,
+            UiElement.screen,
             WHITE,
             (self.position.x, self.position.y, self.area.x, self.area.y),
             RECT_WIDTH,
         )
 
 
-class Text_area_fragment(Text_fragment):
+class TextAreaElement(TextElement):
     def __init__(
         self,
         text: str,
@@ -357,7 +357,7 @@ class Text_area_fragment(Text_fragment):
                 if (x + word_width) >= max_width - self.margin_right:
                     x = initial_x + self.margin_left  # Reinicia x.
                     y += word_height  # Comienza una nueva fila.
-                Ui_fragment.screen.blit(word_surface, (x, y))
+                UiElement.screen.blit(word_surface, (x, y))
                 x += word_width + space
             x = initial_x  # Reinicia x.
             y += word_height  # Comienza una nueva fila.

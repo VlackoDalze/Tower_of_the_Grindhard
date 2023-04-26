@@ -8,7 +8,7 @@ from scripts.collider_matrix_maker import (
 )
 from scripts.torch import Torch
 from scripts.players_views import Views
-from scripts.ui_fragment import *
+from scripts.ui_element import *
 from scripts.music import Music
 from scripts.menu import Menu
 
@@ -41,7 +41,7 @@ WHITE = (255, 255, 255)
 
 # definiendo el tamaño de la pantalla
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-Ui_fragment.setGlobalScreen(screen)  # Es necesario para habilitar el uso de Ui_fragment
+UiElement.setGlobalScreen(screen)  # Es necesario para habilitar el uso de UiElement
 clock = pygame.time.Clock()
 
 # Titulo de la pantalla
@@ -159,13 +159,13 @@ def testMethod():
     print("Hola")
 
 
-buttonTestContainer = Ui_fragment()
-testButton = Button_fragment(
+buttonTestContainer = UiElement()
+testButton = Button_element(
     texture_pack.inventory_button_texture, ("32", "32"), (100, 50)
 )
 testButton.setOnClick(testMethod)
-buttonTestContainer.addFragment(testButton)
-buttonTestContainer.addFragment(Text_fragment("aceptar", 32, ("32", "32"), (100, 50)))
+buttonTestContainer.addElement(testButton)
+buttonTestContainer.addElement(TextElement("aceptar", 32, ("32", "32"), (100, 50)))
 
 # desde aquí empieza el programa
 while True:
@@ -177,7 +177,7 @@ while True:
             pygame.quit()
             exit()
         # *EventListeners
-        Button_fragment.appendGlobalEventListener(event)
+        Button_element.appendGlobalEventListener(event)
 
         # menu previo a las vistas
         if len(players_list) == 0:
@@ -199,7 +199,7 @@ while True:
             Triggers.modeBattle(players_list, screen, event)
         else:  # vistas
             Triggers.setCountPlayers(len(players_list))
-            # Cuando no está activo este fragment, se desactiva los movimientos del jugador
+            # Cuando no está activo este element, se desactiva los movimientos del jugador
             for i in range(0, len(players_list)):
                 if not gui_drawer.isActiveInventory():
                     players_list[i].move(event, i)
@@ -284,7 +284,7 @@ while True:
         gui_drawer.draw_GUI()
 
         #!Solo para test
-        buttonTestContainer.drawListFragments()
+        buttonTestContainer.drawListElements()
 
     pygame.display.flip()  # actualizar los cambios
     #  pygame.display.flip() la pantalla para poner su trabajo en la pantalla ->actualiza toda la pantalla, es lo mismo que update()
@@ -293,4 +293,4 @@ while True:
     # incremento el temporizador
     player_update_time += 1
     furniture_animation_update_time += 1
-    Button_fragment.clearGlobalEventListener()
+    Button_element.clearGlobalEventListener()

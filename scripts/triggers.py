@@ -1,7 +1,7 @@
 from scripts.collider_matrix_maker import get_collider_matrix
 import pygame
 import scripts.setting as setting
-import scripts.ui_fragment as ui_fragment
+import scripts.ui_element as ui_element
 
 # Variables statics
 CELL_SIZE = setting.CELL_SIZE
@@ -288,14 +288,14 @@ class Triggers():
                 if float(aux[0])+size_messageOpen>=SCREEN_WIDTH-size_messageOpen:
                     aux[0]=SCREEN_WIDTH-size_messageOpen
                 position = (str(float(aux[0])),str(float(aux[1])-centery_text))
-                ui_fragment.Text_fragment(screen, newMessage, font_size, position,(CELL_SIZE,CELL_SIZE)).draw()
+                ui_element.TextElement(screen, newMessage, font_size, position,(CELL_SIZE,CELL_SIZE)).draw()
 
             else:
                 newMessage="Esperando..."  + str( Triggers.numPlayersReady)+"/"+str( Triggers.countPlayersNextScene)
                 if float(aux[0])+size_messageExit>=SCREEN_WIDTH-size_messageExit:
                     aux[0]=SCREEN_WIDTH-size_messageExit
                 position = (str(float(aux[0])),str(float(aux[1])-centery_text))
-                ui_fragment.Text_area_fragment(screen, newMessage, font_size, position).draw()
+                ui_element.TextAreaElement(screen, newMessage, font_size, position).draw()
 
         if  len(Triggers.listTriggersActivated)>0:
             for chest in Triggers.listTriggersActivated:

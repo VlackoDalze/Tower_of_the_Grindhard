@@ -1,7 +1,7 @@
 import pygame
 import scripts.setting as setting
 from scripts.player import Player
-from scripts.ui_fragment import *
+from scripts.ui_element import *
 
 button_texture = pygame.image.load("./assets/gui/inventory/inventory_button.png")
 letter_style = "assets/font/Silver.ttf"

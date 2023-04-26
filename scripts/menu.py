@@ -1,7 +1,7 @@
 import pygame
 import scripts.setting as setting
 from scripts.player import Player
-from scripts.ui_fragment import *
+from scripts.ui_element import *
 from scripts.skills import Skills
 from scripts.statistics import Statistics
 # Variables statics
@@ -33,7 +33,7 @@ pointer_color = (245, 230, 100)
 
 
 class Menu(object):
-    pointer_texture = Ui_fragment.getMultiplyColorTexture(
+    pointer_texture = UiElement.getMultiplyColorTexture(
         pointer_texture, pointer_color
     )
 
@@ -64,7 +64,7 @@ class Menu(object):
 
     def setPlayers(self, memoryPositionCircle):
         # fondo del menu necesario para se reinicie las textura de sobras
-        Panel_fragment(background_image, (0, 0), (SCREEN_WIDTH, SCREEN_HEIGHT)).draw()
+        Panel_element(background_image, (0, 0), (SCREEN_WIDTH, SCREEN_HEIGHT)).draw()
 
         letter_size = 15  # ancho de cada letra en px
         # centrar texto linea horizontal esta relacionado al tamaño de la letra importada
@@ -137,7 +137,7 @@ class Menu(object):
         #         height_center + CELL_SIZE * 8,
         #     ),
         # )
-        button_group_fragment = Ui_fragment()
+        button_group_element = UiElement()
         button_player_array = []
         text_player_array = []
 
@@ -162,18 +162,18 @@ class Menu(object):
             if i > 0:
                 position.y += 5 * i
             area = (CELL_SIZE * 5, CELL_SIZE)
-            button_player_array.append(Button_fragment(button_texture, position, area))
+            button_player_array.append(Button_element(button_texture, position, area))
             text_player_array.append(
-                Text_fragment("Jugador " + str(i + 1), 15, position, area)
+                TextElement("Jugador " + str(i + 1), 15, position, area)
             )
 
         for i in range(len(button_player_array)):
             button_player_array[i].setOnClick(setPlayers_array[i])
-            button_group_fragment.addFragment(
+            button_group_element.addElement(
                 button_player_array[i], text_player_array[i]
             )
 
-        button_group_fragment.drawListFragments()
+        button_group_element.drawListElements()
         aux_circle_y = circle_y  # auxiliar para limites del eje y
 
         if self.event.type == pygame.KEYDOWN:

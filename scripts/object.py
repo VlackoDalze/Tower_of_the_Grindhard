@@ -1,6 +1,6 @@
 import pygame
 from scripts.statistics import Statistics
-from scripts.ui_fragment import *
+from scripts.ui_element import *
 from scripts.setting import SCREEN_WIDTH, SCREEN_HEIGHT
 from scripts.texture_pack import inventory_slot
 
@@ -15,10 +15,10 @@ class Object(pygame.sprite.Sprite):
         self.description = description
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
-        self.panelFragment = Panel_fragment(
+        self.panelElement = Panel_element(
             inventory_slot, (0, 0), (CELL_SIZE * 6, CELL_SIZE * 6)
         )
-        # self.panelFragment.addFragment()
+        # self.panelElement.addElement()
 
     def getImage(self) -> pygame.Surface:
         return self.image
@@ -38,12 +38,12 @@ class Object(pygame.sprite.Sprite):
     def setDescription(self, description):
         self.description = description
 
-    def showPanelFragments(self, masterFragments, position):
-        if masterFragments.containFragment(self.panelFragment):
-            masterFragments.getFragmentList().remove(self.panelFragment)
+    def showPanelElements(self, masterElements, position):
+        if masterElements.containElement(self.panelElement):
+            masterElements.getElementList().remove(self.panelElement)
         else:
-            self.panelFragment.setPosition(position)
-            masterFragments.addFragment(self.panelFragment)
+            self.panelElement.setPosition(position)
+            masterElements.addElement(self.panelElement)
 
 
 class Equipment(Object):

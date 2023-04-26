@@ -1,5 +1,5 @@
 import pygame
-from scripts.ui_fragment import *
+from scripts.ui_element import *
 from scripts.players_views import viewsPositions
 from scripts.object import *
 from scripts.player import Player
@@ -26,13 +26,13 @@ class Gui_drawer:
         self.otherGuiIsActive = False
         self.pressed = False
 
-    # Inicializa los fragment necesarios
+    # Inicializa los element necesarios
     def createGUI(self):
-        self.equipment_area_fragment_array = []
+        self.equipment_area_element_array = []
         # *Mains
-        self.master_gui_fragment = Ui_fragment()  # Padre de todos
-        self.default_gui_fragment = Ui_fragment()
-        self.master_gui_fragment.addFragment(self.default_gui_fragment)
+        self.master_gui_element = UiElement()  # Padre de todos
+        self.default_gui_element = UiElement()
+        self.master_gui_element.addElement(self.default_gui_element)
         self.createInventoryGUI()
 
     # TODO: Hacer que los objetos se muestren el slots correspondiente
@@ -44,14 +44,14 @@ class Gui_drawer:
         for i in range(size):
             if len(self.equipment_area_btn_frag_array) < size:
                 self.equipment_area_btn_frag_array.append(
-                    Button_fragment(
+                    Button_element(
                         inventory_button_texture,
                         (0, 0),
                         (CELL_SIZE * 3, CELL_SIZE),
                     )
                 )
 
-        inventory_equipment_panel_fragment_group = Ui_fragment()
+        inventory_equipment_panel_element_group = UiElement()
         for i in range(0, size):
             position_x = viewsPositions[i][0]
             position_y = viewsPositions[i][1]
@@ -59,16 +59,16 @@ class Gui_drawer:
                 position_x *= 1.425
             position_x += 32
             position_y += 16
-            inventory_equipment_panel_fragment = Panel_fragment(
+            inventory_equipment_panel_element = Panel_element(
                 inventory_equipment_panel_texture,
                 (str(position_x), str(position_y)),
             )
-            inventory_equipment_area_fragment = Panel_fragment(
+            inventory_equipment_area_element = Panel_element(
                 inventory_equipment_area_texture,
                 (str(position_x + 16), str(position_y + CELL_SIZE * 3)),
             )
             # TODO: hacer que el area de estadísticas se muestre cuando se presiona el botón correspondiente
-            equipment_buttons = Ui_fragment()
+            equipment_buttons = UiElement()
 
             def openEquipmentArea1():
                 print("Equipment1")
@@ -113,7 +113,7 @@ class Gui_drawer:
             self.equipment_area_btn_frag_array[i].setPosition(
                 (position_x + 16, position_y + 16)
             )
-            text_button = Text_fragment(
+            text_button = TextElement(
                 "Equipamiento",
                 20,
                 (
@@ -125,85 +125,85 @@ class Gui_drawer:
                     self.equipment_area_btn_frag_array[i].getArea().y,
                 ),
             )
-            equipment_buttons.addFragment(
+            equipment_buttons.addElement(
                 self.equipment_area_btn_frag_array[i], text_button
             )
-            inventory_equipment_panel_fragment_group.addFragment(
-                inventory_equipment_panel_fragment,
-                inventory_equipment_area_fragment,
+            inventory_equipment_panel_element_group.addElement(
+                inventory_equipment_panel_element,
+                inventory_equipment_area_element,
                 equipment_buttons,
             )
-            self.equipment_area_fragment_array.append(inventory_equipment_area_fragment)
-        self.inventory_fragment.addFragment(inventory_equipment_panel_fragment_group)
+            self.equipment_area_element_array.append(inventory_equipment_area_element)
+        self.inventory_element.addElement(inventory_equipment_panel_element_group)
 
-        equipment_statistics_fragment_array = []
+        equipment_statistics_element_array = []
         for i in range(size):
-            equipment_statistics_fragment_array.append(Ui_fragment())
-        # for equipment_statistics_fragment in equipment_statistics_fragment_array:
-        #     self.inventory_fragment.addFragment(equipment_statistics_fragment)
+            equipment_statistics_element_array.append(UiElement())
+        # for equipment_statistics_element in equipment_statistics_element_array:
+        #     self.inventory_element.addElement(equipment_statistics_element)
 
     def createInventoryGUI(self):
-        self.inventory_fragment = Ui_fragment()
-        self.equipment_area_fragment = Ui_fragment()
-        self.slotObjectsGroupFragment = Ui_fragment()
+        self.inventory_element = UiElement()
+        self.equipment_area_element = UiElement()
+        self.slotObjectsGroupElement = UiElement()
         self._pressed = True
 
-        self.inventory_slot_group_fragment = Ui_fragment()
+        self.inventory_slot_group_element = UiElement()
 
-        inventory_bag_fragment = Panel_fragment(
+        inventory_bag_element = Panel_element(
             inventory_bag_texture, ("36%", "20%"), (216, 312)
         )
-        inventory_equipment_fragment = Panel_fragment(
+        inventory_equipment_element = Panel_element(
             inventory_equipment_panel_texture,
             ("10%", "10%"),
             inventory_equipment_area_texture.get_size(),
         )
-        inventory_text_fragment = Text_fragment(
+        inventory_text_element = TextElement(
             "Inventario",
             32,
-            inventory_bag_fragment.getPosition(),
+            inventory_bag_element.getPosition(),
             (CELL_SIZE * 6.75, CELL_SIZE),
             WHITE,
         )
 
-        self.indexTextFragment = Text_fragment(
+        self.indexTextElement = TextElement(
             str(Player.inventoryIndex + 1) + "/" + str(len(Player.inventory)),
             24,
             (
-                inventory_bag_fragment.getPosition().x,
-                inventory_bag_fragment.getPosition().y + CELL_SIZE * 8.75,
+                inventory_bag_element.getPosition().x,
+                inventory_bag_element.getPosition().y + CELL_SIZE * 8.75,
             ),
             (CELL_SIZE * 6.75, CELL_SIZE),
             WHITE,
         )
 
-        inventory_slot_fragment = Panel_fragment(inventory_slot, (0, 0))
+        inventory_slot_element = Panel_element(inventory_slot, (0, 0))
 
         # Creo los slots para el inventario
-        self.inventory_slot_group_fragment = Ui_fragment.fragmentsMatrixGroupMaker(
-            inventory_slot_fragment,
+        self.inventory_slot_group_element = UiElement.ElementsMatrixGroupMaker(
+            inventory_slot_element,
             (
-                inventory_bag_fragment.getPosition().x + 24,
-                inventory_bag_fragment.getPosition().y + CELL_SIZE * 2,
+                inventory_bag_element.getPosition().x + 24,
+                inventory_bag_element.getPosition().y + CELL_SIZE * 2,
             ),
             (4, 4),
             (0, 0, 12, 12),
         )
 
-        inventory_bag_fragment.addFragment(self.inventory_slot_group_fragment)
-        self.inventory_fragment.addFragment(  # Carga el inventory fragment
-            inventory_bag_fragment, inventory_text_fragment, self.indexTextFragment
+        inventory_bag_element.addElement(self.inventory_slot_group_element)
+        self.inventory_element.addElement(  # Carga el inventory element
+            inventory_bag_element, inventory_text_element, self.indexTextElement
         )
 
     def updateEquipmentPanel(self, playerList):
-        Ui_fragment.clearFragments(self.equipment_area_fragment)
+        UiElement.clearElements(self.equipment_area_element)
         for index, player in enumerate(playerList):
             equipmentsKeys = player.getEquipmentsKeys()
             equipmentsList = player.getEquipments()
-            self.equipment_area_fragment_array[index]
+            self.equipment_area_element_array[index]
             for key in equipmentsKeys:
-                position_x = self.equipment_area_fragment_array[index].getPosition().x
-                position_y = self.equipment_area_fragment_array[index].getPosition().y
+                position_x = self.equipment_area_element_array[index].getPosition().x
+                position_y = self.equipment_area_element_array[index].getPosition().y
                 if key == PrimaryWeapon:
                     position_x += CELL_SIZE * 5.5
                 if key == SecondaryWeapon:
@@ -223,17 +223,17 @@ class Gui_drawer:
                     position_y += CELL_SIZE * 3
                 position = (position_x, position_y)
                 equipmentImage = equipmentsList[key].getImage()
-                imgFrag = Panel_fragment(equipmentImage, position)
-                self.equipment_area_fragment.addFragment(imgFrag)
-        self.inventory_fragment.addFragment(self.equipment_area_fragment)
+                imgFrag = Panel_element(equipmentImage, position)
+                self.equipment_area_element.addElement(imgFrag)
+        self.inventory_element.addElement(self.equipment_area_element)
 
     def createInventoryContents(self, objects: []):
-        Ui_fragment.clearFragments(self.slotObjectsGroupFragment)
+        UiElement.clearElements(self.slotObjectsGroupElement)
         for index, object in enumerate(objects[Player.inventoryIndex]):
-            position = self.inventory_slot_group_fragment.getFragmentList()[
+            position = self.inventory_slot_group_element.getElementList()[
                 index
             ].getPosition()
-            slotObjectFragment = Button_fragment(
+            slotObjectElement = Button_element(
                 object.getImage(),
                 position,
                 object.getImage().get_size(),
@@ -241,27 +241,27 @@ class Gui_drawer:
 
             #!Arreglar que cada botón tenga su propio método que no esté por referencia
             def openObjectPanel():
-                object.showPanelFragments(
-                    self.inventory_slot_group_fragment,
+                object.showPanelElements(
+                    self.inventory_slot_group_element,
                     (position.x + CELL_SIZE, position.y),
                 )
 
-            slotObjectFragment.setOnClick(openObjectPanel)
-            self.slotObjectsGroupFragment.addFragment(slotObjectFragment)
-            self.indexTextFragment.setText(
+            slotObjectElement.setOnClick(openObjectPanel)
+            self.slotObjectsGroupElement.addElement(slotObjectElement)
+            self.indexTextElement.setText(
                 str(Player.inventoryIndex + 1) + "/" + str(len(Player.inventory))
             )
-        self.inventory_slot_group_fragment.addFragment(self.slotObjectsGroupFragment)
+        self.inventory_slot_group_element.addElement(self.slotObjectsGroupElement)
 
     def draw_GUI(self):
         # *Draw GUI
-        self.master_gui_fragment.drawListFragments()
+        self.master_gui_element.drawListElements()
 
     def hello(self):
         print("hello")
 
     def showInventory(self):
-        Ui_fragment.toggleFragment(self.default_gui_fragment, self.inventory_fragment)
+        UiElement.toggleElement(self.default_gui_element, self.inventory_element)
         self.otherGuiIsActive = True
 
     def isActiveInventory(self):
