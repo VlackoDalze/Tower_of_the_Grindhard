@@ -161,8 +161,8 @@ testButton = Button_fragment(
     screen, texture_pack.inventory_button_texture, ("32", "32"), (100, 50)
 )
 testButton.setOnClick(testMethod)
-buttonTestContainer.add_fragment(testButton)
-buttonTestContainer.add_fragment(
+buttonTestContainer.addFragment(testButton)
+buttonTestContainer.addFragment(
     Text_fragment(screen, "aceptar", 32, ("32", "32"), (100, 50))
 )
 

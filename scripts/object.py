@@ -18,7 +18,7 @@ class Object(pygame.sprite.Sprite):
         self.panelFragment = Panel_fragment(
             self.screen, inventory_slot, (0, 0), (CELL_SIZE * 6, CELL_SIZE * 6)
         )
-        # self.panelFragment.add_fragment()
+        # self.panelFragment.addFragment()
 
     def getImage(self) -> pygame.Surface:
         return self.image
@@ -40,10 +40,10 @@ class Object(pygame.sprite.Sprite):
 
     def showPanelFragments(self, masterFragments, position):
         if masterFragments.containFragment(self.panelFragment):
-            masterFragments.get_fragment_list().remove(self.panelFragment)
+            masterFragments.getFragmentList().remove(self.panelFragment)
         else:
-            self.panelFragment.set_position(position)
-            masterFragments.add_fragment(self.panelFragment)
+            self.panelFragment.setPosition(position)
+            masterFragments.addFragment(self.panelFragment)
 
 
 class Equipment(Object):
