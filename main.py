@@ -41,7 +41,7 @@ WHITE = (255, 255, 255)
 
 # definiendo el tamaño de la pantalla
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-Ui_fragment.setGlobalScreen(screen)
+Ui_fragment.setGlobalScreen(screen)  # Es necesario para habilitar el uso de Ui_fragment
 clock = pygame.time.Clock()
 
 # Titulo de la pantalla
