@@ -2,7 +2,8 @@ import pygame
 from scripts.statistics import Statistics
 import scripts.setting as setting
 from scripts.unique_passive import UniquePassive
-
+import random
+from scripts.skills import Skills
 # Variables statics
 CELL_SIZE = setting.CELL_SIZE
 SCREEN_WIDTH = setting.SCREEN_WIDTH
@@ -68,6 +69,9 @@ class Enemy:
 
     def getStats(self):
         return self.baseStats
+
+    def getName(self):
+        return self.name
     
     def getPositionX(self):
         return self.positionX
@@ -99,3 +103,23 @@ class Enemy:
 
         if str(self.positionX) + "-" + str(self.positionY) not in collision_enemy:
             collision_enemy.append(str(self.positionX) + "-" + str(self.positionY))
+
+    def createRandomEnemies(name,num_players):
+        num_ememies=random.randrange(1,4)
+        list_enemies = []
+        aux_power=(num_players-num_ememies)*50
+        aux_speed=random.randrange(-10,10)
+        
+        for e in range(0,num_ememies):
+            list_enemies.append(Enemy(None,
+            "Esqueleto",
+            "Un día me morí",
+            1,
+            Statistics(200.0+aux_power,20.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,10.0+aux_speed),
+            [Skills('Arañazo',None,10,'Físico')],
+            None,
+            20 * CELL_SIZE,
+            18 * CELL_SIZE,
+            None,))
+            
+        return list_enemies
