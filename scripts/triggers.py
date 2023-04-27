@@ -288,7 +288,7 @@ class Triggers():
                 if float(aux[0])+size_messageOpen>=SCREEN_WIDTH-size_messageOpen:
                     aux[0]=SCREEN_WIDTH-size_messageOpen
                 position = (str(float(aux[0])),str(float(aux[1])-centery_text))
-                ui_element.TextElement(screen, newMessage, font_size, position,(CELL_SIZE,CELL_SIZE)).draw()
+                ui_element.TextElement(newMessage, font_size, position,(CELL_SIZE,CELL_SIZE)).draw()
 
             else:
                 newMessage="Esperando..."  + str( Triggers.numPlayersReady)+"/"+str( Triggers.countPlayersNextScene)
