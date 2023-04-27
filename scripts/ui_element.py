@@ -26,9 +26,7 @@ class UiElement(pygame.sprite.Sprite):
 
     def drawListElements(self):
         for element in self.element_list:
-            if isinstance(element, Complex_element) or isinstance(
-                element, TextElement
-            ):
+            if isinstance(element, Complex_element) or isinstance(element, TextElement):
                 if element.getElementList():
                     element.draw()
                     element.drawListElements()
@@ -61,6 +59,11 @@ class UiElement(pygame.sprite.Sprite):
 
     @staticmethod
     def setGlobalScreen(screen):
+        """Establece la pantalla global utilizada por la clase UiElement.
+
+        Args:
+            screen (_type_): _description_
+        """
         UiElement.screen = screen
 
     @staticmethod
@@ -72,6 +75,19 @@ class UiElement(pygame.sprite.Sprite):
         apply_initial_margin_X=False,
         apply_initial_margin_Y=False,
     ):
+        """Crea un grupo de elementos organizados en una matriz, según los parámetros dados.
+
+        Args:
+            element (_type_): _description_
+            position (typing.Union[Vector2, typing.Tuple[float, float]]): _description_
+            amount (typing.Union[Vector2, typing.Tuple[int, int]]): _description_
+            margin (typing.Tuple[float, float, float, float], optional): _description_. Defaults to (0, 0, 0, 0).
+            apply_initial_margin_X (bool, optional): _description_. Defaults to False.
+            apply_initial_margin_Y (bool, optional): _description_. Defaults to False.
+
+        Returns:
+            _type_: _description_
+        """
         element_group = UiElement()
         position_x = position[0]  # eje x
         position_y = position[1]  # eje y
@@ -234,6 +250,23 @@ class Button_element(Complex_element):
     @staticmethod
     def clearGlobalEventListener():
         Button_element.eventList.clear()
+
+    @staticmethod
+    def hasEventListener() -> bool:
+        """Verifica si hay eventos en la lista eventList de la instancia de la clase.
+        Si hay eventos, devuelve True, de lo contrario, devuelve False.
+        Este método se utiliza para verificar si hay algún evento en la lista eventList antes de que se active un botón.
+        Y verifica si los tipos de eventos son movimientos del ratón, retornando false en caso afirmativo.
+
+        Returns:
+            bool: hasEvent not mouse movement
+        """
+        for event in Button_element.eventList:
+            if event.type == pygame.MOUSEMOTION:
+                continue
+            else:
+                return True
+        return False
 
 
 class TextElement(UiElement):

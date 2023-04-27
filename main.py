@@ -242,11 +242,10 @@ while True:
         # dibujo las antorchas en el mapa a partir de una matriz
         draw_list_torch(list_torch, current_sprite_anim)
 
-        # Actualizar la interfaz de usuario
-        if gui_drawer.isActiveInventory():
+        # Actualizar la interfaz de usuario y solo se actualiza cuando se está usando la interfaz
+        if gui_drawer.isActiveInventory() and Button_element.hasEventListener():
             gui_drawer.updateEquipmentPanel(players_list)
-            if furniture_animation_update_time >= 9:
-                gui_drawer.createInventoryContents(Player.getInventory())
+            gui_drawer.createInventoryContents(Player.getInventory())
 
         # Dibujo al jugador
         for player in players_list:
