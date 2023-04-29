@@ -15,6 +15,33 @@ RECT_WIDTH = 2
 def defaultMethod():
     print("Empty method")
 
+class EventReceiver():
+    eventList = []
+
+    @staticmethod
+    def appendGlobalEventListener(event):
+        Button_element.eventList.append(event)
+
+    @staticmethod
+    def clearGlobalEventListener():
+        Button_element.eventList.clear()
+
+    @staticmethod
+    def hasEventListener() -> bool:
+        """Verifica si hay eventos en la lista eventList de la instancia de la clase.
+        Si hay eventos, devuelve True, de lo contrario, devuelve False.
+        Este método se utiliza para verificar si hay algún evento en la lista eventList antes de que se active un botón.
+        Y verifica si los tipos de eventos son movimientos del ratón, retornando false en caso afirmativo.
+
+        Returns:
+            bool: hasEvent not mouse movement
+        """
+        for event in EventReceiver.eventList:
+            if event.type == pygame.MOUSEMOTION:
+                continue
+            else:
+                return True
+        return False
 
 class UiElement(pygame.sprite.Sprite):
     screen = None
@@ -205,8 +232,7 @@ class Panel_element(Complex_element):
         UiElement.screen.blit(self.ui_image, (x, y))
 
 
-class Button_element(Complex_element):
-    eventList = []
+class Button_element(Complex_element,EventReceiver):
 
     def __init__(
         self,
@@ -225,7 +251,7 @@ class Button_element(Complex_element):
         button_width, button_height = self.area.x, self.area.y
         self.ui_image = pygame.transform.scale(self.ui_image, self.area)
         UiElement.screen.blit(self.ui_image, (x, y))
-        for event in Button_element.eventList:
+        for event in EventReceiver.eventList:
             if event.type == pygame.MOUSEBUTTONDOWN and (self._pressed == False):
                 mouse_pos = pygame.mouse.get_pos()
                 if (
@@ -243,30 +269,7 @@ class Button_element(Complex_element):
     def getArea(self):
         return self.area
 
-    @staticmethod
-    def appendGlobalEventListener(event):
-        Button_element.eventList.append(event)
 
-    @staticmethod
-    def clearGlobalEventListener():
-        Button_element.eventList.clear()
-
-    @staticmethod
-    def hasEventListener() -> bool:
-        """Verifica si hay eventos en la lista eventList de la instancia de la clase.
-        Si hay eventos, devuelve True, de lo contrario, devuelve False.
-        Este método se utiliza para verificar si hay algún evento en la lista eventList antes de que se active un botón.
-        Y verifica si los tipos de eventos son movimientos del ratón, retornando false en caso afirmativo.
-
-        Returns:
-            bool: hasEvent not mouse movement
-        """
-        for event in Button_element.eventList:
-            if event.type == pygame.MOUSEMOTION:
-                continue
-            else:
-                return True
-        return False
 
 
 class TextElement(UiElement):

@@ -177,7 +177,7 @@ while True:
             pygame.quit()
             exit()
         # *EventListeners
-        Button_element.appendGlobalEventListener(event)
+        EventReceiver.appendGlobalEventListener(event)
 
         # menu previo a las vistas
         if len(players_list) == 0:
@@ -292,4 +292,4 @@ while True:
     # incremento el temporizador
     player_update_time += 1
     furniture_animation_update_time += 1
-    Button_element.clearGlobalEventListener()
+    EventReceiver.clearGlobalEventListener()
