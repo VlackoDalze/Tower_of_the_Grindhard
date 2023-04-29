@@ -214,7 +214,7 @@ class Player(Character):
         return object
 
     @staticmethod
-    def getInventory() -> []:
+    def getInventory() -> list[Object]:
         return Player.inventory
 
     # TODO: modificar algunos aspecto del equipado (return)
