@@ -14,19 +14,55 @@ icon="assets/misc/error.png"
 
 
 positions_players=[[(SCREEN_WIDTH/8,SCREEN_HEIGHT/6)]
-                   ,[(SCREEN_WIDTH/8,SCREEN_HEIGHT/2/7),(SCREEN_WIDTH/8,SCREEN_HEIGHT/2/7*3)]
-                   ,[(SCREEN_WIDTH/8,SCREEN_HEIGHT/2/10),(SCREEN_WIDTH/8,SCREEN_HEIGHT/2/10*3),(SCREEN_WIDTH/8,SCREEN_HEIGHT/2/10*6)]
-                   ,[(SCREEN_WIDTH/8,SCREEN_HEIGHT/2/13),(SCREEN_WIDTH/8,SCREEN_HEIGHT/2/13*3),(SCREEN_WIDTH/8,SCREEN_HEIGHT/2/13*6),(SCREEN_WIDTH/8,SCREEN_HEIGHT/2/13*9)]]    
+                   
+                   ,[(SCREEN_WIDTH/8,SCREEN_HEIGHT/2/7),\
+                       (SCREEN_WIDTH/8,SCREEN_HEIGHT/2.5/2+120)] 
+                   
+                   ,[(SCREEN_WIDTH/8+100,SCREEN_HEIGHT/2/7),\
+                       (SCREEN_WIDTH/8,SCREEN_HEIGHT/2.5/2+50),\
+                           (SCREEN_WIDTH/8+100,SCREEN_HEIGHT/2.5/2+190)]
+                   
+                   ,[(SCREEN_WIDTH/8+100,SCREEN_HEIGHT/2/7),\
+                       (SCREEN_WIDTH/8,SCREEN_HEIGHT/2.5/2+20),\
+                           (SCREEN_WIDTH/8,SCREEN_HEIGHT/2.5/2+130),\
+                               (SCREEN_WIDTH/8+100,SCREEN_HEIGHT/2.5/2+240)]]    
    
 position_enemies=[[(SCREEN_WIDTH/2+SCREEN_WIDTH/6,SCREEN_HEIGHT/6)]
-                   ,[(SCREEN_WIDTH/2+SCREEN_WIDTH/6,SCREEN_HEIGHT/2/7),(SCREEN_WIDTH/2+SCREEN_WIDTH/6,SCREEN_HEIGHT/2/7*3)]
-                   ,[(SCREEN_WIDTH/2+SCREEN_WIDTH/6,SCREEN_HEIGHT/2/10),(SCREEN_WIDTH/2+SCREEN_WIDTH/6,SCREEN_HEIGHT/2/10*3),(SCREEN_WIDTH/2+SCREEN_WIDTH/6,SCREEN_HEIGHT/2/10*6)]
-                   ,[(SCREEN_WIDTH/2+SCREEN_WIDTH/6,SCREEN_HEIGHT/2/13),(SCREEN_WIDTH/2+SCREEN_WIDTH/6,SCREEN_HEIGHT/2/13*3),(SCREEN_WIDTH/2+SCREEN_WIDTH/6,SCREEN_HEIGHT/2/13*6),(SCREEN_WIDTH/2+SCREEN_WIDTH/6,SCREEN_HEIGHT/2/13*9)]] 
+                  
+                   ,[(SCREEN_WIDTH/2+SCREEN_WIDTH/6,SCREEN_HEIGHT/2/7),\
+                       (SCREEN_WIDTH/2+SCREEN_WIDTH/6,SCREEN_HEIGHT/2.5/2+120)] 
+                   
+                   ,[(SCREEN_WIDTH/2+SCREEN_WIDTH/6,SCREEN_HEIGHT/2/7),\
+                       (SCREEN_WIDTH/2+SCREEN_WIDTH/6+100,SCREEN_HEIGHT/2.5/2+50),\
+                           (SCREEN_WIDTH/2+SCREEN_WIDTH/6,SCREEN_HEIGHT/2.5/2+190)]
+                   
+                   ,[(SCREEN_WIDTH/2+SCREEN_WIDTH/6,SCREEN_HEIGHT/2/7),\
+                       (SCREEN_WIDTH/2+SCREEN_WIDTH/6+100,SCREEN_HEIGHT/2.5/2+20),\
+                           (SCREEN_WIDTH/2+SCREEN_WIDTH/6+100,SCREEN_HEIGHT/2.5/2+130),\
+                               (SCREEN_WIDTH/2+SCREEN_WIDTH/6,SCREEN_HEIGHT/2.5/2+240)]] 
 
+#---------------------- barra de vida, ancho, barra de mana, cursor de turno, letras de vida y mana
+position_bars=[[(50,20,SCREEN_WIDTH/4,50,5,10,(0,25,20,0,40,25), (SCREEN_WIDTH/4-40,27.5,12.5))]
+                      
+                   ,[(25,20,SCREEN_WIDTH/4/2,25,5,10,(-25,25,-5,0,15,25), (SCREEN_WIDTH/6-60,27.5,12.5)),\
+                       (25,20,SCREEN_WIDTH/4/2,25,5,10,(-25,25,-5,0,15,25), (SCREEN_WIDTH/6-60,27.5,12.5))]\
+                   
+                   ,[(0,20,SCREEN_WIDTH/4/3,0,5,10,(-50,25,-30,0,-10,25), (SCREEN_WIDTH/6-80,27.5,12.5)),\
+                       (0,20,SCREEN_WIDTH/4/3,0,5,10,(-50,25,-30,0,-10,25), (SCREEN_WIDTH/6-80,27.5,12.5)),\
+                          (0,20,SCREEN_WIDTH/4/3,0,5,10,(-50,25,-30,0,-10,25), (SCREEN_WIDTH/6-80,27.5,12.5))]
+                   
+                   ,[(0,20,SCREEN_WIDTH/4/4,0,5,10,(-50,25,-30,0,-10,25), (SCREEN_WIDTH/6-100,27.5,12.5)),\
+                       (0,20,SCREEN_WIDTH/4/4,0,5,10,(-50,25,-30,0,-10,25), (SCREEN_WIDTH/6-100,27.5,12.5)),\
+                          (0,20,SCREEN_WIDTH/4/4,0,5,10,(-50,25,-30,0,-10,25), (SCREEN_WIDTH/6-100,27.5,12.5)),\
+                              (0,20,SCREEN_WIDTH/4/4,0,5,10,(-50,25,-30,0,-10,25), (SCREEN_WIDTH/6-100,27.5,12.5))]]      
+  
 size_playersAndEnemies=[(SCREEN_WIDTH/4,SCREEN_HEIGHT/2.5)
                         ,(SCREEN_WIDTH/4/2,SCREEN_HEIGHT/2.5/2)
                         ,(SCREEN_WIDTH/4/3,SCREEN_HEIGHT/2.5/3)
                         ,(SCREEN_WIDTH/4/4,SCREEN_HEIGHT/2.5/4)]
+
+
+
 
 color=(255, 255, 255)     
 
@@ -111,6 +147,8 @@ class Triggers():
     copyStatsAndSaveObjects=[[],[],[],[]] #0 players , 1 enemies , 2 noduples players , 3 noduples enemy
     aux_positions_players=None
     aux_positions_enemies=None    
+    aux_positions_playersBars=None
+    aux_positions_enemiesBars=None
     order_attack=[]
     aux_num_enemy=[]
     order_attack_enemy=[]
@@ -150,7 +188,8 @@ class Triggers():
         if Triggers.aux_positions_players==None:
             Triggers.aux_positions_players=positions_players[len(Triggers.copyStatsAndSaveObjects[2])-1]
             Triggers.aux_positions_enemies=position_enemies[len(Triggers.copyStatsAndSaveObjects[3])-1]
-
+            Triggers.aux_positions_playersBars=position_bars[len(Triggers.copyStatsAndSaveObjects[2])-1]
+            Triggers.aux_positions_enemiesBars=position_bars[len(Triggers.copyStatsAndSaveObjects[3])-1]
         #areas
         area_btns= pygame.Surface((area_btns_width-aux_resizeWidth,area_btns_height))
         area_info=  pygame.Surface((area_btns_width +aux_resizeWidth,area_btns_height))
@@ -192,30 +231,70 @@ class Triggers():
             image_player= pygame.transform.scale(players_list[i].getImage(), size_playersAndEnemies[len(Triggers.copyStatsAndSaveObjects[2])-1] )#redimiension
 
             #barras de vida
-            pygame.draw.line(screen,(0,128,0),(Triggers.aux_positions_players[i][0]+50,Triggers.aux_positions_players[i][1]-20),(Triggers.aux_positions_players[i][0]+SCREEN_WIDTH/4-50,Triggers.aux_positions_players[i][1]-20),10)
-            pygame.draw.line(screen,(0,0,255),(Triggers.aux_positions_players[i][0]+50,Triggers.aux_positions_players[i][1]-5),(Triggers.aux_positions_players[i][0]+SCREEN_WIDTH/4-50,Triggers.aux_positions_players[i][1]-5),10)
+            pygame.draw.line(screen,(0,128,0),\
+                
+            (Triggers.aux_positions_players[i][0]+Triggers.aux_positions_playersBars[i][0] ,\
+                Triggers.aux_positions_players[i][1]-Triggers.aux_positions_playersBars[i][1]),\
+                    
+            (Triggers.aux_positions_players[i][0]+Triggers.aux_positions_playersBars[i][2]-Triggers.aux_positions_playersBars[i][0],\
+                Triggers.aux_positions_players[i][1]-Triggers.aux_positions_playersBars[i][1]),\
+
+            Triggers.aux_positions_playersBars[i][5])
+            
+            pygame.draw.line(screen,(0,0,255),\
+                
+            (Triggers.aux_positions_players[i][0]+Triggers.aux_positions_playersBars[i][3],\
+                Triggers.aux_positions_players[i][1]-Triggers.aux_positions_playersBars[i][4]),\
+                    
+            (Triggers.aux_positions_players[i][0]+Triggers.aux_positions_playersBars[i][2]-Triggers.aux_positions_playersBars[i][3],\
+                Triggers.aux_positions_players[i][1]-Triggers.aux_positions_playersBars[i][4]),\
+                    
+            Triggers.aux_positions_playersBars[i][5])
 
             text26= font3.render(str(Triggers.copyStatsAndSaveObjects[0][i].getHealth())+"/"+str(players_list[i].getTotalStat('health')), True, (255, 255, 255))
             text27= font3.render(str(Triggers.copyStatsAndSaveObjects[0][i].getMana())+"/"+str(players_list[i].getTotalStat('mana')), True, (255, 255, 255))
 
-            screen.blit(text26,(Triggers.aux_positions_players[i][0]+SCREEN_WIDTH/4-40,Triggers.aux_positions_players[i][1]-27.5)) 
-            screen.blit(text27,(Triggers.aux_positions_players[i][0]+SCREEN_WIDTH/4-40,Triggers.aux_positions_players[i][1]-12.5))   
+            screen.blit(text26,(Triggers.aux_positions_players[i][0]+Triggers.aux_positions_playersBars[i][7][0],\
+                Triggers.aux_positions_players[i][1]-Triggers.aux_positions_playersBars[i][7][1]))  
             
+            screen.blit(text27,(Triggers.aux_positions_players[i][0]+Triggers.aux_positions_playersBars[i][7][0],\
+                Triggers.aux_positions_players[i][1]-Triggers.aux_positions_playersBars[i][7][2]))   
+           
             screen.blit(image_player, Triggers.aux_positions_players[i])
             
         #pintado de imagenes de enemies 
         for i in range(0,len(Triggers.copyStatsAndSaveObjects[3])): 
             image_enemy= pygame.transform.scale(Triggers.copyStatsAndSaveObjects[3][i].getImageDefault(), size_playersAndEnemies[len(Triggers.copyStatsAndSaveObjects[3])-1]) #redimiension
 
-            pygame.draw.line(screen,(0,128,0),(Triggers.aux_positions_enemies[i][0]+50,Triggers.aux_positions_enemies[i][1]-20),(Triggers.aux_positions_enemies[i][0]+SCREEN_WIDTH/4-50,Triggers.aux_positions_enemies[i][1]-20),10)
-            pygame.draw.line(screen,(0,0,255),(Triggers.aux_positions_enemies[i][0]+50,Triggers.aux_positions_enemies[i][1]-5),(Triggers.aux_positions_enemies[i][0]+SCREEN_WIDTH/4-50,Triggers.aux_positions_enemies[i][1]-5),10)
+            pygame.draw.line(screen,(0,128,0),\
+                
+            (Triggers.aux_positions_enemies[i][0]+Triggers.aux_positions_enemiesBars[i][0] ,\
+                Triggers.aux_positions_enemies[i][1]-Triggers.aux_positions_enemiesBars[i][1]),\
+                    
+            (Triggers.aux_positions_enemies[i][0]+Triggers.aux_positions_enemiesBars[i][2]-Triggers.aux_positions_enemiesBars[i][0],\
+                Triggers.aux_positions_enemies[i][1]-Triggers.aux_positions_enemiesBars[i][1]),\
 
+            Triggers.aux_positions_enemiesBars[i][5])
+            
+            pygame.draw.line(screen,(0,0,255),\
+                
+            (Triggers.aux_positions_enemies[i][0]+Triggers.aux_positions_enemiesBars[i][3],\
+                Triggers.aux_positions_enemies[i][1]-Triggers.aux_positions_enemiesBars[i][4]),\
+                    
+            (Triggers.aux_positions_enemies[i][0]+Triggers.aux_positions_enemiesBars[i][2]-Triggers.aux_positions_enemiesBars[i][3],\
+                Triggers.aux_positions_enemies[i][1]-Triggers.aux_positions_enemiesBars[i][4]),\
+                    
+            Triggers.aux_positions_enemiesBars[i][5])
+            
             text28= font3.render(str(Triggers.copyStatsAndSaveObjects[1][i].getHealth())+"/"+str(Triggers.copyStatsAndSaveObjects[3][i].getStats().getHealth()), True, (255, 255, 255))
             text29= font3.render(str(Triggers.copyStatsAndSaveObjects[1][i].getMana())+"/"+str(Triggers.copyStatsAndSaveObjects[3][i].getStats().getMana()), True, (255, 255, 255))
 
-            screen.blit(text28,(Triggers.aux_positions_enemies[i][0]+SCREEN_WIDTH/4-40,Triggers.aux_positions_enemies[i][1]-27.5)) 
-            screen.blit(text29,(Triggers.aux_positions_enemies[i][0]+SCREEN_WIDTH/4-40,Triggers.aux_positions_enemies[i][1]-12.5))   
-
+            screen.blit(text28,(Triggers.aux_positions_enemies[i][0]+Triggers.aux_positions_enemiesBars[i][7][0],\
+                Triggers.aux_positions_enemies[i][1]-Triggers.aux_positions_enemiesBars[i][7][1]))  
+            
+            screen.blit(text29,(Triggers.aux_positions_enemies[i][0]+Triggers.aux_positions_enemiesBars[i][7][0],\
+                Triggers.aux_positions_enemies[i][1]-Triggers.aux_positions_enemiesBars[i][7][2]))   
+            
             screen.blit(image_enemy, Triggers.aux_positions_enemies[i])
  
         aux_higher_speed=0
@@ -230,79 +309,83 @@ class Triggers():
                 isEnemy=False
           
         for copyEnemy in Triggers.copyStatsAndSaveObjects[1]:
-            if  len(Triggers.aux_num_enemy)<len(players_list) and copyEnemy.getSpeed() > aux_higher_speed:
+            if copyEnemy not in Triggers.order_attack_enemy and copyEnemy.getSpeed() > aux_higher_speed:
                 aux_higher_speed  =copyEnemy.getSpeed()
                 next_turn=copyEnemy 
                 isEnemy=True
 
         # dibujar el triángulo en la pantalla        
         if isEnemy:   
-            pygame.draw.polygon(screen,(255, 0, 0), 
-                                [(Triggers.aux_positions_enemies[ len(Triggers.aux_num_enemy)][0],Triggers.aux_positions_enemies[ len(Triggers.aux_num_enemy)][1]-25),\
-                                 (Triggers.aux_positions_enemies[ len(Triggers.aux_num_enemy)][0]+20,Triggers.aux_positions_enemies[ len(Triggers.aux_num_enemy)][1]),\
-                                 (Triggers.aux_positions_enemies[ len(Triggers.aux_num_enemy)][0]+40,Triggers.aux_positions_enemies[ len(Triggers.aux_num_enemy)][1]-25)] )
-            
-            #atributos
-            text4 = font2.render(texts[3], True, (255, 255, 255))
-            text5 = font2.render(texts[4], True, (255, 255, 255))
-            text6 = font2.render(texts[5], True, (255, 255, 255))
-            text7 = font2.render(texts[6], True, (255, 255, 255))
-            text8 = font2.render(texts[7], True, (255, 255, 255))
-            text9 = font2.render(texts[8], True, (255, 255, 255))
-            text10 = font2.render(texts[9], True, (255, 255, 255))
-            text11 = font2.render(texts[10], True, (255, 255, 255))
-            text12= font2.render(texts[11], True, (255, 255, 255))
-            text13= font2.render(texts[12], True, (255, 255, 255))
-            text14= font2.render(texts[13], True, (255, 255, 255))
-                
-            text15= font2.render(str(Triggers.copyStatsAndSaveObjects[1][i].getHealth())+"/"+str(Triggers.copyStatsAndSaveObjects[3][i].getStats().getHealth()), True, (255, 255, 255))
-            text16= font2.render(str(Triggers.copyStatsAndSaveObjects[1][i].getMana())+"/"+str(Triggers.copyStatsAndSaveObjects[3][i].getStats().getMana()), True, (255, 255, 255))
-            text17= font2.render(str(Triggers.copyStatsAndSaveObjects[1][i].getPhysicalAttack())+"/"+str(Triggers.copyStatsAndSaveObjects[3][i].getStats().getPhysicalAttack()), True, (255, 255, 255))
-            text18 = font2.render(str(Triggers.copyStatsAndSaveObjects[1][i].getMagicalAttack())+"/"+str(Triggers.copyStatsAndSaveObjects[3][i].getStats().getMagicalAttack()), True, (255, 255, 255))
-            text19= font2.render(str(Triggers.copyStatsAndSaveObjects[1][i].getPhysicalDefense())+"/"+str(Triggers.copyStatsAndSaveObjects[3][i].getStats().getPhysicalDefense()), True, (255, 255, 255))
-            text20 = font2.render(str(Triggers.copyStatsAndSaveObjects[1][i].getMagicalDefense())+"/"+str(Triggers.copyStatsAndSaveObjects[3][i].getStats().getMagicalDefense()), True, (255, 255, 255))
-            text21 = font2.render(str(Triggers.copyStatsAndSaveObjects[1][i].getPrecision())+"/"+str(Triggers.copyStatsAndSaveObjects[3][i].getStats().getPrecision()), True, (255, 255, 255))
-            text22= font2.render(str(Triggers.copyStatsAndSaveObjects[1][i].getEvasion())+"/"+str(Triggers.copyStatsAndSaveObjects[3][i].getStats().getEvasion()), True, (255, 255, 255))
-            text23 = font2.render(str(Triggers.copyStatsAndSaveObjects[1][i].getCritProbability())+"/"+str(Triggers.copyStatsAndSaveObjects[3][i].getStats().getCritProbability()), True, (255, 255, 255))
-            text24 = font2.render(str(Triggers.copyStatsAndSaveObjects[1][i].getCritMultiplier())+"/"+str(Triggers.copyStatsAndSaveObjects[3][i].getStats().getCritMultiplier()), True, (255, 255, 255))
-            text25 = font2.render(str(Triggers.copyStatsAndSaveObjects[1][i].getSpeed())+"/"+str(Triggers.copyStatsAndSaveObjects[3][i].getStats().getSpeed()), True, (255, 255, 255))
-            
-            area_info.blit(text4,(10,0))     
-            area_info.blit(text5,(10,20))
-            area_info.blit(text6,(10,40))
-            area_info.blit(text7,(10,60))     
-            area_info.blit(text8,(10,80))
-            area_info.blit(text9,(10,100))
-            area_info.blit(text10,(10,120))     
-            area_info.blit(text11,(10,140))
-            area_info.blit(text12,(10,160))
-            area_info.blit(text13,(10,180))     
-            area_info.blit(text14,(10,200))
-            
-            area_info.blit(text15,(area_info.get_width()/2+30,0))
-            area_info.blit(text16,(area_info.get_width()/2+30,20))
-            area_info.blit(text17,(area_info.get_width()/2+30,40))
-            area_info.blit(text18,(area_info.get_width()/2+30,60))
-            area_info.blit(text19,(area_info.get_width()/2+30,80))
-            area_info.blit(text20,(area_info.get_width()/2+30,100)) 
-            area_info.blit(text21,(area_info.get_width()/2+30,120))
-            area_info.blit(text22,(area_info.get_width()/2+30,140))
-            area_info.blit(text23,(area_info.get_width()/2+30,160)) 
-            area_info.blit(text24,(area_info.get_width()/2+30,180)) 
-            area_info.blit(text25,(area_info.get_width()/2+30,200))
+            for i in range(0, len(Triggers.copyStatsAndSaveObjects[1])):   
+                if Triggers.copyStatsAndSaveObjects[1][i]==next_turn: 
+                    pygame.draw.polygon(screen,(255, 0, 0),
+                                [(Triggers.aux_positions_enemies[i][0]+Triggers.aux_positions_enemiesBars[i][6][0],Triggers.aux_positions_enemies[ i][1]-Triggers.aux_positions_enemiesBars[i][6][1]),\
+                                 (Triggers.aux_positions_enemies[ i][0]+Triggers.aux_positions_enemiesBars[i][6][2],Triggers.aux_positions_enemies[ i][1]-Triggers.aux_positions_enemiesBars[i][6][3]),\
+                                 (Triggers.aux_positions_enemies[ i][0]+Triggers.aux_positions_enemiesBars[i][6][4],Triggers.aux_positions_enemies[ i][1]-Triggers.aux_positions_enemiesBars[i][6][5])] )
+                                            
+  
+                    #atributos
+                    text4 = font2.render(texts[3], True, (255, 255, 255))
+                    text5 = font2.render(texts[4], True, (255, 255, 255))
+                    text6 = font2.render(texts[5], True, (255, 255, 255))
+                    text7 = font2.render(texts[6], True, (255, 255, 255))
+                    text8 = font2.render(texts[7], True, (255, 255, 255))
+                    text9 = font2.render(texts[8], True, (255, 255, 255))
+                    text10 = font2.render(texts[9], True, (255, 255, 255))
+                    text11 = font2.render(texts[10], True, (255, 255, 255))
+                    text12= font2.render(texts[11], True, (255, 255, 255))
+                    text13= font2.render(texts[12], True, (255, 255, 255))
+                    text14= font2.render(texts[13], True, (255, 255, 255))
+                        
+                    text15= font2.render(str(Triggers.copyStatsAndSaveObjects[1][i].getHealth())+"/"+str(Triggers.copyStatsAndSaveObjects[3][i].getStats().getHealth()), True, (255, 255, 255))
+                    text16= font2.render(str(Triggers.copyStatsAndSaveObjects[1][i].getMana())+"/"+str(Triggers.copyStatsAndSaveObjects[3][i].getStats().getMana()), True, (255, 255, 255))
+                    text17= font2.render(str(Triggers.copyStatsAndSaveObjects[1][i].getPhysicalAttack())+"/"+str(Triggers.copyStatsAndSaveObjects[3][i].getStats().getPhysicalAttack()), True, (255, 255, 255))
+                    text18 = font2.render(str(Triggers.copyStatsAndSaveObjects[1][i].getMagicalAttack())+"/"+str(Triggers.copyStatsAndSaveObjects[3][i].getStats().getMagicalAttack()), True, (255, 255, 255))
+                    text19= font2.render(str(Triggers.copyStatsAndSaveObjects[1][i].getPhysicalDefense())+"/"+str(Triggers.copyStatsAndSaveObjects[3][i].getStats().getPhysicalDefense()), True, (255, 255, 255))
+                    text20 = font2.render(str(Triggers.copyStatsAndSaveObjects[1][i].getMagicalDefense())+"/"+str(Triggers.copyStatsAndSaveObjects[3][i].getStats().getMagicalDefense()), True, (255, 255, 255))
+                    text21 = font2.render(str(Triggers.copyStatsAndSaveObjects[1][i].getPrecision())+"/"+str(Triggers.copyStatsAndSaveObjects[3][i].getStats().getPrecision()), True, (255, 255, 255))
+                    text22= font2.render(str(Triggers.copyStatsAndSaveObjects[1][i].getEvasion())+"/"+str(Triggers.copyStatsAndSaveObjects[3][i].getStats().getEvasion()), True, (255, 255, 255))
+                    text23 = font2.render(str(Triggers.copyStatsAndSaveObjects[1][i].getCritProbability())+"/"+str(Triggers.copyStatsAndSaveObjects[3][i].getStats().getCritProbability()), True, (255, 255, 255))
+                    text24 = font2.render(str(Triggers.copyStatsAndSaveObjects[1][i].getCritMultiplier())+"/"+str(Triggers.copyStatsAndSaveObjects[3][i].getStats().getCritMultiplier()), True, (255, 255, 255))
+                    text25 = font2.render(str(Triggers.copyStatsAndSaveObjects[1][i].getSpeed())+"/"+str(Triggers.copyStatsAndSaveObjects[3][i].getStats().getSpeed()), True, (255, 255, 255))
+                    
+                    area_info.blit(text4,(10,0))     
+                    area_info.blit(text5,(10,20))
+                    area_info.blit(text6,(10,40))
+                    area_info.blit(text7,(10,60))     
+                    area_info.blit(text8,(10,80))
+                    area_info.blit(text9,(10,100))
+                    area_info.blit(text10,(10,120))     
+                    area_info.blit(text11,(10,140))
+                    area_info.blit(text12,(10,160))
+                    area_info.blit(text13,(10,180))     
+                    area_info.blit(text14,(10,200))
+                    
+                    area_info.blit(text15,(area_info.get_width()/2+30,0))
+                    area_info.blit(text16,(area_info.get_width()/2+30,20))
+                    area_info.blit(text17,(area_info.get_width()/2+30,40))
+                    area_info.blit(text18,(area_info.get_width()/2+30,60))
+                    area_info.blit(text19,(area_info.get_width()/2+30,80))
+                    area_info.blit(text20,(area_info.get_width()/2+30,100)) 
+                    area_info.blit(text21,(area_info.get_width()/2+30,120))
+                    area_info.blit(text22,(area_info.get_width()/2+30,140))
+                    area_info.blit(text23,(area_info.get_width()/2+30,160)) 
+                    area_info.blit(text24,(area_info.get_width()/2+30,180)) 
+                    area_info.blit(text25,(area_info.get_width()/2+30,200))
+                    break
                     
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN:
-                    Triggers.aux_num_enemy.append(len(Triggers.aux_num_enemy)+1)   
+                    Triggers.order_attack_enemy.append(next_turn)   
                      
         elif not isEnemy:
             for i in range(0, len(Triggers.copyStatsAndSaveObjects[0])):   
                 if Triggers.copyStatsAndSaveObjects[0][i]==next_turn: 
                     pygame.draw.polygon(screen,(255, 0, 0),
-                                [(Triggers.aux_positions_players[i][0],Triggers.aux_positions_players[ i][1]-25),\
-                                 (Triggers.aux_positions_players[ i][0]+20,Triggers.aux_positions_players[ i][1]),\
-                                 (Triggers.aux_positions_players[ i][0]+40,Triggers.aux_positions_players[ i][1]-25)] )
-                    
+                                [(Triggers.aux_positions_players[i][0]+Triggers.aux_positions_playersBars[i][6][0],Triggers.aux_positions_players[ i][1]-Triggers.aux_positions_playersBars[i][6][1]),\
+                                 (Triggers.aux_positions_players[ i][0]+Triggers.aux_positions_playersBars[i][6][2],Triggers.aux_positions_players[ i][1]-Triggers.aux_positions_playersBars[i][6][3]),\
+                                 (Triggers.aux_positions_players[ i][0]+Triggers.aux_positions_playersBars[i][6][4],Triggers.aux_positions_players[ i][1]-Triggers.aux_positions_playersBars[i][6][5])] )
+                                            
                     
                     #atributos
                     text4 = font2.render(texts[3], True, (255, 255, 255))
@@ -351,7 +434,8 @@ class Triggers():
                     area_info.blit(text22,(area_info.get_width()/2+30,140))
                     area_info.blit(text23,(area_info.get_width()/2+30,160)) 
                     area_info.blit(text24,(area_info.get_width()/2+30,180)) 
-                    area_info.blit(text25,(area_info.get_width()/2+30,200))           
+                    area_info.blit(text25,(area_info.get_width()/2+30,200))   
+                    break        
                     
             if event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_presses = pygame.mouse.get_pressed()
@@ -368,9 +452,9 @@ class Triggers():
                         
         screen.blit(area_info,(SCREEN_WIDTH/3*2+border-aux_resizeWidth,SCREEN_HEIGHT/3*2+border))
                   
-        if len(Triggers.aux_num_enemy)==len(Triggers.order_attack) and len(Triggers.order_attack)==len(players_list):
-            Triggers.aux_num_enemy=[]
+        if len(Triggers.order_attack_enemy)==len(Triggers.copyStatsAndSaveObjects[3]) and len(Triggers.order_attack)==len(Triggers.copyStatsAndSaveObjects[2]):
             Triggers.order_attack=[]
+            Triggers.order_attack_enemy=[]
                  
         pass
               

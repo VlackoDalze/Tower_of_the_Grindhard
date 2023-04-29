@@ -143,7 +143,7 @@ gui_drawer.createGUI()
 
 select_ok = False
 startBattle = False
-
+    
 
 #!Solo para test
 

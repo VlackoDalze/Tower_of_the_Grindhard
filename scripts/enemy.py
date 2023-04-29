@@ -107,15 +107,22 @@ class Enemy:
     def createRandomEnemies(name,num_players):
         num_ememies=random.randrange(1,4)
         list_enemies = []
-        aux_power=(num_players-num_ememies)*50
-        aux_speed=random.randrange(-10,10)
+        aux_bonus_health=(num_players-num_ememies)*50
+        aux_health=[]
+        aux_speed=[]
+        aux_power=[]
         
+        for i in range(num_ememies):
+            aux_speed.append(random.randrange(-10,10))
+            aux_health.append(random.randrange(-50,50,10))
+            aux_power.append(random.randrange(-10,10))  
+            
         for e in range(0,num_ememies):
             list_enemies.append(Enemy(None,
             "Esqueleto",
             "Un día me morí",
             1,
-            Statistics(200.0+aux_power,20.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,10.0+aux_speed),
+            Statistics(200.0+aux_bonus_health+aux_health[e],20.0,15.0+aux_power[e],0.0,0.0,0.0,0.0,0.0,0.0,0.0,10.0 +aux_speed[e]),
             [Skills('Arañazo',None,10,'Físico')],
             None,
             20 * CELL_SIZE,
