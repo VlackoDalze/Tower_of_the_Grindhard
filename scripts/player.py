@@ -63,7 +63,7 @@ cape = Cape(
 
 class Player(Character):
     newID = 0
-    inventory = [[primary_weapon]]
+    inventory: Object = [[primary_weapon]]
     inventoryIndex = 0
 
     def __init__(
