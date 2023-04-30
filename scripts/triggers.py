@@ -297,7 +297,7 @@ class Triggers():
             
             screen.blit(image_enemy, Triggers.aux_positions_enemies[i])
  
-        aux_higher_speed=0
+        aux_higher_speed=float('-inf')  #valor minimo de float
         next_turn=None
         isEnemy=None
         
@@ -307,7 +307,10 @@ class Triggers():
                 aux_higher_speed=copyPlayer.getSpeed()
                 next_turn=copyPlayer
                 isEnemy=False
-          
+                
+        # if len(Triggers.order_attack)==len(Triggers.copyStatsAndSaveObjects[0]):
+        #     aux_higher_speed=0
+            
         for copyEnemy in Triggers.copyStatsAndSaveObjects[1]:
             if copyEnemy not in Triggers.order_attack_enemy and copyEnemy.getSpeed() > aux_higher_speed:
                 aux_higher_speed  =copyEnemy.getSpeed()

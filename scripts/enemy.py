@@ -113,9 +113,9 @@ class Enemy:
         aux_power=[]
         
         for i in range(num_ememies):
-            aux_speed.append(random.randrange(-5,5))
+            aux_speed.append(random.randrange(-10,10))
             aux_health.append(random.randrange(-50,50,10))
-            aux_power.append(random.randrange(-5,5))  
+            aux_power.append(random.randrange(-10,10))  
             
         for e in range(0,num_ememies):
             list_enemies.append(Enemy(None,
