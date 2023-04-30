@@ -113,16 +113,16 @@ class Enemy:
         aux_power=[]
         
         for i in range(num_ememies):
-            aux_speed.append(random.randrange(-10,10))
+            aux_speed.append(random.randrange(-5,5))
             aux_health.append(random.randrange(-50,50,10))
-            aux_power.append(random.randrange(-10,10))  
+            aux_power.append(random.randrange(-5,5))  
             
         for e in range(0,num_ememies):
             list_enemies.append(Enemy(None,
             "Esqueleto",
             "Un día me morí",
             1,
-            Statistics(200.0+aux_bonus_health+aux_health[e],20.0,15.0+aux_power[e],0.0,0.0,0.0,0.0,0.0,0.0,0.0,10.0 +aux_speed[e]),
+            Statistics(200.0+aux_bonus_health+aux_health[e],20.0,15.0+aux_power[e],0.0,0.0,0.0,0.0,0.0,0.0,0.0,10.0 +aux_speed[e]), #peta con negativos
             [Skills('Arañazo',None,10,'Físico')],
             None,
             20 * CELL_SIZE,
